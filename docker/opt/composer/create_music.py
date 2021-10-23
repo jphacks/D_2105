@@ -140,6 +140,8 @@ def create_great_ocean_main_melody(instruments_list):
         (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
     ]
+    append_notes(notes = steel_drum.notes, summer_beach_melody_notes_list)
+    instruments_list.append(steel_drum)
 
 
 def create_main_melody(instruments_list, prime_value, secondary_value):

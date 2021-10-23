@@ -1,0 +1,38 @@
+version: '3'
+services:
+  python3:
+    container_name: 'python3'
+    build: ./docker/python3
+    volumes:
+      - ./opt:/root/opt
+    restart: always
+    working_dir: '/root/'
+    tty: true
+    stdin_open: true
+# https://qiita.com/Takuro-Researcher/items/67ed50010b4d3ab78736
+  api_mongo:
+    image: mongo:3.6.5
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - /var/lib/mongo_data:/data/db
+      - ./configdb:/data/configdb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+  api_mongo-express:
+    image: mongo-express
+    restart: always
+    links:
+      - 'api_mongo:mongo'
+    ports:
+      - 10081:8081
+    environment:
+      ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: password
+    depends_on:
+      - api_mongo

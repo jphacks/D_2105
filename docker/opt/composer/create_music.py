@@ -228,6 +228,26 @@ def create_tropical_melody(instruments_list):
     instruments_list.append(xylophone)
 
 
+def create_chunibyo_melody(instruments_list):
+    """
+    パラメータが厨二病に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    trumpet = pm.Instrument(Instruments.TRUMPET)
+    chunibyo_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
+        (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
+        (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
+        (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
+    ]
+    append_notes(notes = trumpet.notes, input_notes_list = chunibyo_melody_notes_list)
+    instruments_list.append(trumpet)
+
 
 def create_main_melody(instruments_list, prime_value, secondary_value):
     """
@@ -246,9 +266,9 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
         #でバックよう
         create_great_ocean_main_melody(instruments_list)
     elif prime_value == 'cherry':
-        create_cherry_melody
+        create_cherry_melody(instruments_list)
     elif prime_value == 'cat':
-        hoge = 'a'
+        cat_melody_notes_list(instruments_list)
     elif prime_value == 'dog':
         hoge = 'a'
     elif prime_value == 'train':
@@ -270,7 +290,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'scandinavian':
         hoge = 'a'
     elif prime_value == 'tropical':
-        hoge = 'a'
+        tropical_melody_notes_list(instruments_list)
     elif prime_value == 'school':
         hoge = 'a'
     elif prime_value == 'idol':
@@ -328,7 +348,7 @@ def create_music(related_value_list):
         言語分析の結果を格納したリスト
     """
 
-    NO_ITEM = 0
+    NO_ITEM   = 0
     ONE_ITEMS = 1
     TWO_ITEMS = 2
 

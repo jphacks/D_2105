@@ -135,10 +135,10 @@ def create_summer_beach_melody(instruments_list):
     steel_drum = pm.Instrument(Instruments.STEEL_DRUMS)
     summer_beach_melody_notes_list = \
     [
-        (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
-        (90,'C4',8,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
-        (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
-        (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
+        (90,'C4',2,2.25),(90,'C4',2.25,2.5),(100,'D4',2.5,2.75),(100,'C4',3,3.25),(100,'F4',3.5,3.75),(100,'E4',4,4.25), #Happy Birthday to you
+        (90,'C4',6,6.25),(90,'C4',6.25,6.5),(100,'D4',6.5,6.75),(100,'C4',7,7.25),(100,'G4',7.5,7.75),(100,'F4',8,8.25), #Happy Birthday to you
+        (90,'C4',10,10.25),(90,'C4',10.25,10.5),(100,'C5',10.5,10.75),(100,'A4',11,11.25),(100,'F4',11.5,11.75),(100,'F4',11.75,12),(95,'E4',12,12.25),(95,'E4',12.25,12.5),(90,'D4',12.75,13), #Happy Birthday dear ??
+        (100,'A#4',14,14.25),(100,'A#4',14.25,14.5),(100,'A4',14.5,14.75),(100,'F4',15,15.25),(100,'G4',15.5,15.75),(100,'F4',16,16.25) #Happy Birthday to you
     ]
     append_notes(notes = steel_drum.notes, input_notes_list = summer_beach_melody_notes_list)
     instruments_list.append(steel_drum)

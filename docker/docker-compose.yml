@@ -4,7 +4,7 @@ services:
     container_name: 'python3'
     build: ./docker/python3
     ports:
-      - 12345:12345
+      - "5000:5000"
     volumes:
       - ./opt:/root/opt
     restart: always

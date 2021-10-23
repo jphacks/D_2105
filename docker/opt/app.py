@@ -28,5 +28,5 @@ def error():
 # ページ表示関係 ここまで
 
 if __name__=='__main__':
-    port = 12345
+    port = 5000
     app.run(host="0.0.0.0", port=port, debug=True)

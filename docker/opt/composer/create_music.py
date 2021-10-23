@@ -58,7 +58,7 @@ from midi2audio import FluidSynth
 import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 
-import instruments
+from instruments import Instruments, DrumInstruments
 
 
 def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0):
@@ -90,7 +90,7 @@ def create_default_main_melody(instruments_list):
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
-    piano = pm.Instrument(instruments.Instruments.ACOSTIC_GRAND_PIANO)
+    piano = pm.Instrument(Instruments.ACOSTIC_GRAND_PIANO)
     default_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -98,7 +98,7 @@ def create_default_main_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
     ]
-    append_notes(notes = piano.notes, default_melody_notes_list)
+    ppend_notes(notes = piano.notes, input_notes_list = default_melody_notes_list)
     instruments_list.append(piano)
 
 
@@ -111,7 +111,7 @@ def create_great_ocean_main_melody(instruments_list):
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
-    violin = pm.Instrument(instruments.Instruments.VIOLIN)
+    violin = pm.Instrument(Instruments.VIOLIN)
     great_ocean_melody_notes_list = \
     [
         (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -119,11 +119,11 @@ def create_great_ocean_main_melody(instruments_list):
         (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
     ]
-    append_notes(notes = violin.notes, great_ocean_melody_notes_list)
+    append_notes(notes = violin.notes, input_notes_list = great_ocean_melody_notes_list)
     instruments_list.append(violin)
 
 
-    def create_summer_beach_melody(instruments_list):
+def create_summer_beach_melody(instruments_list):
     """
     パラメータが海で、かつ、真夏のビーチに該当した場合の主旋律を作成する
 
@@ -132,7 +132,7 @@ def create_great_ocean_main_melody(instruments_list):
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
-    steel_drum = pm.Instrument(instruments.Instruments.STEEL_DRUMS)
+    steel_drum = pm.Instrument(Instruments.STEEL_DRUMS)
     summer_beach_melody_notes_list = \
     [
         (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -140,7 +140,7 @@ def create_great_ocean_main_melody(instruments_list):
         (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
     ]
-    append_notes(notes = steel_drum.notes, summer_beach_melody_notes_list)
+    append_notes(notes = steel_drum.notes, input_notes_list = summer_beach_melody_notes_list)
     instruments_list.append(steel_drum)
 
 
@@ -158,41 +158,78 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
         言語分析の結果、二番目に使用頻度の高かったパラメータ
     """
     if prime_value == 'sea':
+        create_great_ocean_main_melody(instruments_list)
     elif prime_value == 'cherry':
+        hoge = 'a'
     elif prime_value == 'cat':
+        hoge = 'a'
     elif prime_value == 'dog':
+        hoge = 'a'
     elif prime_value == 'train':
+        hoge = 'a'
     elif prime_value == 'pc':
+        hoge = 'a'
     elif prime_value == 'gourmet':
+        hoge = 'a'
     elif prime_value == 'sport':
+        hoge = 'a'
     elif prime_value == 'soccer':
+        hoge = 'a'
     elif prime_value == 'baseball':
+        hoge = 'a'
     elif prime_value == 'tabletennis':
+        hoge = 'a'
     elif prime_value == 'japanese':
+        hoge = 'a'
     elif prime_value == 'scandinavian':
+        hoge = 'a'
     elif prime_value == 'tropical':
+        hoge = 'a'
     elif prime_value == 'school':
+        hoge = 'a'
     elif prime_value == 'idol':
+        hoge = 'a'
     elif prime_value == 'outdoor':
+        hoge = 'a'
     elif prime_value == 'car':
+        hoge = 'a'
     elif prime_value == 'drama':
+        hoge = 'a'
     elif prime_value == 'picture':
+        hoge = 'a'
     elif prime_value == 'rock':
+        hoge = 'a'
     elif prime_value == 'hiphop':
+        hoge = 'a'
     elif prime_value == 'electronic':
+        hoge = 'a'
     elif prime_value == 'jazz':
+        hoge = 'a'
     elif prime_value == 'ghost':
+        hoge = 'a'
     elif prime_value == 'sword':
+        hoge = 'a'
     elif prime_value == 'gun':
+        hoge = 'a'
     elif prime_value == 'history':
+        hoge = 'a'
     elif prime_value == 'chuni':
+        hoge = 'a'
     elif prime_value == 'fairy':
+        hoge = 'a'
     elif prime_value == 'child':
+        hoge = 'a'
     elif prime_value == 'mystery':
+        hoge = 'a'
     elif prime_value == 'shopping':
+        hoge = 'a'
     else:
         create_default_main_melody(instruments_list)
 
+
+def midi_to_mp3(inputFileName):
+	fs = FluidSynth('soundFont/MuseScore_General.sf3') #サウンドフォントを指定
+	fs.midi_to_audio(inputFileName, 'sample.wav') #midiをmp3に変換、保存
 
 
 def create_music(value_list):
@@ -217,6 +254,9 @@ def create_music(value_list):
     PM = pm.PrettyMIDI() #Pretty_MIDIオブジェクトの生成
 
     if len(value_list)   == NO_ITEM:
+        prime_value = 'none'
+        secondary_value = 'none'
+        third_value = 'none'
     elif len(value_list) == ONE_ITEMS:
         prime_value     = value_list[0]
     elif len(value_list) == TWO_ITEMS:
@@ -227,7 +267,7 @@ def create_music(value_list):
         secondary_value = value_list[1]
         third_value     = value_list[2]
 
-    create_main_melody(PM.instruments,prime_value)
+    create_main_melody(PM.instruments,prime_value,secondary_value)
     PM.write('sample.mid')
     mid = MidiFile('sample.mid')
     track = MidiTrack()
@@ -235,3 +275,4 @@ def create_music(value_list):
     track.append(MetaMessage('set_tempo',tempo=mido.bpm2tempo(tempo)))
     mid.save('sample2.mid')
     os.remove('sample.mid')
+    midi_to_mp3('sample2.mid')

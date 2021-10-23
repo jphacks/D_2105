@@ -165,5 +165,3 @@ class DrumInstruments:
     ACOSTIC_BASS_DRUM     = 0 
     BASS_DRUM             = 1
     SIDE_STICK            = 2
-
-

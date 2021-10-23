@@ -16,7 +16,7 @@ def translate(text, api_key, url):
 
     Returns
     -------
-    dict
+    translations : dict
         APIから返ってきた結果
     """
     authenticator = IAMAuthenticator(api_key)
@@ -32,7 +32,9 @@ def translate(text, api_key, url):
     #print(translation)
     #print(translation.get_result())
     #joblib.dump(translation, "translation_result")
-    return translation.get_result()["translations"]
+    translation = translation.get_result()["translations"]
+    translations = [text["translation"] for text in translation]
+    return translations
 
 def main():
     translate(TEXT, API_KEY, URL)

@@ -186,6 +186,27 @@ def create_cherry_melody(instruments_list):
     instruments_list.append(organ)
 
 
+def create_cat_melody(instruments_list):
+    """
+    パラメータが猫に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    orchestra_hit = pm.Instrument(Instruments.ORCHESTRA_HIT)
+    cat_melody_notes_list = \
+    [
+        (90,'C4',2,2.25),(90,'C4',2.25,2.5),(100,'D4',2.5,2.75),(100,'C4',3,3.25),(100,'F4',3.5,3.75),(100,'E4',4,4.25), #Happy Birthday to you
+        (90,'C4',6,6.25),(90,'C4',6.25,6.5),(100,'D4',6.5,6.75),(100,'C4',7,7.25),(100,'G4',7.5,7.75),(100,'F4',8,8.25), #Happy Birthday to you
+        (90,'C4',10,10.25),(90,'C4',10.25,10.5),(100,'C5',10.5,10.75),(100,'A4',11,11.25),(100,'F4',11.5,11.75),(100,'F4',11.75,12),(95,'E4',12,12.25),(95,'E4',12.25,12.5),(90,'D4',12.75,13), #Happy Birthday dear ??
+        (100,'A#4',14,14.25),(100,'A#4',14.25,14.5),(100,'A4',14.5,14.75),(100,'F4',15,15.25),(100,'G4',15.5,15.75),(100,'F4',16,17) #Happy Birthday to you
+    ]
+    append_notes(notes = orchestra_hit.notes, input_notes_list = cat_melody_notes_list)
+    instruments_list.append(orchestra_hit)
+
+
 def create_main_melody(instruments_list, prime_value, secondary_value):
     """
     prime_valueに対応した主旋律を作成する

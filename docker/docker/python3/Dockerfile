@@ -10,6 +10,8 @@ ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
 ENV TERM xterm
 
+EXPOSE 12345
+
 RUN apt-get install -y vim less
 RUN apt-get install -y libsndfile1
 RUN pip install --upgrade pip

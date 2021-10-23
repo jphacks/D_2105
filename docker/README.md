@@ -10,6 +10,19 @@ $ docker-compose start
 $ docker-compose exec python3 bash
 ```
 
+# flaskサーバーの起動
+```
+$ docker-compose start
+$ docker-compose exec python3 bash
+```
+の後で
+```
+root@xxxxxxxxxxx:~# cd opt
+root@xxxxxxxxxxx:~# python app.py
+```
+
+止める時は, Ctrl+C→exit
+
 # 作業を終わってdockerを止めたいとき
 ```
 root@xxxxxxxxxx ディレクトリ名# exit

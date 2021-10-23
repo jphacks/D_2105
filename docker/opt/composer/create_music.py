@@ -1,3 +1,56 @@
+# LICENSE
+"""
+# MuseScore_General.sf2
+---
+
+Current version: 0.2  13th May 2020
+
+This is a scaled-down version of **MuseScore_General-HQ.sf2** that replaces some of the larger instruments to save memory and CPU on older PCs. This SoundFont is currently a work-in-progress. Detailed information on presets and sample sources used can be found in "MuseScore_General_Sample_Sources.csv". All instruments without attribution are still using samples from FluidR3Mono.
+
+FluidR3 (original version) by Frank Wen Copyright (c) 2000-02
+
+Mono conversion (FluidR3Mono) by Michael Cowgill Copyright (c) 2014-17
+
+Adaptation for MuseScore_General.sf2 by S. Christian Collins Copyright (c) 2018-19
+
+Temple Blocks instrument provided by Ethan Winer Copyright (c) 2002
+
+Drumline Cymbals provided by Michael Schorsch Copyright (c) 2016
+
+MuseScore_General.sf2 is shared under the MIT license as described in COPYING, as was FluidR3Mono and FluidR3 before it.
+ftp://ftp.osuosl.org/pub/musescore/soundfont/MuseScore_General/MuseScore_General_License.md
+
+"""
+
+"""
+pretty_midi
+
+Copyright (c) 2014 Colin Raffel
+
+Released under the MIT License (MIT)
+https://github.com/craffel/pretty-midi/blob/main/LICENSE.txt
+
+"""
+
+"""
+midi2audio
+
+Copyright (c) 2016 Bohumír Zámečník
+
+Released under the MIT License (MIT)
+https://github.com/bzamecnik/midi2audio/blob/master/LICENSE
+"""
+
+"""
+mido
+
+Copyright (c) 2013-infinity Ole Martin Bjørndalen
+
+Released under the MIT License (MIT)
+https://mido.readthedocs.io/en/latest/license.html
+
+"""
+
 import os
 
 import pretty_midi as pm

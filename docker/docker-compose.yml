@@ -3,6 +3,8 @@ services:
   python3:
     container_name: 'python3'
     build: ./docker/python3
+    ports:
+      - 12345:12345
     volumes:
       - ./opt:/root/opt
     restart: always

@@ -296,13 +296,13 @@ def midi_to_mp3(inputFileName):
 	fs.midi_to_audio(inputFileName, 'sample.wav') #midiをmp3に変換、保存
 
 
-def create_music(value_list):
+def create_music(related_value_list):
     """
     入力されたパラメータを基に曲を作成する
 
     Parameters
     ----------
-    value_list : [str]
+    related_value_list : [str]
         言語分析の結果を格納したリスト
     """
 
@@ -317,19 +317,19 @@ def create_music(value_list):
     tempo = 200 #曲のテンポ。可変
     PM = pm.PrettyMIDI() #Pretty_MIDIオブジェクトの生成
 
-    if len(value_list)   == NO_ITEM:
+    if len(related_value_list)   == NO_ITEM:
         prime_value = 'none'
         secondary_value = 'none'
         third_value = 'none'
-    elif len(value_list) == ONE_ITEMS:
-        prime_value     = value_list[0]
-    elif len(value_list) == TWO_ITEMS:
-        prime_value     = value_list[0]
-        secondary_value = value_list[1]
+    elif len(related_value_list) == ONE_ITEMS:
+        prime_value     = related_value_list[0]
+    elif len(related_value_list) == TWO_ITEMS:
+        prime_value     = related_value_list[0]
+        secondary_value = related_value_list[1]
     else:
-        prime_value     = value_list[0]
-        secondary_value = value_list[1]
-        third_value     = value_list[2]
+        prime_value     = related_value_list[0]
+        secondary_value = related_value_list[1]
+        third_value     = related_value_list[2]
 
     create_main_melody(PM.instruments,prime_value,secondary_value)
     PM.write('sample.mid')

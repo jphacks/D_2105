@@ -21,7 +21,15 @@ def req():
     if re.fullmatch(email_pattern, email) == None:
         return redirect(url_for('index'))
     else:
+        # uuidが被らなくなるまで再発行する
         id = uuid.uuid4().hex
+
+        while os.path.isdir('./movie/' + id):
+            id = uuid.uuid4().hex
+
+        # uuidと同名のディレクトリを作成する
+        os.mkdir('./movie/' + id)
+
         return redirect(url_for('accept', id=id))
 
 @app.route('/<id>/accept')

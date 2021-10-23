@@ -100,6 +100,27 @@ def create_default_main_melody(instruments_list):
     instruments_list.append(piano)
 
 
+def create_great_ocean_main_melody(instruments_list):
+    """
+    パラメータが海で、かつ大海原に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    violin = pm.Instrument(instruments.Instruments.VIOLIN)
+    great_ocean_melody_notes_list = \
+    [
+        (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
+        (90,'C4',8,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
+        (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
+        (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
+    ]
+    append_notes(notes = violin.notes, great_ocean_melody_notes_list)
+    instruments_list.append(violin)
+
+
 def create_main_melody(instruments_list, prime_value, secondary_value):
     """
     prime_valueに対応した主旋律を作成する

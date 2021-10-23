@@ -29,4 +29,4 @@ def error():
 
 if __name__=='__main__':
     port = 12345
-    app.run(port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=True)

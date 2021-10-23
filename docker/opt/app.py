@@ -26,3 +26,7 @@ def error():
         "error.html",
     )
 # ページ表示関係 ここまで
+
+if __name__=='__main__':
+    port = 12345
+    app.run(port=port, debug=True)

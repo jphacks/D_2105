@@ -270,7 +270,6 @@ def create_fairy_melody(instruments_list):
     instruments_list.append(bowed)
 
 
-
 def create_main_melody(instruments_list, prime_value, secondary_value):
     """
     prime_valueに対応した主旋律を作成する

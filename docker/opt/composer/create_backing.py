@@ -91,7 +91,7 @@ CHORDS_DICT = [
         "Ⅰsus4",
 ]
 
-def craete_backing(related_value_list, key_note_list, rhythm_denominator):
+def create_backing(related_value_list, key_note_list, rhythm_denominator):
     """
     入力されたパラメータを基に曲を作成する
     Parameters
@@ -102,6 +102,11 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
         何拍子か? 3or4を想定
+
+    Returns
+    ----------
+    [(int, str, float, float)]
+        順に, velocity, 音高("C4"みたいな), start, end が入る
     """
     if (len(key_note_list) != 21):
         raise ValueError(f"length of related_value_list must be 21, but input was {len(key_note_list)}")
@@ -234,7 +239,7 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
 
     notes_list = []
     # コード進行 chords_progression をもとに伴奏を作る
-    threshold = 0 # 0 から1の値 コードをじゃかじゃか or アルペジオの選ばれる確率 小さいほどアルペジオ
+    threshold = 0.5 # 0 から1の値 コードをじゃかじゃか or アルペジオの選ばれる確率 小さいほどアルペジオ
     style = "s" if np.random.rand() < threshold else "a"
     vel = 60 # velocity
     # コードじゃかじゃか
@@ -268,7 +273,7 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
             elif (chords_progression[i] == -1):
                 i -= 1
             duration = key_note_list[i + 1] - key_note_list[i]
-            arpeggio = create_chord_arpeggio(duration, F_DIATONIC[chords_progression[i]], density=0) # densityをキーワードによって変えるようにしたい
+            arpeggio = create_chord_arpeggio(duration, F_DIATONIC[chords_progression[i]], density=1) # densityをキーワードによって変えるようにしたい
             base_time = key_note_list[i]
             for n in arpeggio:
                 notes_list.append((vel, n[0], base_time, base_time + n[1]))

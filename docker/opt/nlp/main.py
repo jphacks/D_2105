@@ -28,29 +28,39 @@ def get_APIs(api_file_name="../instance/API.csv"):
             api_dict[row[0]]=row[1]
     return api_dict
 
-def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3, api_file_name="API.csv"):
+def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
+    """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。
+
+    Parameters
+    ----------
+    id_ : int
+        ユーザーID
+    twitter_id : str
+        twitterのID（@は不要）
+    twitter_get_num : int, optional
+        取得したいツイート数, by default 900
+    key_num : int, optional
+        欲しいキーワード数, by default 3
+
+    Returns
+    -------
+    keywords : list[str]
+        キーワードのリスト
+    emotion : dict
+        感情分析の結果（例：{'sadness': 0.510395, 'joy': 0.465514, 'fear': 0.087964, 'disgust': 0.129827, 'anger': 0.15183}）
+    """
     api_dict = get_APIs(api_file_name)
-    #tweet_list = twitter.get_tweet(twitter_get_num, twitter_id, api_dict["T_key"], api_dict["T_keys"], api_dict["T_token"], api_dict["T_tokens"])
+    tweet_list = twitter.get_tweet(twitter_get_num, twitter_id, api_dict["T_key"], api_dict["T_keys"], api_dict["T_token"], api_dict["T_tokens"])
     tweet_list = joblib.load("twitter_result")
     keywords = []
     emotions = []
-    tmp_list = []
-    for i in range(len(tweet_list)):
-        tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
-        tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
-        tweet_list[i] = re.sub(r"\s", "", tweet_list[i])
-        tweet_list[i] = re.sub(r"http.*", "", tweet_list[i])
-        #splitchar = r"[\n。？！\?!‼︎⁉︎]"
-        #tmp_list.extend(re.split(splitchar, tweet_list[i]))
-        tmp_list.extend(re.split(r"\n", tweet_list[i]))
-    tweet_list = tmp_list.copy()
-    #translations = translate.translate(tweet_list, api_dict["WL_key"], api_dict["WL_url"])
+    translations = translate.translate(tweet_list, api_dict["WL_key"], api_dict["WL_url"])
     #joblib.dump(tweet_list, "twitter_result2")
     #translations = joblib.load("translate_result")
     #print(translations)
     #print(tweet_list)
-    #emotion = emotion.get_emotion(translations, api_dict["WN_key"], api_dict["WN_url"])
-    return id_, keywords, emotions
+    emotion = emotion.get_emotion(translations, api_dict["WN_key"], api_dict["WN_url"])
+    return keywords, emotions
 
 if __name__ == "__main__":
     nlp_control(0, "")

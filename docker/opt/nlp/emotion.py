@@ -34,7 +34,8 @@ def get_emotion(text, api_key, url):
         text=text,
         features=Features(emotion=EmotionOptions()))
     #joblib.dump(response, "emotion_result")
-    return response
+    emotion = response.get_result()["emotion"]["document"]["emotion"]
+    return emotion
 
 def main():
     get_emotion()

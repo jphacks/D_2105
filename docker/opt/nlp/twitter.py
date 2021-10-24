@@ -7,7 +7,20 @@ import urllib.error
 
 UNIT_NUM = 10
 
-def download_image(url, dst_path="icon.png"):
+def download_image(url, icon_size=200, dst_path="icon.png"):
+    """URLから画像をダウンロードする
+
+    Parameters
+    ----------
+    url : str
+        画像のURL
+    icon_size : int
+        画像サイズ(24, 48, 73, 200, 400, 512のいずれか), by default 200
+    dst_path : str, optional
+        画像の保存場所, by default "icon.png"
+    """
+    url = url.replace("_normal.jpg", "_"+str(icon_size)+"x"+str(icon_size)+".jpg")
+    print(url)
     try:
         data = urllib.request.urlopen(url).read()
         with open(dst_path, mode="wb") as f:

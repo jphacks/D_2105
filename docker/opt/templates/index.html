@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
+<div class=forms>
+ <div class=enter>
+  <form action="/req" method="post" class="form-example">
+  <div class="form-example">
+    <label for="email">メールアドレスを入力してください:</label>
+    <input type="email" placeholder="メールアドレス" name="email" id="email" required>
+  </div>
+  <div class="form-example">
+    <label for="name">TwitterのIDを入力してください:</label>
+    <input type="text" placeholder="Twitter ID" name="twitter_id" id="twitter_id" required>
+  </div>
+</div>
+    <input type="image" name="submit" value="run" src="../static/img/submit.png" alt="送信" width=60% height=60%>
+  </div>
+{% endblock %}

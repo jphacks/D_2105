@@ -1,0 +1,46 @@
+div{
+  width: 100%;
+}
+
+.form-example{
+  position:relative;
+  width:80%;
+}
+
+label{
+  color:#b84513
+}
+
+input{
+  font:15px/24px arial;
+  width:100%;
+  margin:5px 0;
+  transition:0.3s;
+  border: 1px solid brown
+  overflow:hidden;
+  border-radius:4px;
+  outline: none;
+}
+
+input:focus{
+  border-color:#d2691E;
+}
+
+::placeholder{
+  color:#cc9999;
+}
+
+label{
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+
+form{
+  padding:20px;
+}
+
+input[name=submit]{
+  width:250px;
+  height:100px;
+  margin-bottom:50px;
+  filter:drop-shadow(3px 3px 3px rgba(0,0,0,.5));
+}

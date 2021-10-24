@@ -1,0 +1,41 @@
+div{
+  width: 100%;
+}
+
+.hwrapper{
+  width:100%;
+  background-color:#FFF8DC;
+}
+
+header{
+  width:100%;
+}
+
+.header img{
+  width:125px;
+  height:50px;
+  padding-left: 20px;
+  position:relative;
+}
+
+.catch_copy{
+  width:80%;
+  font-size:12px;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  color: #FF6699;
+  margin:auto;
+  padding-bottom:2%;
+}
+
+footer{
+  width:100%;
+  margin:0;
+
+  position: relative;
+  bottom: 0;
+}
+
+.credit{
+  font-size:10px;
+  text-align:center;
+}

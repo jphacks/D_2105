@@ -41,6 +41,7 @@ from midi2audio import FluidSynth
 import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 import numpy as np
+from random import choice
 
 from instruments import Instruments, DrumInstruments
 
@@ -244,16 +245,17 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
     vel = 60 # velocity
     # コードじゃかじゃか
     if (style == "s"):
+        # コードが連続する部分は境界を削除
+        for i in reversed(range(len(key_note_list))):
+            if (chords_progression[i] == -1):
+                key_note_list.pop(i)
         # 最後以外を作る
         for i in range(len(key_note_list) - 1):
             # N.C.
             if (chords_progression[i] == -2):
                 continue
-            # 前のコードを次ぐ場合
-            elif (chords_progression[i] == -1):
-                i -= 1
             duration = key_note_list[i + 1] - key_note_list[i]
-            rhythm = create_chord_rhythm(key_note_list[i])
+            rhythm = create_chord_rhythm(duration)
             base_time = key_note_list[i]
             for r in rhythm:
                 for n in F_DIATONIC[chords_progression[i]]:
@@ -269,7 +271,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
             # N.C.
             if (chords_progression[i] == -2):
                 continue
-            # 前のコードを次ぐ場合
+            # 前のコードを継ぐ場合
             elif (chords_progression[i] == -1):
                 i -= 1
             duration = key_note_list[i + 1] - key_note_list[i]
@@ -296,6 +298,24 @@ def create_chord_rhythm(chord_duration):
     list(int/float)
         コードのストロークの継続時間の配列
     """
+    chords_durations = []
+    # 長さと, それに対応するリズムの刻み方
+    duration_candidate = {
+        0: [[]],
+        0.25: [[0.25]],
+        0.5:  [[0.125, 0.25, 0.125], [0.375, 0.125]],
+        0.75: [[0.125, 0.25, 0.25], [0.25, 0.25, 0.125]],
+        1:    [[0.25, 0.5, 0.25], [0.375, 0.375, 0.25], [0.5, 0.25, 0.25]],
+    }
+    # 整数部分を先に埋める
+    for _ in range(int(chord_duration)):
+        chords_durations += choice(duration_candidate[1])
+    # 残った部分を埋める
+    chords_durations += choice(duration_candidate[chord_duration - int(chord_duration)])
+
+    return chords_durations
+
+    # ↓ボツにした実装
     duration_fixed = chord_duration * 2
 
     chords_durations = np.array([])
@@ -344,7 +364,7 @@ def create_chord_arpeggio(chords_duration, notes_list, density):
 
 # 動作テスト
 if __name__ == "__main__":
-    back = craete_backing(
+    back = create_backing(
         related_value_list=["key1", "key2", "key3"],
         key_note_list=[
             2,3,4,5,6, #Happy Birthday to you

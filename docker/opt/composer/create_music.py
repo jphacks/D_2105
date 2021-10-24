@@ -228,6 +228,27 @@ def create_tropical_melody(instruments_list):
     instruments_list.append(xylophone)
 
 
+def create_ghost_melody(instruments_list):
+    """
+    パラメータが厨二病に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    goblins = pm.Instrument(Instruments.FX_GOBLINS)
+    ghost_melody_notes_list = \
+    [
+        (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
+        (90,'C4',8,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
+        (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
+        (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,28) #Happy Birthday to you
+    ]
+    append_notes(notes = goblins.notes, input_notes_list = ghost_melody_notes_list)
+    instruments_list.append(goblins)
+
+
 def create_chunibyo_melody(instruments_list):
     """
     パラメータが厨二病に該当した場合の主旋律を作成する
@@ -333,7 +354,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'jazz':
         hoge = 'a'
     elif prime_value == 'ghost':
-        hoge = 'a'
+        create_ghost_melody(instruments_list)
     elif prime_value == 'sword':
         hoge = 'a'
     elif prime_value == 'gun':
@@ -341,9 +362,9 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'history':
         hoge = 'a'
     elif prime_value == 'chuni':
-        hoge = 'a'
+        create_chunibyo_melody(instruments_list)
     elif prime_value == 'fairy':
-        hoge = 'a'
+        create_fairy_melody(instruments_list)
     elif prime_value == 'child':
         hoge = 'a'
     elif prime_value == 'mystery':

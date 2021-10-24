@@ -69,6 +69,27 @@ F_DIATONIC = \
 
         [21,24, 28], #Ⅰsus4
     ]
+CHORDS_DICT = [
+
+        "Ⅰ",
+        "Ⅱm",
+        "Ⅲm",
+        "Ⅳ",
+        "Ⅴ",
+        "Ⅵm",
+        "Ⅶdim",
+
+        #ここから7th
+        "Ⅰ7",
+        "Ⅱm7",
+        "Ⅲm7",
+        "Ⅳ7",
+        "Ⅴ7",
+        "Ⅵm7",
+        "Ⅶdim7",
+
+        "Ⅰsus4",
+]
 
 def craete_backing(related_value_list, key_note_list, rhythm_denominator):
     """
@@ -84,7 +105,7 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
     """
     if (len(key_note_list) != 21):
         raise ValueError(f"length of related_value_list must be 21, but input was {len(key_note_list)}")
-
+    b = 5
     chords_candidate_list = [
         {
             # candidate: 使えるコード 
@@ -96,7 +117,7 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
         }, 
         {
             "candidate":   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,], # D, 
-            "probability": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+            "probability": [b, b, b, b, b, b, 1, b, b, b, b, b, b, 1, b,],
         },
         {
             "candidate":   [-1], # C
@@ -104,11 +125,11 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
         }, 
         {
             "candidate":   [0, 1, 3, 5, 6, 7, 9 ,11,12,], # F
-            "probability": [1, 1, 1, 1, 1, 1, 1, 1, 1,],
+            "probability": [b, b, b, b, 1, b, b, b, b,],
         }, 
         {
             "candidate":   [0, 2, 4, 6, 7, 9 ,11,13,], # E
-            "probability": [1, 1, 1, 1, 1, 1, 1, 1, ],
+            "probability": [b, b, b, 1, b, b, b, 1, ],
         }, 
         {
             "candidate":   [-2], # C
@@ -116,7 +137,7 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
         }, 
         {
             "candidate":   [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,], # D
-            "probability": [1, 1, 1, 1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,1 ,],
+            "probability": [b, b, b, b ,b ,b ,1 ,b ,b ,b ,b ,b ,b ,1 ,b ,],
         }, 
         {
             "candidate":   [-2], # C
@@ -124,11 +145,11 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
         }, 
         {
             "candidate":   [0, 1, 3, 4, 7, 8, 9 ,11], # G
-            "probability": [1, 1, 1 ,1 ,1 ,1 ,1 ,1 ,],
+            "probability": [b, b, 1 ,b ,b ,b ,b ,b ,],
         }, 
         {
             "candidate":   [0, 1, 3, 5, 8, 10,12], # F
-            "probability": [1, 1, 1 ,1 ,1 ,1 ,1 ,],
+            "probability": [b, b, b ,b ,b ,b ,b ,],
         }, 
         {
             "candidate":   [-2], # C
@@ -136,49 +157,50 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
         }, 
         {
             "candidate":   [0, 2, 3, 4, 5, 9 ,10,11], # C(hi)
-            "probability": [1, 1, 1 ,1, 1 ,1 ,1 ,1, ],
+            "probability": [b, b, 1 ,b, b ,b ,b ,b, ],
         }, 
         {
             "candidate":   [-1,0, 1, 2, 5, 8, 9 ,10,12], # A
-            "probability": [8, 1, 1, 1, 1, 1, 1, 1, 1,],
+            "probability": [8 * b, b, b, b, b, b, b, b, b,],
         }, 
         {
             "candidate":   [-1,0, 3, 5, 8, 10,12,], # F
-            "probability": [8, 1, 1, 1, 1, 1, 1,],
+            "probability": [8 * b, b, b, b, b, b, b,],
         }, 
         {
             "candidate":   [-1,0,], # E
-            "probability": [1, 1,],
+            "probability": [b, b,],
         }, 
         {
             "candidate":   [1, 3, 8, 10,], # D
-            "probability": [1, 1, 1, 1, ],
+            "probability": [b, b, b, b, ],
         }, 
         {
             "candidate":   [-2,1, 3, 8,], # B♭
-            "probability": [3 ,1, 1, 1,],
+            "probability": [3 * b ,b, b, b,],
         }, 
         {
             "candidate":   [1, 2, 3, 4, 8, 10,11,12], # A
-            "probability": [1, 1, 1, 1 ,1 ,1 ,1 ,1, ],
+            "probability": [b, b, b, b ,b ,b ,b ,b, ],
         }, 
         {
             "candidate":   [-1,1, 3, 8, 10,], # F
-            "probability": [4, 1, 1 ,1 ,1 ,],
+            "probability": [4* b, b, b ,b ,b ,],
         }, 
         {
             "candidate":   [4, 11], # G
-            "probability": [3, 1,],
+            "probability": [3 * b, b,],
         }, 
         {
             "candidate":   [0, 7, 14,], # F
-            "probability": [3, 2, 1],
+            "probability": [3 * b, 2 * b, 1 * b],
         }, 
     ] # コード進行の候補と確率
 
     chords_progression = []
-    # コード進行を作る(最後のコードは別で処理する)
-    for i in range(len(key_note_list) - 1):
+
+    # コード進行を作る
+    for i in range(len(key_note_list)):
         candidate = []
         for probability_idx in range(len(chords_candidate_list[i]["probability"])):
             for pb in range(chords_candidate_list[i]["probability"][probability_idx]):
@@ -192,9 +214,16 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
                     candidate.append(chords_candidate_list[i]["candidate"][probability_idx])
         
         chords_progression.append(np.random.choice(candidate))
-
-
+    
+    # ----テスト出力用-----
+    for i in range(21):
+        if (chords_progression[i] != -1 and chords_progression[i] != -2):
+            print(CHORDS_DICT[chords_progression[i]], end=" ")
+        else: print(chords_progression[i], end=" ")
+    print("")
     # print(chords_progression)
+    # ----テスト出力用ここまで-----
+
 
     # key_note_list があれば拍子を考える必要ないかも
     #if (rhythm_denominator == 3):
@@ -202,7 +231,7 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
     #elif (rhythm_denominator == 4):
     #    pass
 
-
+    # コード進行 chords_progression をもとに伴奏を作る
 
 def create_chord_rhythm(chord_duration):
     """

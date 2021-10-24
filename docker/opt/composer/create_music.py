@@ -228,6 +228,27 @@ def create_tropical_melody(instruments_list):
     instruments_list.append(xylophone)
 
 
+def create_school_melody(instruments_list):
+    """
+    パラメータが学校に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    shcool_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
+        (90,'C4',10,10.75),(90,'C4',10.75,11),(100,'D4',11,12),(100,'C4',12,13),(100,'G4',13,14),(100,'F4',14,15), #Happy Birthday to you
+        (90,'C4',18,18.75),(90,'C4',18.75,19),(100,'C5',19,20),(100,'A4',20,21),(100,'F4',21,21.75),(100,'F4',21.75,22),(95,'E4',22,22.75),(90,'D4',22.75,23),(95,'E4',23,23.75),(90,'D4',23.75,26), #Happy Birthday dear ??
+        (100,'A#4',26,26.75),(100,'A#4',26.75,27),(100,'A4',27,28),(100,'F4',28,29),(100,'G4',29,30),(100,'F4',30,32) #Happy Birthday to you
+    ]
+    append_notes(notes = electric_guitar.notes, input_notes_list = shcool_melody_notes_list)
+    instruments_list.append(electric_guitar)
+
+
 def create_ghost_melody(instruments_list):
     """
     パラメータが厨二病に該当した場合の主旋律を作成する

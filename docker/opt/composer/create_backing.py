@@ -50,24 +50,24 @@ INDEX_TO_NOTENUMBER = 20 #1から88にこれを足すとmidiのノートナン�
 #ダイアトニックコードリスト
 F_DIATONIC = \
     [
-        [21,25,28], #Ⅰ
-        [23,26,30], #Ⅱm
-        [25,28,32], #Ⅲm
-        [26,30,33], #Ⅳ
-        [16,20,23], #Ⅴ
-        [18,21,25], #Ⅵm
-        [20,23,26], #Ⅶdim
+        ["F2","A2","C3"], #Ⅰ
+        ["G2","A#2","D3"], #Ⅱm
+        ["A2","C3","E3"], #Ⅲm
+        ["A#2","D3","F3"], #Ⅳ
+        ["C3","E3","G3"], #Ⅴ
+        ["D3","F3","A3"], #Ⅵm
+        ["E3","G3","A#3"], #Ⅶdim
 
         #ここから7th
-        [21,25,28,31], #Ⅰ7
-        [23,26,30,33], #Ⅱm7
-        [25,28,32,35], #Ⅲm7
-        [26,30,33,36], #Ⅳ7
-        [16,20,23,26], #Ⅴ7
-        [18,21,25,28], #Ⅵm7
-        [20,23,26,30], #Ⅶdim7
+        ["F2","A2","C3", "E3" ], #Ⅰ7
+        ["G2","A#2","D3", "F3" ], #Ⅱm7
+        ["A2","C3","E3", "G3" ], #Ⅲm7
+        ["A#2","D3","F3", "A3" ], #Ⅳ7
+        ["C3","E3","G3", "A#3" ], #Ⅴ7
+        ["D3","F3","A3", "C4" ], #Ⅵm7
+        ["E3","G3","A#3", "D4" ], #Ⅶdim7
 
-        [21,24, 28], #Ⅰsus4
+        ["F2","A#2","C3"], #Ⅰsus4
     ]
 CHORDS_DICT = [
 
@@ -231,7 +231,53 @@ def craete_backing(related_value_list, key_note_list, rhythm_denominator):
     #elif (rhythm_denominator == 4):
     #    pass
 
+
+    notes_list = []
     # コード進行 chords_progression をもとに伴奏を作る
+    threshold = 0 # 0 から1の値 コードをじゃかじゃか or アルペジオの選ばれる確率 小さいほどアルペジオ
+    style = "s" if np.random.rand() < threshold else "a"
+    vel = 60 # velocity
+    # コードじゃかじゃか
+    if (style == "s"):
+        # 最後以外を作る
+        for i in range(len(key_note_list) - 1):
+            # N.C.
+            if (chords_progression[i] == -2):
+                continue
+            # 前のコードを次ぐ場合
+            elif (chords_progression[i] == -1):
+                i -= 1
+            duration = key_note_list[i + 1] - key_note_list[i]
+            rhythm = create_chord_rhythm(key_note_list[i])
+            base_time = key_note_list[i]
+            for r in rhythm:
+                for n in F_DIATONIC[chords_progression[i]]:
+                    notes_list.append((vel, n, base_time, base_time + duration))
+                base_time += r
+        # 最後の音
+        for n in F_DIATONIC[chords_progression[-1]]:
+            notes_list.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
+    # アルペジオ
+    elif (style == "a"):
+        # 最後以外を作る
+        for i in range(len(key_note_list) - 1):
+            # N.C.
+            if (chords_progression[i] == -2):
+                continue
+            # 前のコードを次ぐ場合
+            elif (chords_progression[i] == -1):
+                i -= 1
+            duration = key_note_list[i + 1] - key_note_list[i]
+            arpeggio = create_chord_arpeggio(duration, F_DIATONIC[chords_progression[i]], density=0) # densityをキーワードによって変えるようにしたい
+            base_time = key_note_list[i]
+            for n in arpeggio:
+                notes_list.append((vel, n[0], base_time, base_time + n[1]))
+                base_time += n[1]
+        # 最後の音
+        for n in F_DIATONIC[chords_progression[-1]]:
+            notes_list.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
+
+    return notes_list
 
 def create_chord_rhythm(chord_duration):
     """
@@ -249,14 +295,18 @@ def create_chord_rhythm(chord_duration):
 
     chords_durations = np.array([])
     while True:
-        if np.sum(chords_durations) == duration_fixed:
-            break
-        max_duration = np.min((duration_fixed - np.sum(chords_durations)) * 4 , 4)
-        chords_durations = np.append(chords_durations, 0.25 * np.random.randint(1, max_duration + 1))
+        if (len(chords_durations) == 0):
+            max_duration = np.min([(duration_fixed) * 4 , 4])
+            chords_durations = np.append(chords_durations, 0.25 * np.random.randint(1, max_duration + 1))
+        else:
+            if (np.sum(chords_durations) == duration_fixed):
+                break
+            max_duration = np.min([(duration_fixed - np.sum(chords_durations)) * 4 , 4])
+            chords_durations = np.append(chords_durations, 0.25 * np.random.randint(1, max_duration + 1))
     
     return (chords_durations / 2).tolist()
 
-def create_chord_arpeggio(chords_duration, notes_lsit, density):
+def create_chord_arpeggio(chords_duration, notes_list, density):
     """
     コードをアルペジオで弾く場合のリズムと音を決定
     Parameters
@@ -276,18 +326,16 @@ def create_chord_arpeggio(chords_duration, notes_lsit, density):
     
     if (density != 0 and density != 1):
         raise ValueError("argument [density] must be 0 or 1")
-
     # ひとつひとつの音の長さの候補
     note_duration = [0.125, 0.25]
-    arpeggio = [(notes_lsit[0], note_duration[density])] # (音高, 長さ)のタプルのリスト
-    for i in range((chords_duration // note_duration[density]) - 1):
+    arpeggio_ary = [(notes_list[0], note_duration[density]),] # (音高, 長さ)のタプルのリスト
+    for i in range(int(chords_duration / note_duration[density]) - 1):
         # 同じ音が連続しないための処理
-
-        t = np.random.choice(notes_lsit)
-        while t != arpeggio[-1][0]:
-            t = np.random.choice(notes_lsit)
-        arpeggio.append((t, note_duration[density]))
-    return arpeggio
+        t = np.random.choice(notes_list)
+        while t == arpeggio_ary[-1][0]:
+            t = np.random.choice(notes_list)
+        arpeggio_ary.append((t, note_duration[density]))
+    return arpeggio_ary
 
 # 動作テスト
 if __name__ == "__main__":

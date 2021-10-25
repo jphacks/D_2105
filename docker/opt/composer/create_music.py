@@ -226,7 +226,7 @@ def create_tropical_melody(instruments_list):
     ]
     append_notes(notes = xylophone.notes, input_notes_list = tropical_melody_notes_list)
     instruments_list.append(xylophone)
-
+    
 
 def create_school_melody(instruments_list):
     """
@@ -247,6 +247,27 @@ def create_school_melody(instruments_list):
     ]
     append_notes(notes = electric_guitar.notes, input_notes_list = shcool_melody_notes_list)
     instruments_list.append(electric_guitar)
+
+
+def create_jazz_melody(instruments_list):
+    """
+    パラメータがジャズに該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    piano = pm.Instrument(Instruments.ACOSTIC_GRAND_PIANO)
+    jazz_melody_notes_list = \
+    [
+        (90,'C4',2,2.25),(90,'C4',3,3.25),(100,'D4',4,6),(100,'C4',6,6.25),(100,'F4',7,7.75),(100,'E4',7.75,10), #Happy Birthday to you
+        (90,'C4',11,11.25),(100,'D4',12,14),(100,'C4',14,14.25),(100,'G4',15,15.75),(100,'F4',15.75,18), #Happy Birthday to you
+        (90,'C4',18,18.25),(90,'C4',19,19.25),(100,'C5',20,22),(100,'A4',22,23),(100,'F4',23,24),(95,'E4',24,25),(90,'D4',25,26), #Happy Birthday dear ??
+        (100,'A#4',26.5,27.5),(100,'A#4',27.5,27.75),(100,'A4',28,29),(100,'F4',29,30),(100,'G4',31,32),(100,'F4',32,32.5) #Happy Birthday to you
+    ]
+    append_notes(notes = piano.notes, input_notes_list = jazz_melody_notes_list)
+    instruments_list.append(piano)
 
 
 def create_ghost_melody(instruments_list):
@@ -373,7 +394,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'electronic':
         hoge = 'a'
     elif prime_value == 'jazz':
-        hoge = 'a'
+        create_jazz_melody(instruments_list)
     elif prime_value == 'ghost':
         create_ghost_melody(instruments_list)
     elif prime_value == 'sword':

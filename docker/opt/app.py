@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
-import re, uuid, os
+import re, uuid, os, asyncio, traceback
+import movie_create.movie_create as mc
 
 app = Flask(__name__)
 
@@ -30,6 +31,9 @@ def req():
         # uuidと同名のディレクトリを作成する
         os.mkdir('./movie/' + id)
 
+        # 非同期的に曲生成を開始する
+        create_manager(id)
+
         return redirect(url_for('accept', id=id))
 
 @app.route('/<id>/accept')
@@ -56,7 +60,7 @@ def download(id):
     if os.path.isdir('./movie/' + id) == False:
         return redirect(url_for('index'))
 
-    return send_file('./movie/' + id + '/happy_birthday.mp4', as_attachment=True)
+    return send_file('movie/' + id + '/happy_birthday.mp4', as_attachment=True)
 
 @app.route('/error')
 def error():
@@ -65,6 +69,21 @@ def error():
     )
 
 # ページ表示関係 ここまで
+
+def create_manager(id):
+    """
+    「Twitter探し〜曲出力〜動画出力〜メール送信」までを管理する関数
+
+    Parameter
+    ---------
+    id : str
+        個人識別用uuid
+    """
+    try:
+        mc.movie_create(id)
+    except Exception as e:
+        app.logger.error(str(e))
+        app.logger.error(traceback.format_exc())
 
 if __name__=='__main__':
     port = 5000

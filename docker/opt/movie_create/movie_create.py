@@ -1,5 +1,8 @@
-from moviepy.editor import *
-import cv2, wave
+import moviepy.editor as mpy
+import cv2, wave, os
+import settings
+# デバッグ用
+import shutil
 
 def get_music_length(music_frames):
     """
@@ -19,26 +22,41 @@ def get_music_length(music_frames):
 
     return 1.0 * music_frames / SAMPLING_RATE
 
-if __name__ == '__main__':
-    MOVIE_PATH = '../movie/'
+def movie_create(id):
+    """
+    Parameter
+    ---------
+    id : str
+        個人識別用uuid
+    """
+    MOVIE_PATH = './movie/' + id + '/'
+    BASE_IMG_PATH = './movie_create/common_images/cake.PNG'
+    BASE_HEIGHT = 720
+    BASE_WIDTH = 720
+
+    # デバッグ用
+    if os.path.isfile(os.path.abspath('./movie/sample.wav')):
+        shutil.copy2('./movie/sample.wav', './movie/' + id + '/sample.wav')
+    else:
+        with open('log.log', mode='w') as f:
+            f.write('現在の階層は')
+            f.write(os.getcwd())
+        raise Exception
 
     # 背景画像を取得
-    BASE_IMG_PATH = './common_images/cake.PNG'
     base_img = cv2.imread(BASE_IMG_PATH)
-    base_img = cv2.cvtColor(base_img, cv2.COLOR_BGR2RGB)
-    height = base_img.shape[0]
-    width = base_img.shape[1]
+    base_img = cv2.cvtColor(base_img, cv2.COLOR_BGRA2RGBA)
 
-    # 音楽を取得
+    # 音楽とその長さを取得
     with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
-        length = get_music_length(music.getnframes())
+        music_length = get_music_length(music.getnframes())
 
-    # スライドショーを作る元となる静止画情報を格納する処理
+    # 動画を作る元となる背景画像を格納する処理
     clips = []
-    clip = ImageClip(base_img).set_duration(length)
-    clip = clip.resize(newsize=(width, height))
+    clip = mpy.ImageClip(base_img).set_duration(music_length)
+    clip = clip.resize(newsize=(BASE_WIDTH, BASE_HEIGHT))
     clips.append(clip)
 
-    # スライドショーの動画像を作成する処理
-    concat_clip = concatenate_videoclips(clips, method="compose")
-    concat_clip.write_videofile(MOVIE_PATH + 'output.mp4', fps=30)
+    # 動画を作成する処理
+    concat_clip = mpy.concatenate_videoclips(clips, method='compose')
+    concat_clip.write_videofile(MOVIE_PATH + 'happy_birthday.mp4', fps=30)

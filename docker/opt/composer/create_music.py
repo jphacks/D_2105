@@ -458,9 +458,9 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'scandinavian':
         hoge = 'a'
     elif prime_value == 'tropical':
-        tropical_melody_notes_list(instruments_list)
+        create_tropical_melody(instruments_list)
     elif prime_value == 'school':
-        hoge = 'a'
+        create_school_melody(instruments_list)
     elif prime_value == 'idol':
         hoge = 'a'
     elif prime_value == 'outdoor':

@@ -94,7 +94,7 @@ CHORDS_DICT = [
 
 def create_backing(related_value_list, key_note_list, rhythm_denominator):
     """
-    入力されたパラメータを基に曲を作成する
+    入力されたパラメータを基に伴奏とベースを作成する
     Parameters
     ----------
     related_value_list : [str]
@@ -107,7 +107,9 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
     Returns
     ----------
     [(int, str, float, float)]
-        順に, velocity, 音高("C4"みたいな), start, end が入る
+        伴奏について, 順にvelocity, 音高("4"みたいな), start, end が入る
+    [(int, str, float, float)]
+        ベースについて, 順にvelocity, 音高("4"みたいな), start, end が入る
     """
     if (len(key_note_list) != 21):
         raise ValueError(f"length of related_value_list must be 21, but input was {len(key_note_list)}")
@@ -237,8 +239,14 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
     #elif (rhythm_denominator == 4):
     #    pass
 
+    # ベースを作る
 
-    notes_list = []
+    notes_list_base = create_baseline(
+        related_value_list, key_note_list, rhythm_denominator, chords_progression)
+    
+
+
+    notes_list_chords = []
     # コード進行 chords_progression をもとに伴奏を作る
     threshold = 0.5 # 0 から1の値 コードをじゃかじゃか or アルペジオの選ばれる確率 小さいほどアルペジオ
     style = "s" if np.random.rand() < threshold else "a"
@@ -259,11 +267,11 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
             base_time = key_note_list[i]
             for r in rhythm:
                 for n in F_DIATONIC[chords_progression[i]]:
-                    notes_list.append((vel, n, base_time, base_time + duration))
+                    notes_list_chords.append((vel, n, base_time, base_time + duration))
                 base_time += r
         # 最後の音
         for n in F_DIATONIC[chords_progression[-1]]:
-            notes_list.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
+            notes_list_chords.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
     # アルペジオ
     elif (style == "a"):
         # 最後以外を作る
@@ -275,16 +283,16 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
             elif (chords_progression[i] == -1):
                 i -= 1
             duration = key_note_list[i + 1] - key_note_list[i]
-            arpeggio = create_chord_arpeggio(duration, F_DIATONIC[chords_progression[i]], density=1) # densityをキーワードによって変えるようにしたい
+            arpeggio = create_chord_arpeggio(duration, F_DIATONIC[chords_progression[i]], density=0) # densityをキーワードによって変えるようにしたい
             base_time = key_note_list[i]
             for n in arpeggio:
-                notes_list.append((vel, n[0], base_time, base_time + n[1]))
+                notes_list_chords.append((vel, n[0], base_time, base_time + n[1]))
                 base_time += n[1]
         # 最後の音
         for n in F_DIATONIC[chords_progression[-1]]:
-            notes_list.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
+            notes_list_chords.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
 
-    return notes_list
+    return notes_list_chords
 
 def create_chord_rhythm(chord_duration):
     """
@@ -361,6 +369,67 @@ def create_chord_arpeggio(chords_duration, notes_list, density):
             t = np.random.choice(notes_list)
         arpeggio_ary.append((t, note_duration[density]))
     return arpeggio_ary
+
+def create_baseline(related_value_list, key_note_list, rhythm_denominator, chords_progression):
+    """
+    入力されたパラメータを基に曲を作成する
+    Parameters
+    ----------
+    related_value_list : [str]
+        言語分析の結果を格納したリスト
+    key_note_list : [int/float]
+        great_oceanの21個の音の開始地点を入れたリスト
+    rhythm_denominator : int
+        何拍子か? 3or4を想定
+    chords_progression : [int]
+        コードの数字が入ったリスト
+    Returns
+    ----------
+    [(int, str, float, float)]
+        ベースについて, 順にvelocity, 音高("4"みたいな), start, end が入る
+    """
+    vel = 60
+    notes_list_base = []
+    Fdur_NOTES = ["D2", "E2", "F2", "G2", "A2", "A#2", "C3"] 
+    # 長さと, それに対応するリズムの刻み方
+    duration_candidate = {
+        0: [[]],
+        0.25: [[0.25]],
+        0.5:  [[0.125, 0.25, 0.125], [0.375, 0.125]],
+        0.75: [[0.125, 0.25, 0.25], [0.25, 0.25, 0.125]],
+        1:    [[0.25, 0.5, 0.25], [0.375, 0.375, 0.25], [0.5, 0.25, 0.25]],
+    }
+    # 北欧風
+    if ("" in related_value_list):
+        pass
+
+    else:
+        # 最後以外を生成
+        base_time = 0
+        while False:
+            pass
+        for i in range(len(chords_progression) - 1):
+            if (chords_progression[i] == -2):
+                continue
+            # 前のコードを続ける場合
+            elif (chords_progression[i] == -1):
+                i -= 1
+            duration_list = []
+            chord_duration = key_note_list[i + 1] - key_note_list[i]
+           
+            # 整数部分を先に埋める
+            for _ in range(int(chord_duration)):
+                duration_list += choice(duration_candidate[1])
+            # 残った部分を埋める
+            duration_list += choice(duration_candidate[chord_duration - int(chord_duration)])
+
+            # 音を当てはめる
+            for j in range(len(duration_list)):
+                n = choice(F_DIATONIC[chords_progression[i]] + [F_DIATONIC[chords_progression[i]][0]] + [F_DIATONIC[chords_progression[i]][2]] + Fdur_NOTES)
+                notes_list_base.append((vel, n, ))
+        return chords_durations
+
+    return
 
 # 動作テスト
 if __name__ == "__main__":

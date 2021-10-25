@@ -292,7 +292,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
         for n in F_DIATONIC[chords_progression[-1]]:
             notes_list_chords.append((vel, n, key_note_list[-1], key_note_list[-1] + 1))
 
-    return notes_list_chords
+    return notes_list_chords, notes_list_base
 
 def create_chord_rhythm(chord_duration):
     """
@@ -399,15 +399,17 @@ def create_baseline(related_value_list, key_note_list, rhythm_denominator, chord
         0.75: [[0.125, 0.25, 0.25], [0.25, 0.25, 0.125]],
         1:    [[0.25, 0.5, 0.25], [0.375, 0.375, 0.25], [0.5, 0.25, 0.25]],
     }
-    # 北欧風
-    if ("" in related_value_list):
+    # コンセプト
+    if (False):
         pass
 
     else:
         # 最後以外を生成
-        base_time = 0
-        while False:
-            pass
+        i = 0
+        # ベースを入れる最初の位置を決める chords_progressionでコードがしていされたタイミング
+        while chords_progression[i] != -1 and chords_progression[i] != -2:
+            i += 1
+        base_time = key_note_list[i]
         for i in range(len(chords_progression) - 1):
             if (chords_progression[i] == -2):
                 continue
@@ -426,10 +428,13 @@ def create_baseline(related_value_list, key_note_list, rhythm_denominator, chord
             # 音を当てはめる
             for j in range(len(duration_list)):
                 n = choice(F_DIATONIC[chords_progression[i]] + [F_DIATONIC[chords_progression[i]][0]] + [F_DIATONIC[chords_progression[i]][2]] + Fdur_NOTES)
-                notes_list_base.append((vel, n, ))
-        return chords_durations
+                notes_list_base.append((vel, n, base_time, base_time + duration_list[j]))
+                base_time += duration_list[j]
+        
+        # 最後の音を入れる
+        notes_list_base.append((vel, F_DIATONIC[chords_progression[-1][0]], base_time, base_time + 1))
 
-    return
+    return notes_list_base
 
 # 動作テスト
 if __name__ == "__main__":

@@ -272,7 +272,7 @@ def create_jazz_melody(instruments_list):
 
 def create_ghost_melody(instruments_list):
     """
-    パラメータが厨二病に該当した場合の主旋律を作成する
+    パラメータが妖怪に該当した場合の主旋律を作成する
 
     Parameters
     ----------
@@ -289,6 +289,27 @@ def create_ghost_melody(instruments_list):
     ]
     append_notes(notes = goblins.notes, input_notes_list = ghost_melody_notes_list)
     instruments_list.append(goblins)
+
+
+def create_gun_melody(instruments_list):
+    """
+    パラメータが銃に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    music_box = pm.Instrument(Instruments.MUSIC_BOX)
+    gun_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'E4',5,5.2),(100,'F4',5.2,6),(100,'D4',6,6.2),(100,'E4',6.2,8), #Happy Birthday to you
+        (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'F4',11,11.2),(100,'G4',11.2,12),(100,'E4',12,12.2),(100,'F4',12.2,14), #Happy Birthday to you
+        (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
+        (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
+    ]
+    append_notes(notes = music_box.notes, input_notes_list = gun_melody_notes_list)
+    instruments_list.append(music_box)
 
 
 def create_chunibyo_melody(instruments_list):
@@ -400,7 +421,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'sword':
         hoge = 'a'
     elif prime_value == 'gun':
-        hoge = 'a'
+        create_gun_melody(instruments_list)
     elif prime_value == 'history':
         hoge = 'a'
     elif prime_value == 'chuni':

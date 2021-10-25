@@ -29,7 +29,7 @@ def download_image(url, icon_size=200, dst_path="icon.png"):
         print(e)
 
 def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_token_secret):
-    """対象のツイートを取得
+    """対象のツイートを取得、ユーザのアイコンを./icon.pngに保存
 
     Parameters
     ----------

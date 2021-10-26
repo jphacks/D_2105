@@ -68,6 +68,18 @@ def error():
         "error.html",
     )
 
+@app.route('/404')
+def not_found():
+    return render_template(
+        "404.html",
+    )
+
+@app.route('/500')
+def internal_server_error():
+    return render_template(
+        "500.html",
+    )
+
 # ページ表示関係 ここまで
 
 def create_manager(id):

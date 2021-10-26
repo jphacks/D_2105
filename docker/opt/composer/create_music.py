@@ -96,7 +96,7 @@ def create_default_main_melody(instruments_list):
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
         (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
-        (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,26) #Happy Birthday to you
+        (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
     append_notes(notes = piano.notes, input_notes_list = default_melody_notes_list)
     instruments_list.append(piano)
@@ -205,6 +205,27 @@ def create_cat_melody(instruments_list):
     ]
     append_notes(notes = orchestra_hit.notes, input_notes_list = cat_melody_notes_list)
     instruments_list.append(orchestra_hit)
+
+
+def create_PC_melody(instruments_list):
+    """
+    パラメータがPCに該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    synth_bass1 = pm.Instrument(Instruments.SYNTH_BASS_1)
+    PC_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
+        (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
+        (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
+        (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
+    ]
+    append_notes(notes = synth_bass1.notes, input_notes_list = PC_melody_notes_list)
+    instruments_list.append(synth_bass1)
 
 
 def create_tropical_melody(instruments_list):

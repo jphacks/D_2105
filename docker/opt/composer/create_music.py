@@ -182,7 +182,7 @@ def create_cherry_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',27,27.75),(100,'A#4',27.75,28),(100,'A4',28,29),(100,'F4',29,30),(100,'G4',31,32),(100,'F4',33,39) #Happy Birthday to you
     ]
-    append_notes(notes = organ.notes, input_notes_list = peach_melody_notes_list)
+    append_notes(notes = organ.notes, input_notes_list = cherry_melody_notes_list)
     instruments_list.append(organ)
 
 

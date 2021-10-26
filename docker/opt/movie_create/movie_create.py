@@ -1,4 +1,5 @@
 import moviepy.editor as mpy
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2, wave
 
@@ -45,7 +46,7 @@ def create_clip(path, music_length, id):
     FPS = 30
 
     # 画像を取得
-    img = cv2.imread(path)
+    img = cv2.imread(path, -1)
     img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
 
     # 画像を格納する処理
@@ -58,6 +59,33 @@ def create_clip(path, music_length, id):
 
     return concat_clip
 
+def clip_circle(path, id):
+    """
+    正方形のTwitterアイコンを円形に切り出す関数
+
+    Parameters
+    ----------
+    path : str
+        正方形のTwitterアイコンのパス
+    id : str
+        個人識別用uuid
+    """
+    MOVIE_PATH = './movie/' + id + '/'
+
+    # 画像の読み込み
+    img = cv2.imread(path, -1)
+    height, width = img.shape[:2]
+
+    # マスク作成 (黒く塗りつぶす画素の値は0)
+    mask = np.zeros((height, width), dtype=np.uint8)
+    # 円を描画する関数circle()を利用してマスクの残したい部分を 255 にしている。
+    cv2.circle(mask, center=(height // 2, width // 2), radius=100, color=255, thickness=-1)
+
+    # maskの値が0の画素は透過する
+    img[mask==0] = [0, 0, 0, 0]
+
+    cv2.imwrite(MOVIE_PATH + 'icon_circle.png', img)
+
 def movie_create(id):
     """
     Parameter
@@ -68,6 +96,7 @@ def movie_create(id):
     MOVIE_PATH = './movie/' + id + '/'
     BASE_IMG_PATH = './movie_create/common_images/cake_background.PNG'
     ICON_IMG_PATH = MOVIE_PATH + '/icon.png'
+    ICON_CIRCLE_PATH = MOVIE_PATH + '/icon_circle.png'
     IMGAGES_PATH = './movie_create/images/'
     BASE_HEIGHT = 720
     BASE_WIDTH = 720
@@ -90,9 +119,12 @@ def movie_create(id):
     with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
         music_length = get_music_length(music.getnframes())
 
+    # Twitterアイコンを円形にくり抜く
+    clip_circle(ICON_IMG_PATH, id)
+
     # クリップを作成
     base_clip = create_clip(BASE_IMG_PATH, music_length, id)
-    icon_clip = create_clip(ICON_IMG_PATH, music_length, id)
+    icon_clip = create_clip(ICON_CIRCLE_PATH, music_length, id)
     related_clip_0 = create_clip(IMGAGES_PATH + related_list[0] + '/01.PNG', music_length, id)
     related_clip_1 = create_clip(IMGAGES_PATH + related_list[1] + '/01.PNG', music_length, id)
     related_clip_2 = create_clip(IMGAGES_PATH + related_list[2] + '/01.PNG', music_length, id)

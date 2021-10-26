@@ -97,6 +97,10 @@ def create_manager(id):
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
 
+@app.route("/favicon.ico")
+def favicon():
+    return app.send_static_file("favicon.ico")
+
 if __name__=='__main__':
     port = 5000
     app.run(host="0.0.0.0", port=port, debug=True)

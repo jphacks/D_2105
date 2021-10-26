@@ -1,4 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h1>受付完了！</h1>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/accept.css')}}" />
+<body>
+<div class=message>
+    <h2 class="bubble01">受付完了♪</h2>
+  <div class=accept_cake>
+    <img src="../static/img/accept_cake.png" alt="accept_cake"></img>
+  </div>
+</div>
+
+<div class=mention>
+<p>入力されたアドレスに<br class="br-sp">世界で1つのHappy Birthday to Youが届くよ！
+  <br>ちょっと待ってね^^
+  <br>(このブラウザは閉じてもOKです)</p>
+</div>
+</body>
 {% endblock %}

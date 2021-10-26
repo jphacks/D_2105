@@ -1,0 +1,50 @@
+body{
+  width: 100%;
+}
+
+
+.message h2{
+  font-family: 'Zen Maru Gothic', sans-serif;
+  position:relative;
+  text-align: center;
+  color:#fff;
+  width:200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding:1rem 2rem calc(1rem + 10px);
+  background-color:#cd853f;
+  border-radius: 100vh;
+}
+
+.message h2:before{
+  position: absolute;
+  border-radius: 100vh;
+  top:-4px;
+  left:-4px;
+  width:100%;
+  height:100%;
+  content:'';
+  border:4px dotted #663333;
+}
+
+.accept_cake{
+  text-align: center;
+}
+
+.mention{
+  margin:0;
+}
+
+.mention p{
+  margin:0 auto;
+  font-size:13px;
+  font-family: Arial,'Zen Maru Gothic', sans-serif;
+  padding: 1rem 2rem;
+  width:40%;
+  border-top:2px dotted #663333;
+  border-bottom:2px dotted #663333;
+}
+
+@media screen and (min-width:768px){
+  .br-sp{display:none;}
+}

@@ -1,20 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
-<html>
-  <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
+<link rel="stylesheet" href="{{url_for('static', filename='css/preview.css')}}" />
 <body>
-  <form action="/req" method="post" class="form-example">
-  <div class="form-example">
-    <label for="email">メールアドレスを入力してください:</label>
-    <input type="email" name="email" id="email" required>
-  </div>
-  <div class="form-example">
-    <label for="name">TwitterのIDを入力してください:</label>
-    <input type="text" name="twitter_id" id="twitter_id" required>
-  </div>
-  <div class="form-example">
-    <input type="image" name="submit" value="run" src="../static/img/submit.png" alt="送信">
-  </div>
-  </form>
-</body></html>
+    <div class="preview_title">
+      <h2 class="bubble01">プレビュー♪</h2>
+    </div>
+    <div class="vwrapper">
+      <video width="300px" height="300px"
+       src="/{{ id }}/download" controls></video>
+    </div>
+
+    <div class="preview_download">
+      <a href="/{{ id }}/download" class="download_btn">ダウンロードする！</a>
+    </div>
+
+    <div class=""
+
+</body>
 {% endblock %}

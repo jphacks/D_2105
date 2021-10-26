@@ -1,5 +1,7 @@
 div{
   width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .form-example{
@@ -7,8 +9,21 @@ div{
   width:80%;
 }
 
+@media (max-width:767px) {
+  .formexample{
+    margin-left: auto;
+    margin-right: auto;}
+  }
+
 label{
-  color:#b84513
+  color:#b84513;
+  font-size: 13px;
+}
+
+span{
+    color:#ff0033;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 input{
@@ -38,9 +53,19 @@ form{
   padding:20px;
 }
 
-input[name=submit]{
-  width:250px;
-  height:100px;
+.button{
+  max-width:30%;
+  max-height:auto;
+  margin-left:50px;
   margin-bottom:50px;
   filter:drop-shadow(3px 3px 3px rgba(0,0,0,.5));
+}
+
+@media (max-width:767px) {
+  .button{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
+    max-height: auto;
+  }
 }

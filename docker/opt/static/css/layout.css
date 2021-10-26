@@ -2,37 +2,61 @@ div{
   width: 100%;
 }
 
+
+body{
+  background-color:#fffff0;
+  padding:8px 0 0 0;
+  margin:0;
+}
+
 .hwrapper{
   width:100%;
-  background-color:#FFF8DC;
+  background-color:#FFE991;
+  background-image:repeating-linear-gradient(-45deg,#fff,#fff 7px,transparent 0,transparent 14px);
 }
 
 header{
-  width:100%;
+  padding:0;
 }
 
 .header img{
-  width:125px;
-  height:50px;
+  width:20%;
+  height:auto;
   padding-left: 20px;
   position:relative;
+}
+
+@media (max-width:767px) {
+  .header img{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    height: auto;
+  }
 }
 
 .catch_copy{
   width:80%;
   font-size:12px;
-  font-family: 'Zen Maru Gothic', sans-serif;
-  color: #FF6699;
+  font-family: Arial,"Zen Maru Gothic, sans-serif";
+  color: brown;
+  text-shadow: 1px 3px 3px yellow;
   margin:auto;
   padding-bottom:2%;
 }
 
 footer{
   width:100%;
-  margin:0;
+  padding:10px 0 40px 0;
+  margin:30px 0 0 0;
+  background-color: white;
 
   position: relative;
   bottom: 0;
+}
+
+footer a{
+  padding-left:30px
 }
 
 .credit{

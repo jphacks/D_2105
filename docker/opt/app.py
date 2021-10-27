@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
 
 app = Flask(__name__)
-
+app.secret_key = os.environ["APP_SECRET_KEY"]
 # ページ表示関係
 @app.route('/')
 def index():
@@ -21,10 +21,13 @@ def req():
     email_pattern = "^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
 
     if re.fullmatch(email_pattern, email1) == None:
+        flash("不正なメールアドレスです")
         return redirect(url_for('index'))
     elif re.fullmatch(email_pattern, email2) == None:
+        flash("不正なメールアドレスです")
         return redirect(url_for('index'))
     elif email1 != email2:
+        flash("メールアドレスが一致しません")
         return redirect(url_for('index'))
     else:
         # uuidが被らなくなるまで再発行する

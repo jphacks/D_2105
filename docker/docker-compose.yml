@@ -11,7 +11,6 @@ services:
     working_dir: '/root/'
     tty: true
     stdin_open: true
-    env_file: .env
 # https://qiita.com/Takuro-Researcher/items/67ed50010b4d3ab78736
   api_mongo:
     image: mongo:3.6.5

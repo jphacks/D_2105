@@ -7,6 +7,7 @@ import re
 import twitter
 import translate
 import emotion
+import keywords
 
 def get_APIs(api_file_name="../instance/API.csv"):
     """APIの辞書を作成する。
@@ -44,7 +45,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
 
     Returns
     -------
-    keywords : list[str]
+    keyword_list : list[str]
         キーワードのリスト
     emotion : dict
         感情分析の結果（例：{'sadness': 0.510395, 'joy': 0.465514, 'fear': 0.087964, 'disgust': 0.129827, 'anger': 0.15183}）
@@ -52,7 +53,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     api_dict = get_APIs(api_file_name)
     tweet_list = twitter.get_tweet(twitter_get_num, twitter_id, api_dict["T_key"], api_dict["T_keys"], api_dict["T_token"], api_dict["T_tokens"])
     tweet_list = joblib.load("twitter_result")
-    keywords = []
+    keyword_list = []
     emotions = []
     translations = translate.translate(tweet_list, api_dict["WL_key"], api_dict["WL_url"])
     #joblib.dump(tweet_list, "twitter_result2")
@@ -60,7 +61,8 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     #print(translations)
     #print(tweet_list)
     emotion = emotion.get_emotion(translations, api_dict["WN_key"], api_dict["WN_url"])
-    return keywords, emotions
+    keyword_list = keywords.get_keywords(user_name, password, db_name, tweet_list, key_num)
+    return keyword_list, emotions
 
 if __name__ == "__main__":
     nlp_control(0, "")

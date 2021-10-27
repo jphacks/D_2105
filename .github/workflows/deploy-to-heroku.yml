@@ -1,0 +1,26 @@
+name: Deploy to heroku
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.8.8
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "habify"
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          usedocker: true
+      - name: Start containers
+        run: docker-compose -f "./docker/docker-compose.yml" up -d --build
+      - name: Exec containers
+        run: docker-compose -f "./docker/docker-compose.yml" exec python3 bash
+      - name: Move to app.py directory
+        run: cd opt/
+      - name: Run app.py
+        run: python app.py

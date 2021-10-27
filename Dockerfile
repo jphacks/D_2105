@@ -21,4 +21,4 @@ RUN pip install --upgrade setuptools
 RUN pip install flask tweepy pretty_midi opencv-python opencv-contrib-python numpy scipy ibm-cloud-sdk-core ibm-watson goolabs midi2audio moviepy librosa matplotlib pymongo[srv]
 RUN pip install gunicorn
 
-CMD ["gunicorn", "app:app(1)", "--chdir", "./docker/opt/"]
+CMD ["gunicorn", "app:app(1)", "--chdir", "/opt"]

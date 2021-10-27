@@ -1,0 +1,17 @@
+div{
+  margin-right:auto;
+  margin-left:auto;
+  width: 500px;
+  padding: 10px;
+  text-align: center;
+}
+
+h1{
+  font-family: 'Zen Maru Gothic', sans-serif;
+  color: #8B4513
+  font-weight:bold;
+}
+
+form{
+  padding:20px;
+}

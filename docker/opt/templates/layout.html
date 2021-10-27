@@ -1,1 +1,46 @@
-.
+<!doctype html>
+    <html lang=ja>
+    <head>
+      <meta charset ="UTF-8">
+      <!-- Webフォント -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@800&display=swap" rel="stylesheet">
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+
+      <!-- fontawesome -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+      <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+      <title>HABIFY</title>
+      <link rel="stylesheet" href="{{url_for('static', filename='css/layout.css')}}" />
+      <meta name = "author" content = "D_2105">
+      <meta name = "description" content="HBIFY...">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    </head>
+    <body>
+      <header>
+        <div class="hwrapper">
+        <div class="header">
+          <a href="/"><img src="../static/img/logo.png" alt="HABIFY..."></a>
+        <div class=catch_copy>オンリーワンなHappy Birthday to Youを<br class="br-sp">お届けします……！</div>
+        </div>
+        </div>
+      </header>
+          <main>
+            {% block content %}
+        <!-- ここに別ファイルで書いたコンテンツが入る -->
+            {% endblock %}
+          </main>
+          <footer>
+              <a href="http://www.goo.ne.jp/">
+                <img src="//u.xgoo.jp/img/sgoo.png" alt="supported by goo"
+                title="supported by goo" width="88px" height="36px">
+              </a>
+              <p class=credit>Developed by ぱーいす↑ん↓</p>
+          </footer>
+    </body>
+    <html>

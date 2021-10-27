@@ -1,3 +1,22 @@
-<html><body>
-  <a href="/{{ id }}/download">ダウンロード</a>
-</body></html>
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/preview.css')}}" />
+<body>
+    <div class="preview_title">
+      <h2 class="bubble01">プレビュー♪</h2>
+    </div>
+    <div class="vwrapper">
+      <video width="300px" height="300px"
+       src="/{{ id }}/download" controls></video>
+    </div>
+
+    <div class="preview_download">
+      <a href="/{{ id }}/download" class="download_btn">
+        <i class="far fa-arrow-alt-circle-down"></i> ダウンロードする！
+      </a>
+    </div>
+
+    <div class=""
+
+</body>
+{% endblock %}

@@ -14,5 +14,5 @@ jobs:
         with:
           api_key: ${{secrets.HEROKU_API_KEY}}
           email: ${{secrets.HEROKU_EMAIL}}
-          docker_compose_file: '../../docker/docker-compose.yml'
-          heroku_apps: '[{"imagename":"python3", "appname":"habify", "apptype":"web"'
+          docker_compose_file: '/docker/docker-compose.yml'
+          heroku_apps: '[{"imagename":"python3", "appname":"habify", "apptype":"web"}]'

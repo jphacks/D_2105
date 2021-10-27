@@ -19,5 +19,4 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
           docker_build_args: |
-            -f 
-            docker/docker/deploy/Dockerfile
+            -f docker/docker/deploy/Dockerfile

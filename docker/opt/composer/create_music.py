@@ -590,7 +590,7 @@ def midi_to_mp3(inputFileName):
 	fs.midi_to_audio(inputFileName, 'sample.wav') #midiをmp3に変換、保存
 
 
-def create_music(related_value_list):
+def create_music(related_value_list, BPM=100):
     """
     入力されたパラメータを基に曲を作成する
 
@@ -608,7 +608,7 @@ def create_music(related_value_list):
     secondary_value = 'none'
     third_value = 'none'
 
-    tempo = 200 #曲のテンポ。可変
+    tempo = BPM * 2 #曲のテンポ
     PM = pm.PrettyMIDI() #Pretty_MIDIオブジェクトの生成
 
     if len(related_value_list)   == NO_ITEM:

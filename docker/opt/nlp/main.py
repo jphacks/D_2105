@@ -1,6 +1,7 @@
 import csv
 #import joblib
 import re
+import os
 
 #file
 #import test
@@ -49,9 +50,13 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
         キーワードのリスト
     emotion : dict
         感情分析の結果（例：{'sadness': 0.510395, 'joy': 0.465514, 'fear': 0.087964, 'disgust': 0.129827, 'anger': 0.15183}）
+    error_flag : int
+        1ならエラー、0ならOK
     """
     api_dict = get_APIs(api_file_name)
-    tweet_list = twitter.get_tweet(twitter_get_num, twitter_id, api_dict["T_key"], api_dict["T_keys"], api_dict["T_token"], api_dict["T_tokens"])
+    tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+    if error_flag == 1:
+        return [], {}, 1
     tweet_list = joblib.load("twitter_result")
     keyword_list = []
     emotions = []
@@ -62,7 +67,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     #print(tweet_list)
     emotion = emotion.get_emotion(translations, api_dict["WN_key"], api_dict["WN_url"])
     keyword_list = keywords.get_keywords(user_name, password, db_name, tweet_list, key_num)
-    return keyword_list, emotions
+    return keyword_list, emotions, 0
 
 if __name__ == "__main__":
     nlp_control(0, "")

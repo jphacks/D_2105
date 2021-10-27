@@ -16,6 +16,7 @@ jobs:
           heroku_app_name: "habify"
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
+          dontuseforce: true
       - name: Start containers
         run: docker-compose -f "./docker/docker-compose.yml" up -d --build
       - name: Exec containers

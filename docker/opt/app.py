@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
+import sys
 
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
@@ -106,4 +107,6 @@ def favicon():
 
 if __name__=='__main__':
     port = 5000
+    if (len(sys.argv) >= 1):
+        port = sys.argv[1]
     app.run(host="0.0.0.0", port=port, debug=True)

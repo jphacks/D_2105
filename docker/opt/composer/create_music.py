@@ -61,7 +61,7 @@ from mido import MidiFile, MidiTrack, MetaMessage
 from instruments import Instruments, DrumInstruments
 
 
-def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0):
+def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0,raise_velocity = 0):
     """
     引数のnotesにnotes_listの中身を追加する
 
@@ -74,6 +74,7 @@ def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0):
     """
     for i in input_notes_list:
         velocity, code, start_time, end_time = i
+        velocity += raise_velocity
         pitch = pm.note_name_to_number(code) + raise_key
         start = start_time + sift_start
         end = end_time + sift_start

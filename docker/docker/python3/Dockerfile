@@ -18,3 +18,4 @@ RUN apt-get install -y libsndfile1
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN pip install flask tweepy pretty_midi opencv-python opencv-contrib-python numpy scipy ibm-cloud-sdk-core ibm-watson goolabs midi2audio moviepy librosa matplotlib pymongo[srv]
+CMD

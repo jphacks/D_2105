@@ -24,16 +24,16 @@ def get_music_length(music_frames):
 
     return 1.0 * music_frames / SAMPLING_RATE
 
-def create_clip(path, music_length, id):
+def create_clip(path, id, is_icon=False):
     """
     画像から音楽と同じ長さの無音動画を作る関数
 
     Parameters
     ----------
+    is_icon : bool
+        Twitterアイコンであるかどうか
     path : str
         動画化したい画像のパス
-    music_length : float
-        動画にする音楽の長さ(秒)
     id : str
         個人識別用uuid
 
@@ -45,9 +45,17 @@ def create_clip(path, music_length, id):
     MOVIE_PATH = './movie/' + id + '/'
     FPS = 30
 
-    # 画像を取得
-    img = cv2.imread(path, -1)
-    img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
+    # Twitterアイコンであるかどうかを判定する
+    if is_icon:
+        img = clip_circle(path, id)
+    else:
+        # 画像を取得
+        img = cv2.imread(path, -1)
+        img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
+
+    # 音楽とその長さを取得
+    with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
+        music_length = get_music_length(music.getnframes())
 
     # 画像を格納する処理
     clips = []
@@ -69,11 +77,17 @@ def clip_circle(path, id):
         正方形のTwitterアイコンのパス
     id : str
         個人識別用uuid
+
+    Return
+    ------
+    img : numpy型配列
+        円形に切り出したTwitterアイコン
     """
     MOVIE_PATH = './movie/' + id + '/'
 
     # 画像の読み込み
     img = cv2.imread(path, -1)
+    img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
     height, width = img.shape[:2]
 
     # マスク作成 (黒く塗りつぶす画素の値は0)
@@ -84,7 +98,7 @@ def clip_circle(path, id):
     # maskの値が0の画素は透過する
     img[mask==0] = [0, 0, 0, 0]
 
-    cv2.imwrite(MOVIE_PATH + 'icon_circle.png', img)
+    return img
 
 def movie_create(id):
     """
@@ -119,15 +133,12 @@ def movie_create(id):
     with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
         music_length = get_music_length(music.getnframes())
 
-    # Twitterアイコンを円形にくり抜く
-    clip_circle(ICON_IMG_PATH, id)
-
     # クリップを作成
-    base_clip = create_clip(BASE_IMG_PATH, music_length, id)
-    icon_clip = create_clip(ICON_CIRCLE_PATH, music_length, id)
-    related_clip_0 = create_clip(IMGAGES_PATH + related_list[0] + '/01.PNG', music_length, id)
-    related_clip_1 = create_clip(IMGAGES_PATH + related_list[1] + '/01.PNG', music_length, id)
-    related_clip_2 = create_clip(IMGAGES_PATH + related_list[2] + '/01.PNG', music_length, id)
+    base_clip = create_clip(BASE_IMG_PATH, id)
+    icon_clip = create_clip(ICON_IMG_PATH, id, is_icon=True)
+    related_clip_0 = create_clip(IMGAGES_PATH + related_list[0] + '/01.PNG', id)
+    related_clip_1 = create_clip(IMGAGES_PATH + related_list[1] + '/01.PNG', id)
+    related_clip_2 = create_clip(IMGAGES_PATH + related_list[2] + '/01.PNG', id)
 
     # クリップの合成
     final_clip = mpy.CompositeVideoClip([base_clip, icon_clip.set_position((BASE_WIDTH * 0.38, BASE_HEIGHT * 0.2))])

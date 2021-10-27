@@ -6,21 +6,26 @@ import cv2, wave
 # デバッグ用
 import shutil, os
 
-def get_music_length(music_frames):
+def get_music(id):
     """
-    音楽の長さが何秒かを浮動小数で返す関数
+    音楽の長さが何秒か(浮動小数)と
+    フレーム数を返す関数
 
     Parameter
     ---------
-    music_frames : int
-        フレームレート数
+    id : str
+        個人識別用uuid
 
-    Return
-    ------
+    Returns
+    -------
     1.0 * music_frames / SAMPLING_RATE : float
         音楽の長さ(秒)
     """
+    MOVIE_PATH = MOVIE_PATH = './movie/' + id + '/'
     SAMPLING_RATE = 44100
+
+    with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
+        music_frames = music.getnframes()
 
     return 1.0 * music_frames / SAMPLING_RATE
 
@@ -30,12 +35,12 @@ def create_clip(path, id, is_icon=False):
 
     Parameters
     ----------
-    is_icon : bool
-        Twitterアイコンであるかどうか
     path : str
         動画化したい画像のパス
     id : str
         個人識別用uuid
+    is_icon : bool
+        Twitterアイコンであるかどうか
 
     Return
     ------
@@ -44,30 +49,37 @@ def create_clip(path, id, is_icon=False):
     """
     MOVIE_PATH = './movie/' + id + '/'
     FPS = 30
+    SECONDS_PER_FRAME = 1/30
+
+    # デバッグ用
+    bpm = 30
+
+    # 音楽の長さ，フレーム数を取得
+    music_length = get_music(id)
+
+    # 画像を格納する処理
+    clips = []
 
     # Twitterアイコンであるかどうかを判定する
     if is_icon:
-        img = clip_circle(path, id)
+        img_list = clip_circle(path, id, bpm, music_length)
+
+        for i in img_list:
+            clip = mpy.ImageClip(i).set_duration(SECONDS_PER_FRAME)
+            clips.append(clip)
     else:
         # 画像を取得
         img = cv2.imread(path, -1)
         img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
-
-    # 音楽とその長さを取得
-    with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
-        music_length = get_music_length(music.getnframes())
-
-    # 画像を格納する処理
-    clips = []
-    clip = mpy.ImageClip(img).set_duration(music_length)
-    clips.append(clip)
+        clip = mpy.ImageClip(img).set_duration(music_length)
+        clips.append(clip)
 
     # 動画を作成する処理
     concat_clip = mpy.concatenate_videoclips(clips, method='compose')
 
     return concat_clip
 
-def clip_circle(path, id):
+def clip_circle(path, id, bpm, music_length):
     """
     正方形のTwitterアイコンを円形に切り出す関数
 
@@ -77,28 +89,64 @@ def clip_circle(path, id):
         正方形のTwitterアイコンのパス
     id : str
         個人識別用uuid
+    bpm : int
+        曲の速さ(♩/秒)
+    music_length : float
+        音楽の長さ(秒)
 
     Return
     ------
-    img : numpy型配列
-        円形に切り出したTwitterアイコン
+    img_list : numpy型配列
+        円形に切り出したTwitterアイコンの配列
     """
     MOVIE_PATH = './movie/' + id + '/'
+    FPS = 30
 
     # 画像の読み込み
-    img = cv2.imread(path, -1)
-    img = cv2.cvtColor(img, cv2.COLOR_BGRA2RGBA)
-    height, width = img.shape[:2]
+    img_origin = cv2.imread(path, -1)
+    img_origin = cv2.cvtColor(img_origin, cv2.COLOR_BGRA2RGBA)
+    height, width = img_origin.shape[:2]
 
-    # マスク作成 (黒く塗りつぶす画素の値は0)
-    mask = np.zeros((height, width), dtype=np.uint8)
-    # 円を描画する関数circle()を利用してマスクの残したい部分を 255 にしている。
-    cv2.circle(mask, center=(height // 2, width // 2), radius=100, color=255, thickness=-1)
+    img_list = []
+    movie_frames = int(music_length * FPS) + 1
 
-    # maskの値が0の画素は透過する
-    img[mask==0] = [0, 0, 0, 0]
+    for i in range(movie_frames):
+        '''
+        bpmに合わせて拡大縮小を行う．
 
-    return img
+        bpm
+        60(s)でpbm(拍) = 60/bpm(s)で1(拍)
+
+        fps
+        1(s)で30(枚) = 60/bpm(s)で1800/bpm(枚)
+        '''
+        SECONDS_PER_MINUTE = 60
+        FPS = 30
+        FRAMES_PER_BEAT = SECONDS_PER_MINUTE * FPS // bpm
+        new_size = 0
+
+        # 深いコピー
+        img = img_origin.copy()
+
+        # 画像の拡大縮小
+        if i % FRAMES_PER_BEAT < FRAMES_PER_BEAT // 2:
+            new_size = 200 - 50 * (i % (FRAMES_PER_BEAT // 2)) // (FRAMES_PER_BEAT // 2)
+        else:
+            new_size = 150 + 50 * (i % (FRAMES_PER_BEAT // 2)) // (FRAMES_PER_BEAT // 2)
+
+        cv2.resize(img, dsize=None, fx=new_size/200, fy=new_size/200)
+
+        # マスク作成 (黒く塗りつぶす画素の値は0)
+        mask = np.zeros((200, 200), dtype=np.uint8)
+
+        # 円を描画する関数circle()を利用してマスクの残したい部分を 255 にしている。
+        cv2.circle(mask, center=(height//2, width//2), radius=new_size//2, color=255, thickness=-1)
+
+        # maskの値が0の画素は透過する
+        img[mask==0] = [0, 0, 0, 0]
+        img_list.append(img)
+
+    return img_list
 
 def movie_create(id):
     """
@@ -110,7 +158,6 @@ def movie_create(id):
     MOVIE_PATH = './movie/' + id + '/'
     BASE_IMG_PATH = './movie_create/common_images/cake_background.PNG'
     ICON_IMG_PATH = MOVIE_PATH + '/icon.png'
-    ICON_CIRCLE_PATH = MOVIE_PATH + '/icon_circle.png'
     IMGAGES_PATH = './movie_create/images/'
     BASE_HEIGHT = 720
     BASE_WIDTH = 720
@@ -128,10 +175,6 @@ def movie_create(id):
             f.write('現在の階層は')
             f.write(os.getcwd())
         raise Exception
-
-    # 音楽とその長さを取得
-    with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
-        music_length = get_music_length(music.getnframes())
 
     # クリップを作成
     base_clip = create_clip(BASE_IMG_PATH, id)

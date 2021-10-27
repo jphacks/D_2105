@@ -51,6 +51,8 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
     error_flag : int
         1ならエラー、0ならOK
     """
+    if account[0] == "@":
+        account = account[1:]
     auth = tweepy.OAuthHandler(api_key, api_key_secret)
     auth.set_access_token(access_token, access_token_secret)
 

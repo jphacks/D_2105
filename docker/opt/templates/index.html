@@ -10,17 +10,17 @@
   {% endif %}
 {% endwith %}
 
+<script src="./mail_confirmation.js"defer async></script>
 <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
 <div class=forms>
-<h2>さあオリジナルのHappy Birthday to Youを作ろう！</h2>
+<h2>さあオリジナルの<br class="br-sp">Happy Birthday to You<br class="br-sp">を作ろう！</h2>
  <div class=enter>
   <form action="/req" method="post" class="form-example">
 
   <div class="formexample">
-      <label for="email"><span>あなた</span>のメールアドレスを入力してください<span>*</span>:</label>
-      <input type="email1" placeholder="あなたのメールアドレス" name="email" id="email" required>
-      <input type="email2" placeholder="もう一度ご入力ください(確認用)" name="email" id="email" required>
-      <script src="./mail_confirmation.js"defer async></script>
+      <label for="email1"><span>あなた</span>のメールアドレスを入力してください<span>*</span>:</label>
+      <input type="email" placeholder="あなたのメールアドレス" name="email1" id="email1" required>
+      <input type="email" placeholder="もう一度ご入力ください(確認用)" name="email2" id="email2" required>
 
       <label for="name"><span>祝いたい相手</span>のTwitterのIDを入力してください<span>*</span>:</label>
       <input type="text" placeholder="相手のTwitter ID" name="twitter_id" id="twitter_id" required>
@@ -28,9 +28,8 @@
 
 </div>
   <div class="button">
-    <input type="image" name="submit" onclick="location.href"='accept.html" "img src="../static/img/submit.png" alt="送信" width=60% height=60%>
+    <input type="image" name="submit" onclick="location.href"='accept.html" "img src="../static/img/submit.PNG" alt="送信" width=60% height=60%>
   </div>
 </div>
-<script type="text/JavaScript" src="mail_confirmation.js"></scirpt>
 
 {% endblock %}

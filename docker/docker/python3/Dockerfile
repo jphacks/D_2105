@@ -2,7 +2,7 @@ FROM python:3.9.7-bullseye
 USER root
 
 RUN apt-get update
-RUN apt-get upgrade
+RUN apt-get -y upgrade
 RUN apt-get -y install locales libgl1-mesa-dev && \
     localedef -f UTF-8 -i ja_JP ja_JP.UTF-8 
 ENV LANG ja_JP.UTF-8

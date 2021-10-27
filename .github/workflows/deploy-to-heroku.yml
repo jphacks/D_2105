@@ -18,4 +18,5 @@ jobs:
           heroku_app_name: "habify" #Must be unique in Heroku
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
+          dontuseforce: true
 

@@ -1,0 +1,18 @@
+name: Deploy to heroku
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0
+        with:
+          api_key: ${{secrets.HEROKU_API_KEY}}
+          email: ${{secrets.HEROKU_EMAIL}}
+          docker_compose_file: '/docker/docker-compose.yml'
+          heroku_apps: '[{"imagename":"python3", "appname":"habify", "apptype":"web"}]'

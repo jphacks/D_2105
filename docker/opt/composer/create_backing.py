@@ -432,7 +432,7 @@ def create_baseline(related_value_list, key_note_list, rhythm_denominator, chord
                 base_time += duration_list[j]
         
         # 最後の音を入れる
-        notes_list_base.append((vel, F_DIATONIC[chords_progression[-1][0]], base_time, base_time + 1))
+        notes_list_base.append((vel, F_DIATONIC[chords_progression[-1]][0], base_time, base_time + 1))
 
     return notes_list_base
 

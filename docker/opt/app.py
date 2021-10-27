@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
 
 app = Flask(__name__)
-
+app.secret_key = os.environ["APP_SECRET_KEY"]
 # ページ表示関係
 @app.route('/')
 def index():
@@ -13,18 +13,25 @@ def index():
 
 @app.route('/req', methods=['POST'])
 def req():
-    email = request.form.get('email')
+    email1 = request.form.get('email1')
+    email2 = request.form.get('email2')
     twitter_id = request.form.get('twitter_id')
 
     # メールアドレスのバリデーションを設定
     email_pattern = "^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
 
-    if re.fullmatch(email_pattern, email) == None:
+    if re.fullmatch(email_pattern, email1) == None:
+        flash("不正なメールアドレスです")
+        return redirect(url_for('index'))
+    elif re.fullmatch(email_pattern, email2) == None:
+        flash("不正なメールアドレスです")
+        return redirect(url_for('index'))
+    elif email1 != email2:
+        flash("メールアドレスが一致しません")
         return redirect(url_for('index'))
     else:
         # uuidが被らなくなるまで再発行する
         id = uuid.uuid4().hex
-
         while os.path.isdir('./movie/' + id):
             id = uuid.uuid4().hex
 
@@ -68,17 +75,13 @@ def error():
         "error.html",
     )
 
-@app.route('/404')
-def not_found():
-    return render_template(
-        "404.html",
-    )
+@app.errorhandler(404)
+def page_not_found(error):
+  return render_template('404.html'), 404
 
-@app.route('/500')
-def internal_server_error():
-    return render_template(
-        "500.html",
-    )
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('500.html'), 500
 
 # ページ表示関係 ここまで
 

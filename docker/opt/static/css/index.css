@@ -4,16 +4,22 @@ div{
   margin-right: auto;
 }
 
+.forms h2{
+  text-align: center;
+}
+
 .form-example{
   position:relative;
-  width:80%;
+  width:40%;
 }
 
 @media (max-width:767px) {
-  .formexample{
-    margin-left: auto;
-    margin-right: auto;}
+  .form-example{
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;}
   }
+
 
 label{
   color:#b84513;

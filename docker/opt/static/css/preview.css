@@ -36,6 +36,7 @@ div{
 
 .vwrapper{
   text-align: center;
+  margin:auto;
 }
 
 a{
@@ -51,8 +52,13 @@ a{
 }
 
 .download_btn{
+  font-weight: bold;
   position: relative;
   border-radius:100vh;
   background-color:#ff6699;
-  padding:10px;
+  padding:0.8em;
+}
+
+.download_btn:hover{
+  opacity: .5;
 }

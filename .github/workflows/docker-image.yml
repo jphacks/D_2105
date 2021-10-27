@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Start containers
-      run: docker-compose -f "./docker/docker-compose.yml" up -d --build
+      run: docker-compose -f "./docker/docker-compose.yml" up -d --build || true
     - name: Exec containers
       run: docker-compose exec python3 bash
     - name: Move to app.py directory

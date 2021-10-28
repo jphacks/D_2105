@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
-import sys
 
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
@@ -96,7 +95,9 @@ def create_manager(id):
         個人識別用uuid
     """
     try:
-        mc.movie_create(id)
+        bpm = 100 # デバッグ用
+        related_list = ['cherry', 'dog', 'idol']
+        mc.movie_create(id, bpm, related_list)
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
@@ -106,8 +107,5 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
-    port = int(os.environ.get('PORT', 5000))
-    debug = True
-    if (len(sys.argv) >= 2):
-        debug = False
-    app.run(host="0.0.0.0", port=port, debug=debug)
+    port = 5000
+    app.run(host="0.0.0.0", port=port, debug=True)

@@ -84,7 +84,7 @@ class Instruments:
     ALTO_SAX              = 65
     TENOR_SAX             = 66
     BARITONE_SAX          = 67
-    Oboe                  = 68
+    OBOE                  = 68
     ENGLISH_HONE          = 69
     BASSOON               = 70
     CLARINET              = 71
@@ -114,7 +114,7 @@ class Instruments:
     PAD2_WARM             = 89 #温かみのある音
     PAD3_POLYSYNTH        = 90 #ポリムーグの擬似
     PAD4_COIR             = 91 #コーラス系
-    PAD5_BOWED            = 92 #グラス破壊系
+    PAD5_BOWED            = 92 #グラス破壊系 #メルヘンチック
     PAD6_METALIC          = 93 #金属系
     PAD7_HALO             = 94 #明るい音
     PAD8_SWEEP            = 95 #うねり系
@@ -125,7 +125,7 @@ class Instruments:
     FX_CRYSTAL            = 98
     FX_ATMOSPHERE         = 99
     FX_BRIGHTNESS         = 100
-    FX_GOBLINS            = 101
+    FX_GOBLINS            = 101 #不気味になる
     FX_ECHOES             = 102
     FX_SCI_FI             = 103
 

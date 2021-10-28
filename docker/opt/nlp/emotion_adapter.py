@@ -9,7 +9,7 @@ import pickle as pick
 MODEL_DIR = "/root/opt/nlp/"
 def setup_model():
     """
-    起動時に一度だけ実行
+    起動時に一度だけ実行される
     提供されているモデルをDLしてpickleオブジェクトに保存する
     """
     model = AutoModelForSequenceClassification.from_pretrained("cl-tohoku/bert-base-japanese-whole-word-masking")

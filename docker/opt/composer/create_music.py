@@ -60,6 +60,7 @@ from mido import MidiFile, MidiTrack, MetaMessage
 
 from instruments import Instruments, DrumInstruments
 import get_tempo
+import settings
 
 
 def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0,raise_velocity = 0):
@@ -960,12 +961,12 @@ def create_main_melody(instruments_list, prime_value, positive_param):
         create_default_main_melody(instruments_list)
 
 
-def midi_to_mp3(inputFileName):
+def midi_to_audio(inputFileName,id):
 	fs = FluidSynth('soundFont/MuseScore_General.sf3') #サウンドフォントを指定
-	fs.midi_to_audio(inputFileName, 'sample.wav') #midiをmp3に変換、保存
+	fs.midi_to_wave(inputFileName, 'movie/' + id +'/' + settings.WAV_FILE_NAME) #midiをmp3に変換、保存
 
 
-def create_music(related_value_list, positive_param):
+def create_music(related_value_list, positive_param,id):
     """
     入力されたパラメータを基に曲を作成する
 
@@ -1001,11 +1002,11 @@ def create_music(related_value_list, positive_param):
         third_value     = related_value_list[2]
 
     create_main_melody(PM.instruments,prime_value,positive_param)
-    PM.write('sample.mid')
-    mid = MidiFile('sample.mid')
+    PM.write('movie/' + id +'/sample.mid')
+    mid = MidiFile('movie/' + id +'/sample.mid')
     track = MidiTrack()
     mid.tracks.append(track)
     track.append(MetaMessage('set_tempo',tempo=mido.bpm2tempo(tempo)))
-    mid.save('sample2.mid')
-    os.remove('sample.mid')
-    midi_to_mp3('sample2.mid')
+    mid.save('movie/' + id +'/sample2.mid')
+    os.remove('movie/' + id +'/sample.mid')
+    midi_to_wave('movie/' + id +'/sample2.mid',id)

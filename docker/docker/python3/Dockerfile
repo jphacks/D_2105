@@ -12,11 +12,10 @@ ENV TZ JST-9
 ENV TERM xterm
 
 WORKDIR /opt
-ADD ./docker/opt/ /opt
-RUN git clone https://github.com/huggingface/transformers
 
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
-RUN pip install flask tweepy pretty_midi opencv-python opencv-contrib-python numpy scipy ibm-cloud-sdk-core ibm-watson goolabs midi2audio moviepy librosa matplotlib pymongo[srv]
-
+RUN pip install git+https://github.com/adapter-hub/adapter-transformers.git
+RUN git clone https://github.com/huggingface/transformers
+RUN pip install flask tweepy pretty_midi opencv-python opencv-contrib-python numpy scipy ibm-cloud-sdk-core ibm-watson goolabs midi2audio moviepy librosa matplotlib pymongo[srv] torch
 RUN pip install mecab-python3 unidic-lite fugashi ipadic

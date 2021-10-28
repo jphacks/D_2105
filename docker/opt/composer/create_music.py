@@ -166,25 +166,38 @@ def create_moderate_beach_melody(instruments_list):
     instruments_list.append(vibraphone)
 
 
-def create_cherry_melody(instruments_list):
+def create_aggressive_cherry_melody(instruments_list):
     """
-    パラメータが桜に該当した場合の主旋律を作成する
+    パラメータが攻め気味の桜に該当した場合の主旋律を作成する
 
     Parameters
     ----------
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
-    organ = pm.Instrument(Instruments.DRAWBER_ORGAN)
+    electric_piano = pm.Instrument(Instruments.ELECTRIC_PIANO_2)
     cherry_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
+        (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
+        (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
+        (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
+    ]
+    append_notes(notes = electric_piano.notes, input_notes_list = cherry_melody_notes_list)
+    instruments_list.append(electric_piano)
+
+
+def create_graduate_cherry_melody(instruments_list):
+    piano = pm.Instrument(Instruments.ACOSTIC_GRAND_PIANO)
+    gradu_cherry_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
         (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',27,27.75),(100,'A#4',27.75,28),(100,'A4',28,29),(100,'F4',29,30),(100,'G4',31,32),(100,'F4',33,39) #Happy Birthday to you
     ]
-    append_notes(notes = organ.notes, input_notes_list = cherry_melody_notes_list)
-    instruments_list.append(organ)
+    append_notes(notes = piano.notes, input_notes_list = gradu_cherry_melody_notes_list)
+    instruments_list.append(piano)
 
 
 def create_cat_melody(instruments_list):
@@ -785,7 +798,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
         #でバックよう
         create_great_ocean_main_melody(instruments_list)
     elif prime_value == 'cherry':
-        create_cherry_melody(instruments_list)
+        create_graduate_cherry_melody(instruments_list)
     elif prime_value == 'cat':
         create_cat_melody(instruments_list)
     elif prime_value == 'dog':

@@ -5,7 +5,7 @@ import math
 import urllib.request
 import urllib.error
 
-UNIT_NUM = 10
+UNIT_NUM = 100
 
 def download_image(url, icon_size=200, dst_path="icon.png"):
     """URLから画像をダウンロードする
@@ -75,11 +75,10 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
             tweet_list.append(status.text)
     for i in range(len(tweet_list)):
         tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
-        tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"http.*", "", tweet_list[i])
     
-    return tweet_list, description
+    return tweet_list, description, 0
 
 def main():
     tweet_list = get_tweet()

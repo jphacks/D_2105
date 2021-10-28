@@ -1,5 +1,5 @@
 import csv
-#import joblib
+import joblib
 import re
 import os
 
@@ -34,22 +34,32 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     error_flag : int
         1ならエラー、0ならOK
     """
+    if twitter_id == "":
+        return [], {}, 1
     tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+    #tweet_list = joblib.load("twitter_result")
+    #error_flag = 0
+    #description = "ピアノ弾きます DTMやります 演奏&作曲で動画上げてます良ければお聴きくださいAAR(Anti-AgingRecord)所属 https://m.youtube.com/c/sawapypiano PythonとC++で色々やってるLinux使い"
+    #joblib.dump(tweet_list, "twitter_result")
     if error_flag == 1:
         return [], {}, 1
-    #tweet_list = joblib.load("twitter_result")
     translations = translate.translate(tweet_list, os.environ["WL_key"], os.environ["WL_url"])
-    #joblib.dump(tweet_list, "twitter_result2")
-    #translations = joblib.load("translate_result")
-    #print(translations)
-    #print(tweet_list)
+    #translations = joblib.load("translation_result")
+    #joblib.dump(translations, "translation_result")
     translations = "".join(translations)
     emotions = emotion.get_emotion(translations, os.environ["WN_key"], os.environ["WN_url"])
+    #emotions = joblib.load("emotion_result")
+    #joblib.dump(emotions, "emotion_result")
     description_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], [description])
+    joblib.dump(description_keywords, "description_keywords")
     tweet_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], tweet_list)
+    joblib.dump(tweet_keywords, "tweet_keywords")
     keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, key_num, twitter_get_num)
-
+    joblib.dump(keyword_list, "keyword_result")
+    
+    print(keyword_list)
+    print(emotions)
     return keyword_list, emotions, 0
 
 if __name__ == "__main__":
-    nlp_control(0, "")
+    nlp_control(0, "jphacks2021")

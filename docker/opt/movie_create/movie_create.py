@@ -2,6 +2,7 @@ import moviepy.editor as mpy
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2, wave
+import settings
 
 # デバッグ用
 import shutil, os
@@ -22,9 +23,10 @@ def get_music(id):
         音楽の長さ(秒)
     """
     MOVIE_PATH = MOVIE_PATH = './movie/' + id + '/'
+    WAVE_PATH = MOVIE_PATH + settings.WAV_FILE_NAME
     SAMPLING_RATE = 44100
 
-    with wave.open(MOVIE_PATH + 'sample.wav', 'r') as music:
+    with wave.open(WAVE_PATH, 'r') as music:
         music_frames = music.getnframes()
 
     return 1.0 * music_frames / SAMPLING_RATE
@@ -237,6 +239,7 @@ def movie_create(id, bpm, related_list):
         関連するキーワードのリスト
     """
     MOVIE_PATH = './movie/' + id + '/'
+    WAVE_PATH = MOVIE_PATH + settings.WAV_FILE_NAME
     BASE_IMG_PATH = './movie_create/common_images/cake_background.PNG'
     ICON_IMG_PATH = MOVIE_PATH + '/icon.png'
     IMGAGES_PATH = './movie_create/images/'
@@ -247,8 +250,8 @@ def movie_create(id, bpm, related_list):
     FPS = 30
 
     # デバッグ用
-    if os.path.isfile(os.path.abspath('./movie/sample.wav')):
-        shutil.copy2('./movie/sample.wav', MOVIE_PATH + '/sample.wav')
+    if os.path.isfile(os.path.abspath('./movie/' + settings.WAV_FILE_NAME)):
+        shutil.copy2('./movie/' + settings.WAV_FILE_NAME, WAVE_PATH)
         shutil.copy2('./movie/icon.png', MOVIE_PATH + '/icon.png')
     else:
         with open('log.log', mode='w') as f:
@@ -269,5 +272,5 @@ def movie_create(id, bpm, related_list):
     related_clip_2.set_position((BASE_WIDTH * 0.7, BASE_HEIGHT * 0.55))])
 
     # 音と動画を合成
-    final_clip = final_clip.set_audio(mpy.AudioFileClip(MOVIE_PATH + '/sample.wav'))
+    final_clip = final_clip.set_audio(mpy.AudioFileClip(WAVE_PATH))
     final_clip.write_videofile(filename = MOVIE_PATH + 'happy_birthday.mp4', codec='libx264', audio_codec='aac', fps=FPS)

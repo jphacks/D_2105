@@ -52,7 +52,7 @@ def create_clip(path, id, is_icon=False):
     SECONDS_PER_FRAME = 1/30
 
     # デバッグ用
-    bpm = 30
+    bpm = 100
 
     # 音楽の長さ，フレーム数を取得
     music_length = get_music(id)
@@ -96,7 +96,7 @@ def clip_circle(path, id, bpm, music_length):
 
     Return
     ------
-    img_list : numpy型配列
+    img_list : ndarray
         円形に切り出したTwitterアイコンの配列
     """
     MOVIE_PATH = './movie/' + id + '/'
@@ -134,13 +134,14 @@ def clip_circle(path, id, bpm, music_length):
         else:
             new_size = 150 + 50 * (i % (FRAMES_PER_BEAT // 2)) // (FRAMES_PER_BEAT // 2)
 
-        cv2.resize(img, dsize=None, fx=new_size/200, fy=new_size/200)
-
         # マスク作成 (黒く塗りつぶす画素の値は0)
-        mask = np.zeros((200, 200), dtype=np.uint8)
+        mask = np.zeros((new_size, new_size), dtype=np.uint8)
 
         # 円を描画する関数circle()を利用してマスクの残したい部分を 255 にしている。
-        cv2.circle(mask, center=(height//2, width//2), radius=new_size//2, color=255, thickness=-1)
+        cv2.circle(mask, center=(new_size//2, new_size//2), radius=new_size//2, color=255, thickness=-1)
+
+        # 画像の拡縮
+        img = cv2.resize(img, dsize=(new_size, new_size))
 
         # maskの値が0の画素は透過する
         img[mask==0] = [0, 0, 0, 0]

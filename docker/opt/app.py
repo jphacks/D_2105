@@ -50,7 +50,7 @@ def req():
         return redirect(url_for('accept', id=id))
 
 @app.route('/<id>/accept')
-def accept(id, twitter_id):
+def accept(id):
     if os.path.isdir('./movie/' + id) == False:
         return redirect(url_for('index'))
 
@@ -104,7 +104,7 @@ def create_manager(id, email1):
     """
     try:
         bpm = 100 # デバッグ用
-        related_list = ['cherry', 'dog', 'idol']
+        related_list = ['cherry', 'dog', 'idol'] # デバッグ用
         positive_param = 0.3 #デバッグ用
         create_music.create_music(related_list, positive_param, id)
         mc.movie_create(id, bpm, related_list)
@@ -116,6 +116,8 @@ def create_manager(id, email1):
 def send_email(email1, id):
     from_address = os.environ["from_address"]
     password = os.environ["password"]
+    email_server = os.environ["email_server"]
+    email_port = os.environ["email_port"]
 
     subject = '【HABIFY】動画の生成が完了しました'
     body_text = f'<p>ダウンロードは<a href="https://habify.herokuapp.com/{id}/preview">こちら</a>から</p>'
@@ -123,7 +125,7 @@ def send_email(email1, id):
     to_address = email1
 
     # SMTPサーバに接続
-    smtpobj = smtplib.SMTP('smtp.gmail.com', 587)
+    smtpobj = smtplib.SMTP(email_server, email_port)
     smtpobj.starttls()
     smtpobj.login(from_address, password)
 

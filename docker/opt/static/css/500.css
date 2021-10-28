@@ -1,0 +1,8 @@
+.error_message{
+  text-align: center;
+}
+
+.error_message img{
+max-width: 100%;
+height: auto;
+}

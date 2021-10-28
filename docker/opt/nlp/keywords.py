@@ -1,7 +1,7 @@
 import pymongo
 #import joblib
 
-def get_keywords(user_name, password, db_name, text_list, keyword_num):
+def get_keywords(user_name, password, db_name, text_list):
     """キーワードを取得する
 
     Parameters
@@ -14,13 +14,11 @@ def get_keywords(user_name, password, db_name, text_list, keyword_num):
         dbの名前
     text_list : list[str]
         テキストのリスト
-    keyword_num : int
-        返すキーワードの数
 
     Returns
     -------
-    keyword_list : list[str]
-        キーワードのリスト
+    keyword_count : dict
+        キーワード数を示した辞書
     """
     connection_url = "mongodb+srv://"+user_name+":"+password+"@cluster0.43xkd.mongodb.net/"+db_name+"?retryWrites=true&w=majority"
     client = pymongo.MongoClient(connection_url)
@@ -44,14 +42,7 @@ def get_keywords(user_name, password, db_name, text_list, keyword_num):
             if word in text_list[i]:
                 keyword_count[keyword] += 1
             text_list[i] = text_list[i].replace(word, "")
-    keyword_list = []
-    for i in range(keyword_num):
-        max_k = max(keyword_count, key=keyword_count.get)
-        keyword_list.append(max_k)
-        keyword_count[max_k] = 0
-
-    return keyword_list
-
+    return keyword_count
 
 if __name__ == "__main__":
     #tweet_list = joblib.load("twitter_result2")

@@ -35,9 +35,11 @@ Twitterの投稿を元にその人の趣味趣向や性格を分析し, その�
 * 使用言語: python3.9
 * デプロイ先: Heroku
 * mongoDB
+* [gunicorn](https://gunicorn.org)
 
 #### API・データ
 * [Twitter API](https://developer.twitter.com/en/products/twitter-api/)
+* [バンダイナムコ研究所 感情判定Adapters](https://github.com/BandaiNamcoResearchInc/sentiment-analysis-adapter)
 * [gooラボAPI（固有表現抽出API）](https://labs.goo.ne.jp/api/jp/named-entity-extraction/)
 * [IBM Watson Language Translator](https://www.ibm.com/jp-ja/cloud/watson-language-translator/)
 * [IBM Watson Natural Language Understanding](https://www.ibm.com/cloud/watson-natural-language-understanding/)

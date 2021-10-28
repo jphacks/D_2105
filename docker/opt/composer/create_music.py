@@ -602,7 +602,7 @@ def create_mystery_melody(instruments_list):
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
-    return create_jazz_melody(instruments_list)
+    create_jazz_melody(instruments_list)
 
 
 def create_main_melody(instruments_list, prime_value, secondary_value):

@@ -95,7 +95,7 @@ if __name__ == "__main__":
     
     # setup_model()
 
-    # テスト
+    # テスト用
     print(tweets2posi_nega([
         "ウチらズッ友だョ",
         "楽しい",

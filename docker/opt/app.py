@@ -107,5 +107,11 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
-    port = 5000
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = os.getenv('PORT')
+    debug = False
+    if (port is not None):
+        port = int(port)
+    else:
+        port = 5000
+        debug = True
+    app.run(host="0.0.0.0", port=port, debug=debug)

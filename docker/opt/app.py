@@ -1,9 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
+import smtplib
+from email.mime.text import MIMEText
+from email.utils import formatdate
 
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
+
 # ページ表示関係
 @app.route('/')
 def index():
@@ -39,12 +43,12 @@ def req():
         os.mkdir('./movie/' + id)
         print(f"created uuid: {id}")
         # 非同期的に曲生成を開始する
-        create_manager(id)
+        create_manager(id, email1)
 
         return redirect(url_for('accept', id=id))
 
 @app.route('/<id>/accept')
-def accept(id):
+def accept(id, twitter_id):
     if os.path.isdir('./movie/' + id) == False:
         return redirect(url_for('index'))
 
@@ -85,7 +89,7 @@ def internal_server_error(error):
 
 # ページ表示関係 ここまで
 
-def create_manager(id):
+def create_manager(id, email1):
     """
     「Twitter探し〜曲出力〜動画出力〜メール送信」までを管理する関数
 
@@ -93,14 +97,42 @@ def create_manager(id):
     ---------
     id : str
         個人識別用uuid
+    email1 : str
+        返信用メールアドレス
     """
     try:
         bpm = 100 # デバッグ用
-        related_list = ['cherry', 'dog', 'idol']
+        related_list = ['cherry', 'dog', 'idol'] # デバッグ用
         mc.movie_create(id, bpm, related_list)
+        send_email(email1, id)
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
+
+def send_email(email1, id):
+    from_address = os.environ["from_address"]
+    password = os.environ["password"]
+
+    subject = '【HABIFY】動画の生成が完了しました'
+    body_text = f'<p>ダウンロードは<a href="https://habify.herokuapp.com/{id}/preview">こちら</a>から</p>'
+    from_address = from_address
+    to_address = email1
+
+    # SMTPサーバに接続
+    smtpobj = smtplib.SMTP('smtp.gmail.com', 587)
+    smtpobj.starttls()
+    smtpobj.login(from_address, password)
+
+    # メール作成
+    msg = MIMEText(body_text, 'html')
+    msg['Subject'] = subject
+    msg['From'] = from_address
+    msg['To'] = to_address
+    msg['Date'] = formatdate()
+
+    # 作成したメールを送信
+    smtpobj.send_message(msg)
+    smtpobj.close()
 
 @app.route("/favicon.ico")
 def favicon():

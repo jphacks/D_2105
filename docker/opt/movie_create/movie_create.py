@@ -245,8 +245,6 @@ def movie_create(id, bpm, related_list):
     IMGAGES_PATH = './movie_create/images/'
     BASE_HEIGHT = 720
     BASE_WIDTH = 720
-    ICON_HEIGHT = 200
-    ICON_WIDTH = 200
     FPS = 30
 
     # デバッグ用

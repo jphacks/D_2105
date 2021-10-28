@@ -96,7 +96,7 @@ def create_manager(id):
     """
     try:
         bpm = 100 # デバッグ用
-        related_list = ['cherry_blossom', 'dog', 'idol']
+        related_list = ['cherry', 'dog', 'idol']
         mc.movie_create(id, bpm, related_list)
     except Exception as e:
         app.logger.error(str(e))

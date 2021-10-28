@@ -229,6 +229,27 @@ def create_dog_melody(instruments_list):
     instruments_list.append(xylophone)
 
 
+def create_train_melody(instruments_list):
+    """
+    パラメータが電車に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    piano = pm.Instrument(Instruments.ACOSTIC_GRAND_PIANO)
+    train_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
+        (90,'C4',8,8.75),(90,'C4',8.75,9),(100,'D4',9,10),(100,'C4',10,11),(100,'G4',11,12),(100,'F4',12,14), #Happy Birthday to you
+        (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ?? 19->51で電車が通過
+        (100,'A#4',51,51.75),(100,'A#4',51.75,52),(100,'A4',52,53),(100,'F4',53,54),(100,'G4',54,55),(100,'F4',55,57) #Happy Birthday to you
+    ]
+    append_notes(notes = piano.notes, input_notes_list = train_melody_notes_list)
+    instruments_list.append(piano)
+
+
 def create_PC_melody(instruments_list):
     """
     パラメータがPCに該当した場合の主旋律を作成する
@@ -718,7 +739,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'dog':
         create_dog_melody(instruments_list)
     elif prime_value == 'train':
-        hoge = 'a'
+        create_train_melody(instruments_list)
     elif prime_value == 'pc':
         create_PC_melody(instruments_list)
     elif prime_value == 'gourmet':

@@ -1,2 +1,4 @@
 instance/*
 movie/*
+*/__pycache__
+*.log

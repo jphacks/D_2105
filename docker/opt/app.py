@@ -95,7 +95,9 @@ def create_manager(id):
         個人識別用uuid
     """
     try:
-        mc.movie_create(id)
+        bpm = 100 # デバッグ用
+        related_list = ['cherry_blossom', 'dog', 'idol']
+        mc.movie_create(id, bpm, related_list)
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())

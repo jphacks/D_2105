@@ -37,7 +37,7 @@ def req():
 
         # uuidと同名のディレクトリを作成する
         os.mkdir('./movie/' + id)
-
+        print(f"created uuid: {id}")
         # 非同期的に曲生成を開始する
         create_manager(id)
 

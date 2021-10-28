@@ -1,5 +1,5 @@
 import csv
-#import joblib
+import joblib
 import re
 import os
 
@@ -9,26 +9,7 @@ import twitter
 import translate
 import emotion
 import keywords
-
-def get_APIs(api_file_name="../instance/API.csv"):
-    """APIの辞書を作成する。
-
-    Parameters
-    ----------
-    api_file_name : str, optional
-        APIの情報が書かれたcsvファイル, by default "API.csv"
-
-    Returns
-    -------
-    api_dict : dict
-        api_dict[API_name]=key or ...
-    """
-    api_dict = {}
-    with open(api_file_name, "r")as f:
-        reader = csv.reader(f, delimiter=",")
-        for row in reader:
-            api_dict[row[0]]=row[1]
-    return api_dict
+import decide_keywords
 
 def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。
@@ -53,21 +34,32 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     error_flag : int
         1ならエラー、0ならOK
     """
-    api_dict = get_APIs(api_file_name)
+    if twitter_id == "":
+        return [], {}, 1
     tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+    #tweet_list = joblib.load("twitter_result")
+    #error_flag = 0
+    #description = "ピアノ弾きます DTMやります 演奏&作曲で動画上げてます良ければお聴きくださいAAR(Anti-AgingRecord)所属 https://m.youtube.com/c/sawapypiano PythonとC++で色々やってるLinux使い"
+    #joblib.dump(tweet_list, "twitter_result")
     if error_flag == 1:
         return [], {}, 1
-    tweet_list = joblib.load("twitter_result")
-    keyword_list = []
-    emotions = []
-    translations = translate.translate(tweet_list, api_dict["WL_key"], api_dict["WL_url"])
-    #joblib.dump(tweet_list, "twitter_result2")
-    #translations = joblib.load("translate_result")
-    #print(translations)
-    #print(tweet_list)
-    emotion = emotion.get_emotion(translations, api_dict["WN_key"], api_dict["WN_url"])
-    keyword_list = keywords.get_keywords(user_name, password, db_name, tweet_list, key_num)
+    translations = translate.translate(tweet_list, os.environ["WL_key"], os.environ["WL_url"])
+    #translations = joblib.load("translation_result")
+    #joblib.dump(translations, "translation_result")
+    translations = "".join(translations)
+    emotions = emotion.get_emotion(translations, os.environ["WN_key"], os.environ["WN_url"])
+    #emotions = joblib.load("emotion_result")
+    #joblib.dump(emotions, "emotion_result")
+    description_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], [description])
+    joblib.dump(description_keywords, "description_keywords")
+    tweet_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], tweet_list)
+    joblib.dump(tweet_keywords, "tweet_keywords")
+    keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, key_num, twitter_get_num)
+    joblib.dump(keyword_list, "keyword_result")
+    
+    print(keyword_list)
+    print(emotions)
     return keyword_list, emotions, 0
 
 if __name__ == "__main__":
-    nlp_control(0, "")
+    nlp_control(0, "jphacks2021")

@@ -92,7 +92,7 @@ CHORDS_DICT = [
         "Ⅰsus4",
 ]
 
-def create_backing(related_value_list, key_note_list, rhythm_denominator):
+def create_backing(related_value_list, key_note_list, rhythm_denominator, emotion_value=0.5):
     """
     入力されたパラメータを基に伴奏とベースを作成する
     Parameters
@@ -103,6 +103,8 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
         何拍子か? 3or4を想定
+    emotion_value : float
+        感情分析の結果の値
 
     Returns
     ----------

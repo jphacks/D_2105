@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
+from nlp import emotion_adapter
 from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
@@ -102,9 +103,9 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
+        bpm = 100 # デバッグ用
         related_list = ['cherry', 'dog', 'idol']
         positive_param = 0.3 #デバッグ用
-        bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)
         mc.movie_create(id, bpm, related_list)
         send_email(email1, id)
@@ -142,6 +143,8 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
+    # 感情判定のセットアップ
+    emotion_adapter.setup_model()
     port = os.getenv('PORT')
     debug = False
     if (port is not None):

@@ -59,6 +59,7 @@ import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 
 from instruments import Instruments, DrumInstruments
+import get_tempo
 
 
 def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0,raise_velocity = 0):
@@ -878,10 +879,8 @@ def create_main_melody(instruments_list, prime_value, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     prime_value : str
         言語分析の結果、一番使用頻度の高かったパラメータ
-    secondary_value : str
-        言語分析の結果、二番目に使用頻度の高かったパラメータ
     positive_param : float
-        Tweetから算出されたポジティブ度(一旦1~0と仮定)
+        Tweetから算出されたポジティブ度
     """
     if prime_value == 'sea':
         if positive_param < 0.33:
@@ -966,7 +965,7 @@ def midi_to_mp3(inputFileName):
 	fs.midi_to_audio(inputFileName, 'sample.wav') #midiをmp3に変換、保存
 
 
-def create_music(related_value_list, BPM=100):
+def create_music(related_value_list, positive_param):
     """
     入力されたパラメータを基に曲を作成する
 
@@ -983,7 +982,7 @@ def create_music(related_value_list, BPM=100):
     prime_value = 'none'
     secondary_value = 'none'
     third_value = 'none'
-
+    BPM = get_tempo.get_bpm(related_value_list, positive_param)
     tempo = BPM * 2 #曲のテンポ
     PM = pm.PrettyMIDI() #Pretty_MIDIオブジェクトの生成
 
@@ -1001,7 +1000,7 @@ def create_music(related_value_list, BPM=100):
         secondary_value = related_value_list[1]
         third_value     = related_value_list[2]
 
-    create_main_melody(PM.instruments,prime_value,secondary_value)
+    create_main_melody(PM.instruments,prime_value,positive_param)
     PM.write('sample.mid')
     mid = MidiFile('sample.mid')
     track = MidiTrack()

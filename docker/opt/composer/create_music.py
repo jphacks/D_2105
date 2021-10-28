@@ -58,8 +58,8 @@ from midi2audio import FluidSynth
 import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 
-from instruments import Instruments, DrumInstruments
-import get_tempo
+from composer.instruments import Instruments, DrumInstruments
+import composer.get_tempo as get_tempo
 import settings
 
 
@@ -961,10 +961,12 @@ def create_main_melody(instruments_list, prime_value, positive_param):
         create_default_main_melody(instruments_list)
 
 
-def midi_to_audio(inputFileName,id):
-	fs = FluidSynth('soundFont/MuseScore_General.sf3') #サウンドフォントを指定
-	fs.midi_to_wave(inputFileName, 'movie/' + id +'/' + settings.WAV_FILE_NAME) #midiをmp3に変換、保存
-
+def midi_to_wave(inputFileName,id):
+    WAV_PATH = f'movie/{id}/{settings.WAV_FILE_NAME}'
+    SOUND_FONT_PATH = 'composer/soundFont/MuseScore_General.sf3'
+    fs = FluidSynth(SOUND_FONT_PATH) #サウンドフォントを指定
+    fs.midi_to_audio(inputFileName,WAV_PATH) #midiをmp3に変換、保存
+    os.remove(inputFileName)
 
 def create_music(related_value_list, positive_param,id):
     """
@@ -975,6 +977,8 @@ def create_music(related_value_list, positive_param,id):
     related_value_list : [str]
         言語分析の結果を格納したリスト
     """
+    TENTATIVE_MIDI_PATH = f'movie/{id}/sample.mid'
+    MIDI_PATH = f'movie/{id}/sample2.mid'
 
     NO_ITEM   = 0
     ONE_ITEMS = 1
@@ -1002,11 +1006,11 @@ def create_music(related_value_list, positive_param,id):
         third_value     = related_value_list[2]
 
     create_main_melody(PM.instruments,prime_value,positive_param)
-    PM.write('movie/' + id +'/sample.mid')
-    mid = MidiFile('movie/' + id +'/sample.mid')
+    PM.write(TENTATIVE_MIDI_PATH)
+    mid = MidiFile(TENTATIVE_MIDI_PATH)
     track = MidiTrack()
     mid.tracks.append(track)
     track.append(MetaMessage('set_tempo',tempo=mido.bpm2tempo(tempo)))
-    mid.save('movie/' + id +'/sample2.mid')
-    os.remove('movie/' + id +'/sample.mid')
-    midi_to_wave('movie/' + id +'/sample2.mid',id)
+    mid.save(MIDI_PATH)
+    os.remove(TENTATIVE_MIDI_PATH)
+    midi_to_wave(MIDI_PATH,id)

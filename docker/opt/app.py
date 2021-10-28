@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
+from composer import get_tempo, create_music
 
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
@@ -97,6 +98,8 @@ def create_manager(id):
     try:
         bpm = 100 # デバッグ用
         related_list = ['cherry', 'dog', 'idol']
+        positive_param = 0.3 #デバッグ用
+        create_music.create_music(related_list, positive_param, id)
         mc.movie_create(id, bpm, related_list)
     except Exception as e:
         app.logger.error(str(e))

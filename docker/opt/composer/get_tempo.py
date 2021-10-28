@@ -1,4 +1,4 @@
-def get_bpm(related_value_list, positive_param)
+def get_bpm(related_value_list, positive_param):
     """
     パラメータごとのテンポを返す
 

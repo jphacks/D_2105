@@ -16,6 +16,7 @@ ADD ./docker/opt/ /opt
 
 RUN apt-get install -y vim less
 RUN apt-get install -y libsndfile1
+RUN apt-get install -y fluidsynth
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 RUN pip install flask tweepy pretty_midi opencv-python opencv-contrib-python numpy scipy ibm-cloud-sdk-core ibm-watson goolabs midi2audio moviepy librosa matplotlib pymongo[srv]

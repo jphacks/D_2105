@@ -107,10 +107,10 @@ def favicon():
 
 if __name__=='__main__':
     port = os.getenv('PORT')
-    debug = True
+    debug = False
     if (port is not None):
         port = int(port)
     else:
         port = 5000
-        debug = False
+        debug = True
     app.run(host="0.0.0.0", port=port, debug=debug)

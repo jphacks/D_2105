@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
+from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formatdate
@@ -102,7 +103,13 @@ def create_manager(id, email1):
     """
     try:
         bpm = 100 # デバッグ用
+<<<<<<< HEAD
+        related_list = ['cherry', 'dog', 'idol']
+        positive_param = 0.3 #デバッグ用
+        create_music.create_music(related_list, positive_param, id)
+=======
         related_list = ['cherry', 'dog', 'idol'] # デバッグ用
+>>>>>>> 7c12518f5e60a049a719aca9b05d866f2f79c857
         mc.movie_create(id, bpm, related_list)
         send_email(email1, id)
     except Exception as e:

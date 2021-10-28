@@ -1,0 +1,73 @@
+div{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.preview_title h2{
+  font-family: 'Zen Maru Gothic', sans-serif;
+  position:relative;
+  text-align: center;
+  color:#fff;
+  width:200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding:1rem 2rem calc(1rem + 10px);
+  background-color:#cd853f;
+  border-radius: 100vh;
+}
+
+.preview_title h2:before{
+  position: absolute;
+  border-radius: 100vh;
+  top:-4px;
+  left:-4px;
+  width:100%;
+  height:100%;
+  content:'';
+  border:4px dotted #663333;
+}
+
+#video{
+  top:0;
+  width:100%;
+  height:100%;
+}
+
+.vwrapper{
+  text-align: center;
+  margin:auto;
+}
+
+a{
+  color:white;
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.buttons{
+  text-align:center;
+  margin-top: 30px;
+  width:40%;
+  height: auto;
+}
+
+.download_btn{
+  font-weight: bold;
+  position: relative;
+  border-radius:100vh;
+  background-color:#ff6699;
+  padding:0.8em;
+  display: block;
+}
+
+.twitter-share-button{
+  display: block;
+  text-align: center;
+  padding: 30px;
+}
+
+.download_btn:hover{
+  opacity: .5;
+}

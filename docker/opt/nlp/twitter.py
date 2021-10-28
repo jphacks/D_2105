@@ -5,7 +5,7 @@ import math
 import urllib.request
 import urllib.error
 
-UNIT_NUM = 10
+UNIT_NUM = 100
 
 def download_image(url, icon_size=200, dst_path="icon.png"):
     """URLから画像をダウンロードする
@@ -46,11 +46,26 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
     -------
     tweet_list : list[str]
         ツイートのリスト
+    description : str
+        プロフィールの文
+    error_flag : int
+        1ならエラー、0ならOK
     """
+    if account[0] == "@":
+        account = account[1:]
     auth = tweepy.OAuthHandler(api_key, api_key_secret)
     auth.set_access_token(access_token, access_token_secret)
 
     api = tweepy.API(auth)
+    try:
+        user = api.get_user(id=account)
+    except:
+        return [], "", 1
+    if user.protected == True:
+        return [], "", 1
+    description = user.description
+    img_url = user.profile_image_url_https
+    download_image(img_url)
     
     tweet_list = []
     paging_num = math.ceil(min_num/UNIT_NUM)
@@ -60,17 +75,10 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
             tweet_list.append(status.text)
     for i in range(len(tweet_list)):
         tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
-        tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"http.*", "", tweet_list[i])
     
-    user = api.get_user(id=account)
-    description = user.description
-    img_url = user.profile_image_url_https
-    download_image(img_url)
-    print(img_url)
-    print(description)
-    return tweet_list, description
+    return tweet_list, description, 0
 
 def main():
     tweet_list = get_tweet()

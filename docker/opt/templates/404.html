@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/404.css')}}" />
+
+<div class="error_message">
+  <img src="../static/img/404.PNG" alt="404"></img>
+
+  <p>お探しのページは見つかりません！</p>
+
+</div>
+{% endblock %}

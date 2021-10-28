@@ -37,7 +37,7 @@ def req():
 
         # uuidと同名のディレクトリを作成する
         os.mkdir('./movie/' + id)
-
+        print(f"created uuid: {id}")
         # 非同期的に曲生成を開始する
         create_manager(id)
 
@@ -95,7 +95,9 @@ def create_manager(id):
         個人識別用uuid
     """
     try:
-        mc.movie_create(id)
+        bpm = 100 # デバッグ用
+        related_list = ['cherry', 'dog', 'idol']
+        mc.movie_create(id, bpm, related_list)
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
@@ -105,5 +107,11 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
-    port = 5000
-    app.run(host="0.0.0.0", port=port, debug=True)
+    port = os.getenv('PORT')
+    debug = False
+    if (port is not None):
+        port = int(port)
+    else:
+        port = 5000
+        debug = True
+    app.run(host="0.0.0.0", port=port, debug=debug)

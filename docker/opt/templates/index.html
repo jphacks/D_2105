@@ -1,15 +1,35 @@
-<html><body>
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- エラーメッセージ -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<script src="./mail_confirmation.js"defer async></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}" />
+<div class=forms>
+<h2>さあオリジナルの<br class="br-sp">Happy Birthday to You<br class="br-sp">を作ろう！</h2>
+ <div class=enter>
   <form action="/req" method="post" class="form-example">
-  <div class="form-example">
-    <label for="email">Enter your email: </label>
-    <input type="email" name="email" id="email" required>
+
+  <div class="formexample">
+      <label for="email1"><span>あなた</span>のメールアドレスを入力してください<span>*</span>:</label>
+      <input type="email" placeholder="あなたのメールアドレス" name="email1" id="email1" required>
+      <input type="email" placeholder="もう一度ご入力ください(確認用)" name="email2" id="email2" required>
+
+      <label for="name"><span>祝いたい相手</span>のTwitterのIDを入力してください<span>*</span>:</label>
+      <input type="text" placeholder="相手のTwitter ID" name="twitter_id" id="twitter_id" required>
   </div>
-  <div class="form-example">
-    <label for="name">Enter your twitter id: </label>
-    <input type="text" name="twitter_id" id="twitter_id" required>
+
+</div>
+  <div class="button">
+    <input type="image" name="submit" onclick="location.href"='accept.html" "img src="../static/img/submit.PNG" alt="送信" width=60% height=60%>
   </div>
-  <div class="form-example">
-    <input type="submit" value="run">
-  </div>
-  </form>
-</body></html>
+</div>
+
+{% endblock %}

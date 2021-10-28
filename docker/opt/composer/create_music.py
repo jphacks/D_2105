@@ -413,6 +413,27 @@ def create_japanese_melody(instruments_list):
     instruments_list.append(koto)
 
 
+def create_scandiavian_melody(instruments_list):
+    """
+    パラメータが南国に該当した場合の主旋律を作成する
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    fiddle = pm.Instrument(Instruments.FIDDLE)
+    scandinavian_melody_notes_list = \
+    [
+        (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',6,7),(100,'E4',7,10), #Happy Birthday to you
+        (90,'C4',10,10.75),(90,'C4',10.75,11),(100,'D4',11,12),(100,'C4',12,13),(100,'G4',14,15),(100,'F4',15,18), #Happy Birthday to you
+        (90,'C4',18,18.75),(90,'C4',18.75,19),(100,'C5',19,20),(100,'A4',20,21),(100,'F4',22,22.75),(100,'F4',22.75,23),(95,'E4',23,23.75),(95,'E4',23.75,24),(90,'D4',24,26), #Happy Birthday dear ??
+        (100,'A#4',26,26.75),(100,'A#4',26.75,27),(100,'A4',27,28),(100,'F4',28,30),(100,'G4',30,31),(100,'F4',31,34) #Happy Birthday to you
+    ]
+    append_notes(notes = fiddle.notes, input_notes_list = scandinavian_melody_notes_list)
+    instruments_list.append(fiddle)
+
+
 def create_tropical_melody(instruments_list):
     """
     パラメータが南国に該当した場合の主旋律を作成する
@@ -786,7 +807,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'japanese':
         create_japanese_melody(instruments_list)
     elif prime_value == 'scandinavian':
-        hoge = 'a'
+        create_scandiavian_melody(instruments_list)
     elif prime_value == 'tropical':
         create_tropical_melody(instruments_list)
     elif prime_value == 'school':

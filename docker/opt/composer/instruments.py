@@ -84,7 +84,7 @@ class Instruments:
     ALTO_SAX              = 65
     TENOR_SAX             = 66
     BARITONE_SAX          = 67
-    Oboe                  = 68
+    OBOE                  = 68
     ENGLISH_HONE          = 69
     BASSOON               = 70
     CLARINET              = 71

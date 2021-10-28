@@ -15,12 +15,25 @@
       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
       <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 
+      <!-- OGP画像宣言 -->
+    <head prefix=”og: http://ogp.me/ns#”>
+
+      <meta property="og:url" content="https://habify.herokuapp.com/{{ id }}/preview/" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="HABIFY…" />
+      <meta property="og:description" content="オンリーワンのHappy Birthday to Youを作ろう！あなたの家族、友だち、恋人などにオリジナルのHappy Birthday to Youを送りませんか？独自のシステムでその人にぴったりの曲を生成します。" />
+      <meta property="og:site_name" content="HABIFY…" />
+      <meta property="og:image" content="https://habify.herokuapp.com/{{url_for('static',filename='cake_background.PNG')}}" />
+      <meta name="twitter:card" content=".player" />
+
       <title>HABIFY</title>
       <link rel="stylesheet" href="{{url_for('static', filename='css/layout.css')}}" />
       <meta name = "author" content = "D_2105">
       <meta name = "description" content="HBIFY...">
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
     </head>
+
     <body>
       <header>
         <div class="hwrapper">
@@ -42,5 +55,8 @@
               </a>
               <p class=credit>Developed by ぱーいす↑ん↓</p>
           </footer>
+          
+          <!-- JavaScript -->
+          <script src="./mail_confirmation.js"defer async></script>
     </body>
     <html>

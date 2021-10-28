@@ -5,8 +5,23 @@ div{
 }
 
 .forms h2{
-  text-align: center;
+  font-family: Arial,'Zen Maru Gothic', sans-serif;
+  color: brown;
+  padding-left: 20px;
 }
+
+@media(max-width:767px) {
+  .forms h2{
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;}
+  }
+
+@media screen and (min-width:768px) {
+    .br-sp{
+    display: none;
+    }
+    }
 
 .form-example{
   position:relative;

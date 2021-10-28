@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/500.css')}}" />
 
-<div class=500_message>
-  <img src="../static/img/500.png" alt="404"></img>
-</div>
+<div class="error_message">
+  <img src="../static/img/500.PNG" alt="500"></img>
 
 <p>サーバー内でエラーが発生しました</p>
+
+</div>
+
 
 {% endblock %}

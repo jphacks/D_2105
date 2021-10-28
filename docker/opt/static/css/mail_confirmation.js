@@ -1,23 +1,36 @@
-window.MTNetFormDataLayer = window.MTNetFormDataLayer || [];
-function mail_check() {
-  MTNetFormDataLayer.push(arguments); }
-  mail_check("validator", {
-  validator: function(values) {
-    var email, confirm, confirmId;
-    values.forEach(function(v) {
-      if (v.label === "email1") {
-        email = v.value;
-      } else if (v.label === "email2") {
-        confirm = v.value;
-        confirmId = v.id;
-      }
-    });
+<form onSubmit="return CheckEmail_1()">
+  <div>
+    <label for="email1">メール:</label>
+  </div>
+  <div>
+    <input type="email" id="email1" required>
+  </div>
+  <div>
+    <label for="email2">メール確認用:</label>
+  </div>
+  <div>
+    <input type="email" id="email2" required>
+  </div>
+  <p>
+    <input type="image" id="submit">
+  </p>
+</form>
 
-    if (email && confirm && email !== confirm) {
-      return {s
-        id: confirmId,
-        message: "「メールアドレス（確認）」が一致していません。",
-      };
+<script language="JavaScript" type="text/javascript">
+<!--
+  function CheckEmail_1() {
+    //IE対応の為変更
+    //var mail = mail1.value; //メールフォームの値を取得
+    //var mailConfirm = mail2.value; //メール確認用フォームの値を取得
+    var mail = document.getElementById("email_1").value; //メールフォームの値を取得
+    var mailConfirm = document.getElementById("email2").value; //メール確認用フォームの値を取得
+    // パスワードの一致確認
+    if (mail != mailConfirm){
+      alert("パスワードと確認用パスワードが一致しません"); // 一致していなかったら、エラーメッセージを表示する
+      return false;
+    }else{
+      return true;
     }
-  },
-});
+  };
+// -->
+</script>

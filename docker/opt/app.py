@@ -103,10 +103,6 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
-<<<<<<< HEAD
-=======
-        bpm = 100 # デバッグ用
->>>>>>> b8a78a447c1f34cebfda6fc2e6bf6f2b5a92f86d
         related_list = ['cherry', 'dog', 'idol']
         positive_param = 0.3 #デバッグ用
         bpm = get_tempo.get_bpm(related_list,positive_param)

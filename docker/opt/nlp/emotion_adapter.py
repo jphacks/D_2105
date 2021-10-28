@@ -31,7 +31,7 @@ def load_model():
     tokernizre
         提供されたヤツ(よくわかってない)
     """
-    with open(MODEL_DIR + '/model.pickle', 'rb') as f:
+    with open(MODEL_DIR + 'model.pickle', 'rb') as f:
         model = pick.load(f)
     with open(MODEL_DIR + 'tokenizer.pickle', 'rb') as f:
         tokenizer = pick.load(f)

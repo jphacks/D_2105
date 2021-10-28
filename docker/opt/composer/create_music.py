@@ -593,6 +593,18 @@ def create_fairy_melody(instruments_list):
     instruments_list.append(bowed)
 
 
+def create_mystery_melody(instruments_list):
+    """
+    パラメータがミステリーに該当した場合の主旋律を作成する(jazzと同じ)
+
+    Parameters
+    ----------
+    instruments_list : pretty_midi.Pretty_midi.instruments
+        pretty_midi.Instrumentインスタンスを格納するリスト
+    """
+    return create_jazz_melody(instruments_list)
+
+
 def create_main_melody(instruments_list, prime_value, secondary_value):
     """
     prime_valueに対応した主旋律を作成する
@@ -668,7 +680,7 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
     elif prime_value == 'child':
         hoge = 'a'
     elif prime_value == 'mystery':
-        hoge = 'a'
+        create_mystery_melody(instruments_list)
     elif prime_value == 'shopping':
         hoge = 'a'
     else:

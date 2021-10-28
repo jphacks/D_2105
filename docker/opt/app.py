@@ -102,14 +102,10 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
-        bpm = 100 # デバッグ用
-<<<<<<< HEAD
         related_list = ['cherry', 'dog', 'idol']
         positive_param = 0.3 #デバッグ用
+        bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)
-=======
-        related_list = ['cherry', 'dog', 'idol'] # デバッグ用
->>>>>>> 7c12518f5e60a049a719aca9b05d866f2f79c857
         mc.movie_create(id, bpm, related_list)
         send_email(email1, id)
     except Exception as e:

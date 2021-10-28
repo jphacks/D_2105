@@ -3,4 +3,3 @@ movie/*
 !dev_test
 */__pycache__
 *.log
-*.pickle

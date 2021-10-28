@@ -1,15 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
-<<<<<<< HEAD
 from nlp import emotion_adapter
-=======
 from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formatdate
 
->>>>>>> 3d9ca83ce198aa389be240a83b066ef38fe5c4ec
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
-
+from nlp import emotion_adapter
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
 # ページ表示関係
@@ -107,6 +107,9 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
+    # 感情分析のセットアップ
+    emotion_adapter.setup_model()
+
     port = os.getenv('PORT')
     debug = False
     if (port is not None):

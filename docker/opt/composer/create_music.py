@@ -868,7 +868,7 @@ def create_shopping_melody(instruments_list):
     instruments_list.append(handbell)
 
 
-def create_main_melody(instruments_list, prime_value, secondary_value):
+def create_main_melody(instruments_list, prime_value, positive_param):
     """
     prime_valueに対応した主旋律を作成する
 
@@ -880,12 +880,21 @@ def create_main_melody(instruments_list, prime_value, secondary_value):
         言語分析の結果、一番使用頻度の高かったパラメータ
     secondary_value : str
         言語分析の結果、二番目に使用頻度の高かったパラメータ
+    positive_param : float
+        Tweetから算出されたポジティブ度(一旦1~0と仮定)
     """
     if prime_value == 'sea':
-        #でバックよう
-        create_great_ocean_main_melody(instruments_list)
+        if positive_param < 0.33:
+            create_moderate_beach_melody(instruments_list)
+        elif positive_param < 0.66:
+            create_great_ocean_main_melody(instruments_list)
+        else:
+            create_summer_beach_melody(instruments_list)
     elif prime_value == 'cherry':
-        create_graduate_cherry_melody(instruments_list)
+        if positive_param < 0.5:
+            create_graduate_cherry_melody(instruments_list)
+        else:
+            create_aggressive_cherry_melody(instruments_list)
     elif prime_value == 'cat':
         create_cat_melody(instruments_list)
     elif prime_value == 'dog':

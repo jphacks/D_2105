@@ -9,6 +9,7 @@ import twitter
 import translate
 import emotion
 import keywords
+import decide_keywords
 
 def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。
@@ -42,8 +43,12 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     #translations = joblib.load("translate_result")
     #print(translations)
     #print(tweet_list)
+    translations = "".join(translations)
     emotions = emotion.get_emotion(translations, os.environ["WN_key"], os.environ["WN_url"])
-    keyword_list = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], tweet_list, key_num)
+    description_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], [description])
+    tweet_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], tweet_list)
+    keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, key_num, twitter_get_num)
+
     return keyword_list, emotions, 0
 
 if __name__ == "__main__":

@@ -13,6 +13,7 @@ def translate(text, api_key, url):
     text : list[str]
         一文ごとに区切られた、翻訳したい文章
     api_key : str
+    url : str
 
     Returns
     -------

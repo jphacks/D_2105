@@ -188,7 +188,7 @@ def create_aggressive_cherry_melody(instruments_list):
 
 
 def create_graduate_cherry_melody(instruments_list):
-    piano = pm.Instrument(Instruments.ACOSTIC_GRAND_PIANO)
+    flute = pm.Instrument(Instruments.FLUTE)
     gradu_cherry_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -196,8 +196,8 @@ def create_graduate_cherry_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',27,27.75),(100,'A#4',27.75,28),(100,'A4',28,29),(100,'F4',29,30),(100,'G4',31,32),(100,'F4',33,39) #Happy Birthday to you
     ]
-    append_notes(notes = piano.notes, input_notes_list = gradu_cherry_melody_notes_list)
-    instruments_list.append(piano)
+    append_notes(notes = flute.notes, input_notes_list = gradu_cherry_melody_notes_list)
+    instruments_list.append(flute)
 
 
 def create_cat_melody(instruments_list):

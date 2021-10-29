@@ -104,7 +104,7 @@ def get_effect_times(prime_value, positive_param):
     return effect_times
 
 
-def add_sea_effect(instruments_list, effect_time)
+def add_sea_effect(instruments_list, effect_time):
     """
     波の音のサウンドエフェクトを追加する
 
@@ -213,7 +213,7 @@ def add_drama_effect(instruments_list, effect_time):
         サウンドエフェクトを発生させるタイミング
     """
     violin = pm.Instrument(Instrument.VIOLIN)
-    note = pm.Note(velocity=100,pitch=pm.note_name_to_number('F4'),effect_time,effect_time+2)
+    note = pm.Note(velocity=100,pitch=pm.note_name_to_number('F4'),start=effect_time,end=effect_time+2)
     violin.notes.append(note)
     instruments_list.append(violin)
 
@@ -250,7 +250,7 @@ def add_electronic_effect(instruments_list, effect_time):
         サウンドエフェクトを発生させるタイミング
     """
     synth_brass = pm.Instrument(Instruments.SYNTH_BRASS_2)
-    note = pm.Note(velocity=100,pitch=pm.note_name_to_number('F4'),effect_time,effect_time+1)
+    note = pm.Note(velocity=100,pitch=pm.note_name_to_number('F4'),start=effect_time,end=effect_time+1)
     synth_brass.notes.append(note)
     instruments_list.append(synth_brass)
 
@@ -345,7 +345,7 @@ def add_midi_effect(instruments_list, effect_time, value):
         add_jazz_effect(instruments_list, effect_time)
     elif value =='gun':
         add_gun_effect(instruments_list, effect_time)
-    elif value =='history'
+    elif value =='history':
         add_history_effect(instruments_list, effect_time)
 
 def by_midi(instruments_list, positive_param, prime_value, secondary_value, third_value):
@@ -371,7 +371,7 @@ def by_midi(instruments_list, positive_param, prime_value, secondary_value, thir
     if NEED_MIDI_SECOND and len(effect_times) > 0:
         add_midi_effect(instruments_list, effect_times[0], secondary_value)
     if NEED_MIDI_THIRD and len(effect_times) > 0:
-        add_midi_effect(instruments_list, effect_times[0], third_value)
+        add_midi_effect(instruments_list, effect_times[1], third_value)
 
 
 

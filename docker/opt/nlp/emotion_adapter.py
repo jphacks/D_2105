@@ -58,12 +58,15 @@ def tweets2posi_nega(tweets):
 
     results = []
     for tweet in tweets:
+        if tweet == "":
+            continue
         token_ids = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(tweet))
         input_tensor = torch.tensor([token_ids])
         outputs = model(input_tensor, adapter_names=['sst-2'])
         result = torch.argmax(outputs[0]).item()
         results.append(result)
         # print(f"{result}: {tweet}") # 確認用
+    print(len(results))
     return average(results)
 
 def predict(sentence, tokenizer, model):

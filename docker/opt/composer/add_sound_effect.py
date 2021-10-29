@@ -1,8 +1,10 @@
 import librosa
+import numpy as np
+import soundfile as sf
 import pretty_midi as pm
 
-from composer.instruments import Instruments
-import composer.get_tempo as get_tempo
+# from composer.instruments import Instruments
+# import composer.get_tempo as get_tempo
 
 
 # MIDIによってサウンドエフェクトを設定する必要のあるパラメータ
@@ -375,21 +377,70 @@ def by_midi(instruments_list, positive_param, prime_value, secondary_value, thir
 
 
 
-def by_librosa():
+def by_librosa(secondary_value, third_value, time_1, time_2):
     """
     WAVによってサウンドエフェクトを追加する
 
     Parameters
     ----------
-    instruments_list : pretty_midi.Pretty_midi.instruments
-        pretty_midi.Instrumentインスタンスを格納するリスト
-    positive_param : float
-        Tweetから算出されたポジティブ度
-    prime_value : str
-        言語分析の結果、一番使用頻度の高かったパラメータ
     secondary_value : str
         言語分析の結果、二番目に使用頻度の高かったパラメータ
     third_value : str
         言語分析の結果、三番目に使用頻度の高かったパラメータ
+    time_1 : int
+        SE入れるタイミング, 何拍目か?
+    time_2 : int
+        SE入れるタイミング, 何拍目か?
     """
-    hoge = 'hoge'
+
+
+def merge_wav(filename_1, filename_2, time, fs=44100):
+    """
+    2つのwavを合成して, filename_1に上書きする. 
+    filename_2はtimeで指定された秒数の部分に合成する.
+
+    Parameters
+    ----------
+    filename_1 : string
+        合成元ファイル名(合成したファイルはここに上書きされる)
+    filename_2 : string
+        合成されるファイル名
+    time : float
+        filename_2を合成する地点
+    fs : int
+        wavのサンプリングレート
+    """
+
+    # wavの読み込み
+    wav_1, _ = librosa.load(filename_1, sr=fs, mono=True)
+    wav_2, _ = librosa.load(filename_2, sr=fs, mono=True)
+
+    # 合成する開始地点のindex
+    start_idx = int(time * fs)
+
+    # 合成後にはみ出さないように長さを拡張
+    total_length = np.max((len(wav_1), start_idx + len(wav_2)))
+    if (total_length > len(wav_1)):
+        wav_1 = np.append(wav_1, np.zeros(total_length - len(wav_1)))
+
+    # 合成されるほうの長さをゼロ埋めで合わせる
+    wav_2 = np.append(np.zeros(start_idx), wav_2)
+    wav_2 = np.append(wav_2, np.zeros(total_length - len(wav_2)))
+
+    # 合成
+    wav_1 += wav_2
+
+    # 音割れ対策
+    max_amplitude = np.max(np.abs(wav_1))
+    if max_amplitude > 0.99995:
+        wav_1 = wav_1 * 0.99995 / max_amplitude
+    
+    # 出力
+    sf.write(filename_1, wav_1, fs, subtype="PCM_16")
+
+if __name__ == "__main__":
+    merge_wav(
+        "/root/opt/movie/my_test/input.wav",
+        "/root/opt/movie/my_test/voice.wav",
+        time = 2.3
+    )

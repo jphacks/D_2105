@@ -305,7 +305,7 @@ def create_PC_melody(instruments_list, positive_param):
     accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = synth_bass1.notes, input_notes_list = PC_melody_notes_list)
     append_notes(notes = synth_string.notes, input_notes_list = accompaniment)
-    append_notes(notes = synth_bass1.notes input_notes_list = bass)
+    append_notes(notes = synth_bass1.notes, input_notes_list = bass)
     instruments_list.append(synth_bass1)
     instruments_list.append(synth_string)
 
@@ -445,7 +445,7 @@ def create_table_tennis_melody(instruments_list):
     instruments_list.append(woodblock)
 
 
-def create_japanese_melody(instruments_list):
+def create_japanese_melody(instruments_list, positive_param):
     """
     パラメータが和風に該当した場合の主旋律を作成する
 
@@ -455,6 +455,7 @@ def create_japanese_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     koto = pm.Instrument(Instruments.KOTO)
+    shamisen = pm.Instrument(Instruments.SHAMISEN)
     japanese_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'G4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -462,8 +463,12 @@ def create_japanese_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'G4',17,17.75),(100,'G4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'D4',23,24),(100,'G4',24,25),(100,'E4',25,27) #Happy Birthday to you
     ]
-    append_notes(notes = koto.notes, input_notes_list = japanese_melody_notes_list)
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
+    append_notes(notes = shamisen.notes, input_notes_list = japanese_melody_notes_list, raise_velocity = 20)
+    append_notes(notes = koto.notes, input_notes_list = accompaniment, raise_velocity=-10)
     instruments_list.append(koto)
+    instruments_list.append(shamisen)
 
 
 def create_scandiavian_melody(instruments_list):
@@ -1017,7 +1022,7 @@ def create_main_melody(instruments_list, prime_value, positive_param):
     elif prime_value == 'tabletennis':
         create_table_tennis_melody(instruments_list)
     elif prime_value == 'japanese':
-        create_japanese_melody(instruments_list)
+        create_japanese_melody(instruments_list, positive_param)
     elif prime_value == 'scandinavian':
         create_scandiavian_melody(instruments_list)
     elif prime_value == 'tropical':

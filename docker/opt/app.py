@@ -128,7 +128,6 @@ def create_manager(id, email1, twitter_id):
         返信用メールアドレス
     """
     try:
-        #related_list = ['cherry', 'dog', 'idol']
         related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id)
         if error_flag != "":
             print(f"error occured in nlp: {error_flag}")

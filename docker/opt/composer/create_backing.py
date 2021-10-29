@@ -1,7 +1,7 @@
 import numpy as np
 from random import choice
 
-from instruments import Instruments, DrumInstruments
+from composer.instruments import Instruments, DrumInstruments
 
 INDEX_TO_NOTENUMBER = 20 #1から88にこれを足すとmidiのノートナンバーになる
 # 例：よくある左手のF=20+21

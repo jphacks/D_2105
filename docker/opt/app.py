@@ -126,14 +126,32 @@ def create_manager(id, email1):
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
 
-def send_email(email1, id):
+def send_email(email1, id, error=False):
+    '''
+    メールを送信するための関数
+
+    Parameters
+    ----------
+    email1 : str
+        送信先emailアドレス
+    id : str
+        個人識別用uuid
+    error : bool
+        エラーならTrue,
+        正常終了ならFalse
+    '''
     from_address = os.environ["from_address"]
     password = os.environ["password"]
     email_server = os.environ["email_server"]
     email_port = os.environ["email_port"]
 
-    subject = '【HABIFY】動画の生成が完了しました'
-    body_text = f'<p>ダウンロードは<a href="https://habify.herokuapp.com/{id}/preview">こちら</a>から</p>'
+    if error:
+        subject = '【HABIFY】エラーが発生しました'
+        body_text = 'エラーが発生しました．ご迷惑をおかけして申し訳ありませんが，しばらく時間をおいてから再度アクセスしてください．'
+    else:
+        subject = '【HABIFY】動画の生成が完了しました'
+        body_text = f'<p>↓こちらのリンクよりご覧ください↓</p><p><a href="https://habify.herokuapp.com/{id}/preview">https://habify.herokuapp.com/{id}/preview</a></p>'
+
     from_address = from_address
     to_address = email1
 

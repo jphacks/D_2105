@@ -3,13 +3,13 @@ import re
 import os
 
 #file
-import twitter
-import translate
-import emotion
-import keywords
-import decide_keywords
-import emotion_adapter
-import name_check
+from nlp import twitter
+from nlp import translate
+from nlp import emotion
+from nlp import keywords
+from nlp import decide_keywords
+from nlp import emotion_adapter
+from nlp import name_check
 
 def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=10000, key_num=3, no_api=0):
     """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。

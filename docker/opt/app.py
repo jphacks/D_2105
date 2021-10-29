@@ -3,6 +3,7 @@ import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
 from nlp import emotion_adapter
 from nlp import check
+import nlp.main as nlp_main
 from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
@@ -63,7 +64,7 @@ def req():
 
         # 非同期的に曲生成を開始する
         loop = asyncio.new_event_loop()
-        loop.run_in_executor(None, create_manager, id, email1)
+        loop.run_in_executor(None, create_manager, id, email1, twitter_id)
         
 
         return redirect(url_for('accept', id=id))
@@ -115,7 +116,7 @@ def internal_server_error(error):
 
 # ページ表示関係 ここまで
 
-def create_manager(id, email1):
+def create_manager(id, email1, twitter_id):
     """
     「Twitter探し〜曲出力〜動画出力〜メール送信」までを管理する関数
 
@@ -128,8 +129,11 @@ def create_manager(id, email1):
     """
     try:
         #related_list = ['cherry', 'dog', 'idol']
-        related_list = ['sea','history','shopping']
-        positive_param = 0.3 #デバッグ用
+        related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id)
+        if error_flag != "":
+            print(f"error occured in nlp: {error_flag}")
+            related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id, no_api=1)
+        positive_param = emotion_pn
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)
         mc.movie_create(id, bpm, related_list)

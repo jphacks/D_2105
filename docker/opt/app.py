@@ -109,11 +109,10 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
-        # ここにTwitterからキーワードとかをとってくる関数の呼び出しを書く
-
-        bpm = 100 # デバッグ用
-        related_list = ['cherry', 'dog', 'idol'] # デバッグ用
+        #related_list = ['cherry', 'dog', 'idol']
+        related_list = ['sea','history','gun']
         positive_param = 0.3 #デバッグ用
+        bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)
         mc.movie_create(id, bpm, related_list)
         send_email(email1, id)

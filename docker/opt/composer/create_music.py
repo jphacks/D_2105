@@ -518,6 +518,7 @@ def create_school_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_FINGER)
     shcool_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -525,8 +526,13 @@ def create_school_melody(instruments_list, positive_param):
         (90,'C4',18,18.75),(90,'C4',18.75,19),(100,'C5',19,20),(100,'A4',20,21),(100,'F4',21,21.75),(100,'F4',21.75,22),(95,'E4',22,22.75),(90,'D4',22.75,23),(95,'E4',23,23.75),(90,'D4',23.75,26), #Happy Birthday dear ??
         (100,'A#4',26,26.75),(100,'A#4',26.75,27),(100,'A4',27,28),(100,'F4',28,29),(100,'G4',29,30),(100,'F4',30,32) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,10,11,12,13,14,18,19,20,21,22,23.75,26,27,28,29,30]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=4, emotion_value=positive_param)
     append_notes(notes = electric_guitar.notes, input_notes_list = shcool_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
 def create_idol_melody(instruments_list):
@@ -563,7 +569,9 @@ def create_outdoor_melody(instruments_list, positive_param):
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
+    flute = pm.Instrument(Instruments.FLUTE)
     acostic_guitar = pm.Instrument(Instruments.ACOSTIC_GUITAR_NYLON)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     outdoor_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -571,8 +579,14 @@ def create_outdoor_melody(instruments_list, positive_param):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
-    append_notes(notes = acostic_guitar.notes, input_notes_list = outdoor_melody_notes_list)
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
+    append_notes(notes = flute.notes, input_notes_list = outdoor_melody_notes_list, raise_key = 12)
+    append_notes(notes = acostic_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
+    instruments_list.append(flute)
     instruments_list.append(acostic_guitar)
+    instruments_list.append(contrabass)
 
 
 def create_picture_melody(instruments_list, positive_param):
@@ -585,6 +599,7 @@ def create_picture_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     violin = pm.Instrument(Instruments.VIOLIN)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     violin_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -592,8 +607,13 @@ def create_picture_melody(instruments_list, positive_param):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = violin.notes, input_notes_list = violin_melody_notes_list)
+    append_notes(notes = violin.notes, input_notes_list = accompaniment)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
     instruments_list.append(violin)
+    instruments_list.append(contrabass)
 
 
 def create_car_melody(instruments_list, positive_param):
@@ -606,6 +626,7 @@ def create_car_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_PICK)
     car_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -613,8 +634,13 @@ def create_car_melody(instruments_list, positive_param):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,20), #Happy Birthday dear ??
         (100,'A#4',20,20.75),(100,'A#4',20.75,21),(100,'A4',21,22),(100,'F4',22,23),(100,'G4',23,24),(100,'F4',24,26) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = electric_guitar.notes, input_notes_list = car_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
 def create_bike_melody(instruments_list, positive_param):
@@ -627,6 +653,8 @@ def create_bike_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     synth_brass = pm.Instrument(Instruments.SYNTH_BRASS_2)
+    synth_brass1 = pm.Instrument(Instruments.SYNTH_BRASS_1)
+    synth_bass = pm.Instrument(Instruments.SYNTH_BASS_1)
     bike_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -634,8 +662,14 @@ def create_bike_melody(instruments_list, positive_param):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,20), #Happy Birthday dear ??
         (100,'A#4',20,20.75),(100,'A#4',20.75,21),(100,'A4',21,22),(100,'F4',22,23),(100,'G4',23,24),(100,'F4',24,26) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list,rhythm_denominator=3,emotion_value=positive_param)
     append_notes(notes = synth_brass.notes, input_notes_list = bike_melody_notes_list)
+    append_notes(notes = synth_bass1.notes, input_notes_list = accompaniment)
+    append_notes(notes = synth_bass.notes, input_notes_list = bass)
     instruments_list.append(synth_brass)
+    instruments_list.append(synth_bass1)
+    instruments_list.append(synth_bass)
 
 
 def create_drama_melody(instruments_list, positive_param):
@@ -649,6 +683,8 @@ def create_drama_melody(instruments_list, positive_param):
     """
     glocken = pm.Instrument(Instruments.GLOCKENSPIEL)
     piccolo = pm.Instrument(Instruments.PICCOLO)
+    xylophone = pm.Instrument(Instruments.XYLOPHONE)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     drama_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -656,10 +692,16 @@ def create_drama_melody(instruments_list, positive_param):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = glocken.notes, input_notes_list = drama_melody_notes_list)
     append_notes(notes = piccolo.notes, input_notes_list = drama_melody_notes_list)
+    append_notes(notes = xylophone.notes, input_notes_list = accompaniment)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
     instruments_list.append(glocken)
     instruments_list.append(piccolo)
+    instruments_list.append(xylophone)
+    instruments_list.append(contrabass)
 
 
 def create_rock_melody(instruments_list, positive_param):
@@ -672,6 +714,8 @@ def create_rock_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     distortion_guitar = pm.Instrument(Instruments.DISTORTION_GUITAR)
+    electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_FINGER)
     rock_melody_notes_list = \
     [
         (90,'C4',2,2.25),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -679,8 +723,14 @@ def create_rock_melody(instruments_list, positive_param):
         (90,'C4',14,14.25),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,20), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = distortion_guitar.notes, input_notes_list = rock_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(distortion_guitar)
+    instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
 def create_electronics_melody(instruments_list, positive_param):
@@ -693,6 +743,8 @@ def create_electronics_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     lead2_sawtooth = pm.Instrument(Instruments.LEAD2_SAWTOOTH)
+    electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_FINGER)
     electronics_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -700,8 +752,14 @@ def create_electronics_melody(instruments_list, positive_param):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = lead2_sawtooth.notes, input_notes_list = electronics_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(lead2_sawtooth)
+    instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
 def create_jazz_melody(instruments_list):
@@ -735,6 +793,8 @@ def create_ghost_melody(instruments_list, positive_param):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     goblins = pm.Instrument(Instruments.FX_GOBLINS)
+    wistle = pm.Instrument(Instruments.WHISTLE)
+    acosic_base = pm.Instrument(Instruments.ACOSIC_BASS)
     ghost_melody_notes_list = \
     [
         (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -742,8 +802,13 @@ def create_ghost_melody(instruments_list, positive_param):
         (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,28) #Happy Birthday to you
     ]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param)
     append_notes(notes = goblins.notes, input_notes_list = ghost_melody_notes_list)
+    append_notes(notes = wistle.notes, input_notes_list = accompaniment)
+    append_notes(notes = acosic_base.notes, input_notes_list = bass)
     instruments_list.append(goblins)
+    instruments_list.append(wistle)
+    instruments_list.append(acosic_base)
 
 
 def create_sword_melody(instruments_list):

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
 from nlp import emotion_adapter
+from nlp import check
 from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
@@ -27,6 +28,9 @@ def req():
     # メールアドレスのバリデーションを設定
     email_pattern = "^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
 
+    # twitterアカウントの状態確認
+    twitter_status = check.check_id(twitter_id)
+
     if re.fullmatch(email_pattern, email1) == None:
         flash("不正なメールアドレスです")
         return redirect(url_for('index'))
@@ -36,9 +40,11 @@ def req():
     elif email1 != email2:
         flash("メールアドレスが一致しません")
         return redirect(url_for('index'))
-    elif (False):
+    elif (twitter_status != ""):
         # Twitterアカウントの存在確認
-        pass
+        flash(twitter_status)
+        return redirect(url_for('index'))
+
     else:
         # uuidが被らなくなるまで再発行する
         id = uuid.uuid4().hex
@@ -49,7 +55,7 @@ def req():
         os.mkdir('./movie/' + id)
         print(f"created uuid: {id}")
         # 非同期的に曲生成を開始する
-        loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
         loop.run_in_executor(None, create_manager, id, email1)
         
 

@@ -120,7 +120,7 @@ def send_email(email1, id):
     email_port = os.environ["email_port"]
 
     subject = '【HABIFY】動画の生成が完了しました'
-    body_text = f'<p>ダウンロードは<a href="https://habify.herokuapp.com/{id}/preview">こちら</a>から</p>'
+    body_text = f'<p>↓ダウンロードはこちら↓</p><p><a href="https://habify.herokuapp.com/{id}/preview">https://habify.herokuapp.com/{id}/preview</a></p>'
     from_address = from_address
     to_address = email1
 

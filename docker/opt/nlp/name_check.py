@@ -1,5 +1,4 @@
 from goolabs import GoolabsAPI
-#import joblib
 import time
 
 def name_check(api_id, text_list):
@@ -17,6 +16,11 @@ def name_check(api_id, text_list):
     name_list : list[str]
         名前と判断された語（重複あり）
     """
+    n_list = ["鬼太郎", "ぬらりひょん", "コナン", "金田一", "モリアーティー", "ホームズ",
+              "水谷隼", "張本智和", "石川佳純", "丹羽孝希", "陳夢", "馬龍", "伊藤美誠", "宇田幸矢", "許キン",
+              "ロナウド", "リオネルメッシ", "リオネル・メッシ", "本田圭佑", "香川真司", "内田篤人", "三浦知良", "長友佑都",
+              "イチロー", "王貞治", "大谷翔平", "星野仙一",
+              ]
     name_list = []
     api = GoolabsAPI(api_id)
     for i in range(int(len(text_list)/100)+1):
@@ -25,7 +29,9 @@ def name_check(api_id, text_list):
         elif len(text_list)%100 != 0:
             text = "".join(text_list[i*100:])
         ne_list = api.entity(sentence=text, class_filter="PSN")["ne_list"]
-        [name_list.append(name[0]) for name in ne_list]
+        for name in ne_list:
+            if name[0] not in n_list:
+                name_list.append(name[0])
         time.sleep(1)
     return name_list
 

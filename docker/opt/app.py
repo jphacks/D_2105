@@ -3,6 +3,7 @@ import re, uuid, os, asyncio, traceback
 import movie_create.movie_create as mc
 from nlp import emotion_adapter
 from nlp import check
+import nlp.main as nlp_main
 from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
@@ -54,9 +55,16 @@ def req():
         # uuidと同名のディレクトリを作成する
         os.mkdir('./movie/' + id)
         print(f"created uuid: {id}")
+
+        # twitterのidを書いておく
+        if (twitter_id[0] == "@"):
+            twitter_id = twitter_id[1:]
+        with open(f"./movie/{id}/twitter_id.txt", 'w') as f:
+            f.write(twitter_id)
+
         # 非同期的に曲生成を開始する
         loop = asyncio.new_event_loop()
-        loop.run_in_executor(None, create_manager, id, email1)
+        loop.run_in_executor(None, create_manager, id, email1, twitter_id)
         
 
         return redirect(url_for('accept', id=id))
@@ -75,9 +83,14 @@ def preview(id):
     if os.path.isdir('./movie/' + id) == False:
         return redirect(url_for('index'))
 
+    twitter_id = ""
+    with open(f"./movie/{id}/twitter_id.txt", 'r') as f:
+        twitter_id = f.read()
+
     return render_template(
         "preview.html",
-        id=id
+        id=id,
+        twitter_id=twitter_id,
     )
 
 @app.route('/<id>/download')
@@ -103,7 +116,7 @@ def internal_server_error(error):
 
 # ページ表示関係 ここまで
 
-def create_manager(id, email1):
+def create_manager(id, email1, twitter_id):
     """
     「Twitter探し〜曲出力〜動画出力〜メール送信」までを管理する関数
 
@@ -116,8 +129,11 @@ def create_manager(id, email1):
     """
     try:
         #related_list = ['cherry', 'dog', 'idol']
-        related_list = ['sea','history','shopping']
-        positive_param = 0.3 #デバッグ用
+        related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id)
+        if error_flag != "":
+            print(f"error occured in nlp: {error_flag}")
+            related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id, no_api=1)
+        positive_param = emotion_pn
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)
         mc.movie_create(id, bpm, related_list)
@@ -125,15 +141,35 @@ def create_manager(id, email1):
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
+        # エラー発生を知らせるメール送る
+        send_email(email1,id, error=True)
 
-def send_email(email1, id):
+def send_email(email1, id, error=False):
+    '''
+    メールを送信するための関数
+
+    Parameters
+    ----------
+    email1 : str
+        送信先emailアドレス
+    id : str
+        個人識別用uuid
+    error : bool
+        エラーならTrue,
+        正常終了ならFalse
+    '''
     from_address = os.environ["from_address"]
     password = os.environ["password"]
     email_server = os.environ["email_server"]
     email_port = os.environ["email_port"]
 
-    subject = '【HABIFY】動画の生成が完了しました'
-    body_text = f'<p>ダウンロードは<a href="https://habify.herokuapp.com/{id}/preview">こちら</a>から</p>'
+    if error:
+        subject = '【HABIFY】エラーが発生しました'
+        body_text = 'エラーが発生しました．ご迷惑をおかけして申し訳ありませんが，しばらく時間をおいてから再度アクセスしてください．'
+    else:
+        subject = '【HABIFY】動画の生成が完了しました'
+        body_text = f'<p>↓こちらのリンクよりご覧ください↓</p><p><a href="https://habify.herokuapp.com/{id}/preview">https://habify.herokuapp.com/{id}/preview</a></p>'
+
     from_address = from_address
     to_address = email1
 

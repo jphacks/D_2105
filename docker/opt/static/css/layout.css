@@ -38,7 +38,7 @@ header{
 .catch_copy{
   width:80%;
   font-size:12px;
-  font-family: Arial,"Zen Maru Gothic, sans-serif";
+  font-family: 'Arial','Zen Maru Gothic', sans-serif;
   color: brown;
   text-shadow: 1px 3px 3px yellow;
   margin:auto;

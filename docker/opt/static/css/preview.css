@@ -5,7 +5,7 @@ div{
 }
 
 .preview_title h2{
-  font-family: 'Zen Maru Gothic', sans-serif;
+  font-family: 'Zen Maru Gothic','MS ゴシック', sans-serif;
   position:relative;
   text-align: center;
   color:#fff;

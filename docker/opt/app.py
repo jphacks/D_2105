@@ -103,7 +103,8 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
-        related_list = ['cherry', 'dog', 'idol']
+        #related_list = ['cherry', 'dog', 'idol']
+        related_list = ['sea','history','gun']
         positive_param = 0.3 #デバッグ用
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)

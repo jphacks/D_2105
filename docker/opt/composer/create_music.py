@@ -59,7 +59,8 @@ import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 
 from composer.instruments import Instruments, DrumInstruments
-import composer.get_tempo as get_tempo
+#import composer.get_tempo as get_tempo
+from composer import get_tempo, add_sound_effect
 import settings
 
 
@@ -1006,6 +1007,7 @@ def create_music(related_value_list, positive_param,id):
         third_value     = related_value_list[2]
 
     create_main_melody(PM.instruments,prime_value,positive_param)
+    add_sound_effect.by_midi(PM.instruments,positive_param,prime_value,secondary_value,third_value)
     PM.write(TENTATIVE_MIDI_PATH)
     mid = MidiFile(TENTATIVE_MIDI_PATH)
     track = MidiTrack()

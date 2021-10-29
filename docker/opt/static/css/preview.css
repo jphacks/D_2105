@@ -53,19 +53,22 @@ a{
   height: auto;
 }
 
+.tw_share_btn{
+  font-weight: bold;
+  position: relative;
+  border-radius: 100vh;
+  display: block;
+  background-color: #00acee;
+  padding:0.8em;
+}
+
 .download_btn{
   font-weight: bold;
   position: relative;
   border-radius:100vh;
+  display: block;
   background-color:#ff6699;
   padding:0.8em;
-  display: block;
-}
-
-.twitter-share-button{
-  display: block;
-  text-align: center;
-  padding: 30px;
 }
 
 .download_btn:hover{

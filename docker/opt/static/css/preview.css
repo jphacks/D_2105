@@ -5,7 +5,7 @@ div{
 }
 
 .preview_title h2{
-  font-family: 'Zen Maru Gothic', sans-serif;
+  font-family: 'Zen Maru Gothic','MS ゴシック', sans-serif;
   position:relative;
   text-align: center;
   color:#fff;
@@ -48,7 +48,7 @@ a{
 
 .buttons{
   text-align:center;
-  margin-top: 30px;
+  margin: 20px auto 30px auto;
   width:40%;
   height: auto;
 }
@@ -60,6 +60,11 @@ a{
   display: block;
   background-color: #00acee;
   padding:0.8em;
+  margin-bottom: 5px;
+}
+
+.tw_share_btn:hover{
+  opacity: .5;
 }
 
 .download_btn{

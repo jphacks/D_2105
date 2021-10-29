@@ -4,7 +4,7 @@ body{
 
 
 .message h2{
-  font-family: 'Zen Maru Gothic', sans-serif;
+  font-family: 'Zen Maru Gothic','MS ゴシック!', sans-serif;
   position:relative;
   text-align: center;
   color:#fff;
@@ -38,7 +38,7 @@ body{
 .mention p{
   margin:0 auto;
   font-size:13px;
-  font-family: Arial,'Zen Maru Gothic', sans-serif;
+  font-family: 'Arial','Zen Maru Gothic','MS ゴシック', sans-serif;
   padding: 1rem 2rem;
   width:40%;
   border-top:2px dotted #663333;

@@ -7,11 +7,13 @@ import urllib.error
 
 UNIT_NUM = 50
 
-def download_image(url, icon_size=200, dst_path="icon.png"):
+def download_image(id_, url, icon_size=200, dst_path="../movie/"):
     """URLから画像をダウンロードする
 
     Parameters
     ----------
+    id_ : int
+        受付ID
     url : str
         画像のURL
     icon_size : int
@@ -21,14 +23,16 @@ def download_image(url, icon_size=200, dst_path="icon.png"):
     """
     url = url.replace("_normal.jpg", "_"+str(icon_size)+"x"+str(icon_size)+".jpg")
     data = urllib.request.urlopen(url).read()
-    with open(dst_path, mode="wb") as f:
+    with open(dst_path+str(id_)+"/icon.png", mode="wb") as f:
         f.write(data)
 
-def get_tweet(max_num, max_chara_num, account, api_key, api_key_secret, access_token, access_token_secret):
+def get_tweet(id_, max_num, max_chara_num, account, api_key, api_key_secret, access_token, access_token_secret):
     """対象のツイートを取得
 
     Parameters
     ----------
+    id_ : int
+        受付ID
     max_num : int
         ツイート数の上限
     max_chara_num : int

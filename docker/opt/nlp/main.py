@@ -43,7 +43,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=1000
     if no_api == 1:
         try:
             error_flag = ""
-            tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_get_chara_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+            tweet_list, description, error_flag = twitter.get_tweet(id_, twitter_get_num, twitter_get_chara_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
             if error_flag != "":
                 return [], {}, -1, error_flag
             translations = translate.translate(tweet_list, os.environ["WL_key"], os.environ["WL_url"])
@@ -65,7 +65,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=1000
     else:
         error_flag = ""
         try:
-            tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_get_chara_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+            tweet_list, description, error_flag = twitter.get_tweet(id_, twitter_get_num, twitter_get_chara_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
         except Exception as e:
             print(e)
             return [], {}, -1, "ツイートの取得に失敗しました"

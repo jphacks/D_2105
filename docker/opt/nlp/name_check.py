@@ -1,5 +1,4 @@
 from goolabs import GoolabsAPI
-#import joblib
 import time
 
 def name_check(api_id, text_list):

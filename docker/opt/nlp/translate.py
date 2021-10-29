@@ -1,7 +1,6 @@
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import time
-#import joblib
 
 VERSION = '2018-05-01'
 #翻訳したい文章は1文ごとのリストにする

@@ -23,9 +23,16 @@
       <meta property="og:title" content="HABIFY…" />
       <meta property="og:description" content="オンリーワンのHappy Birthday to Youを作ろう！あなたの家族、友だち、恋人などにオリジナルのHappy Birthday to Youを送りませんか？独自のシステムでその人にぴったりの曲を生成します。" />
       <meta property="og:site_name" content="HABIFY…" />
+      <meta property="og:title" content="HABIFY…" />
       <meta property="og:image" content="https://habify.herokuapp.com/{{url_for('static',filename='cake_background.PNG')}}" />
       <meta name="twitter:card" content="player" />
-
+      <meta name="twitter:player" content="https://habify.herokuapp.com/{{url_for('static',filename='cake_background.PNG')}}"" />
+      <meta name="twitter:player" content="https://habify.herokuapp.com/{{id}}/preview" />
+      <meta name="twitter:text:player_width" content="30" />
+      <meta name="twitter:text:player_height" content="30" />
+      <meta name="twitter:player:width" content="350" />
+      <meta name="twitter:player:height" content="350" />
+      <meta name="twitter:secureurl:player_url" content="https://habify.herokuapp.com/{{id}}/preview" />
 
       <title>HABIFY</title>
       <link rel="stylesheet" href="{{url_for('static', filename='css/layout.css')}}" />
@@ -57,7 +64,5 @@
               <p class=credit>Developed by ぱーいす↑ん↓</p>
           </footer>
 
-          <!-- JavaScript -->
-          <script src="./mail_confirmation.js"defer async></script>
     </body>
     <html>

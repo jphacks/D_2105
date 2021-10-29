@@ -377,7 +377,7 @@ def by_midi(instruments_list, positive_param, prime_value, secondary_value, thir
 
 def by_librosa():
     """
-    WAVによってサウンドエフェクトを追加する(追加できるものはNEED_MIDI_EFFECTS_LISTにある項目のみ)
+    WAVによってサウンドエフェクトを追加する
 
     Parameters
     ----------

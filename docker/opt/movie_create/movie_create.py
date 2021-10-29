@@ -247,16 +247,6 @@ def movie_create(id, bpm, related_list):
     BASE_WIDTH = 720
     FPS = 30
 
-    # デバッグ用
-    if os.path.isfile(os.path.abspath('./movie/' + settings.WAV_FILE_NAME)):
-        # shutil.copy2('./movie/' + settings.WAV_FILE_NAME, WAVE_PATH)
-        shutil.copy2('./movie/icon.png', MOVIE_PATH + '/icon.png')
-    else:
-        with open('log.log', mode='w') as f:
-            f.write('現在の階層は')
-            f.write(os.getcwd())
-        raise Exception
-
     # クリップを作成
     base_clip = create_clip(BASE_IMG_PATH, id)
     icon_clip = create_clip(ICON_IMG_PATH, id, bpm, is_icon=True)

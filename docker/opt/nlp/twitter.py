@@ -20,12 +20,9 @@ def download_image(url, icon_size=200, dst_path="icon.png"):
         画像の保存場所, by default "icon.png"
     """
     url = url.replace("_normal.jpg", "_"+str(icon_size)+"x"+str(icon_size)+".jpg")
-    try:
-        data = urllib.request.urlopen(url).read()
-        with open(dst_path, mode="wb") as f:
-            f.write(data)
-    except urllib.error.URLError as e:
-        print(e)
+    data = urllib.request.urlopen(url).read()
+    with open(dst_path, mode="wb") as f:
+        f.write(data)
 
 def get_tweet(max_num, max_chara_num, account, api_key, api_key_secret, access_token, access_token_secret):
     """対象のツイートを取得
@@ -85,8 +82,6 @@ def get_tweet(max_num, max_chara_num, account, api_key, api_key_secret, access_t
         tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"http.*", "", tweet_list[i])
-    print(len(tweet_list))
-    print(chara_count)
     return tweet_list, description, ""
 
 def main():

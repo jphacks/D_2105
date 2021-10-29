@@ -74,7 +74,7 @@ def get_tweet(id_, max_num, max_chara_num, account, api_key, api_key_secret, acc
     tweet_list = []
     paging_num = math.ceil(max_num/UNIT_NUM)
     for page in range(paging_num):
-        statuses = api.user_timeline(id=account, count=UNIT_NUM, page=page, include_rts=False)
+        statuses = api.user_timeline(id=account, count=UNIT_NUM, page=page, include_rts=True)
         for status in statuses:
             tweet_text = status.text
             chara_count += len(tweet_text)

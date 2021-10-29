@@ -116,7 +116,7 @@ def clip_circle(path, id, bpm, music_length):
     img_origin = cv2.cvtColor(img_origin, cv2.COLOR_BGRA2RGBA)
 
     img_list = []
-    movie_frames = int(music_length * FPS) + 1
+    movie_frames = int(music_length * FPS)
 
     for i in range(movie_frames):
         '''
@@ -187,7 +187,7 @@ def clip_related(path, id, bpm, music_length):
     width = img_origin.shape[1]
 
     img_list = []
-    movie_frames = int(music_length * FPS) + 1
+    movie_frames = int(music_length * FPS)
 
     for i in range(movie_frames):
         '''
@@ -245,13 +245,11 @@ def movie_create(id, bpm, related_list):
     IMGAGES_PATH = './movie_create/images/'
     BASE_HEIGHT = 720
     BASE_WIDTH = 720
-    ICON_HEIGHT = 200
-    ICON_WIDTH = 200
     FPS = 30
 
     # デバッグ用
     if os.path.isfile(os.path.abspath('./movie/' + settings.WAV_FILE_NAME)):
-        shutil.copy2('./movie/' + settings.WAV_FILE_NAME, WAVE_PATH)
+        # shutil.copy2('./movie/' + settings.WAV_FILE_NAME, WAVE_PATH)
         shutil.copy2('./movie/icon.png', MOVIE_PATH + '/icon.png')
     else:
         with open('log.log', mode='w') as f:

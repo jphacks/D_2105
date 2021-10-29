@@ -46,9 +46,11 @@ a{
   margin-right: auto;
 }
 
-.preview_download{
+.buttons{
   text-align:center;
   margin-top: 30px;
+  width:40%;
+  height: auto;
 }
 
 .download_btn{
@@ -57,6 +59,13 @@ a{
   border-radius:100vh;
   background-color:#ff6699;
   padding:0.8em;
+  display: block;
+}
+
+.twitter-share-button{
+  display: block;
+  text-align: center;
+  padding: 30px;
 }
 
 .download_btn:hover{

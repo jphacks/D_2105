@@ -116,7 +116,7 @@ def create_manager(id, email1):
     """
     try:
         #related_list = ['cherry', 'dog', 'idol']
-        related_list = ['sea','history','gun']
+        related_list = ['sea','history','shopping']
         positive_param = 0.3 #デバッグ用
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)

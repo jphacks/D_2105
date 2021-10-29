@@ -11,6 +11,7 @@ import emotion
 import keywords
 import decide_keywords
 import emotion_adapter
+import name_check
 
 def nlp_control(id_, twitter_id, twitter_get_num=100, key_num=3, no_api=0):
     """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。
@@ -42,8 +43,6 @@ def nlp_control(id_, twitter_id, twitter_get_num=100, key_num=3, no_api=0):
     if no_api == 1:
         return [], {}, -1, ""
     error_flag = ""
-    if twitter_id == "":
-        return [], {}, -1, "アカウント名が入力されていません"
     #try:
     #    tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
     #except:
@@ -63,16 +62,23 @@ def nlp_control(id_, twitter_id, twitter_get_num=100, key_num=3, no_api=0):
     emotions = joblib.load("emotion_result")
     #joblib.dump(emotions, "emotion_result")
     #description_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], [description])
+    description_keywords = joblib.load("description_keywords")
     #joblib.dump(description_keywords, "description_keywords")
     #tweet_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], tweet_list)
+    tweet_keywords = joblib.load("tweet_keywords")
     #joblib.dump(tweet_keywords, "tweet_keywords")
-    #keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, key_num, twitter_get_num)
-    keyword_list = joblib.load("keyword_result")
+    name_list = name_check.name_check(os.environ["G_id"], tweet_list)
+    name_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], name_list)
+    keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, name_keywords, key_num, twitter_get_num)
+    #keyword_list = joblib.load("keyword_result")
     #joblib.dump(keyword_list, "keyword_result")
-    emotion_pn = emotion_adapter.tweets2posi_nega(tweet_list)
+    #emotion_pn = emotion_adapter.tweets2posi_nega(tweet_list)
+    emotion_pn = 0.5757121439280359
     print(keyword_list)
     print(emotions)
     print(emotion_pn)
+    print(name_list)
+    print(name_keywords)
     return keyword_list, emotions, emotion_pn, ""
 
 if __name__ == "__main__":

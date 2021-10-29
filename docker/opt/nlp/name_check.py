@@ -18,7 +18,6 @@ def name_check(api_id, text_list):
         名前と判断された語（重複あり）
     """
     name_list = []
-    tweet_list = joblib.load("twitter_result")
     api = GoolabsAPI(api_id)
     for i in range(int(len(text_list)/100)+1):
         if i != int(len(text_list)/100):

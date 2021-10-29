@@ -5,7 +5,7 @@ import math
 import urllib.request
 import urllib.error
 
-UNIT_NUM = 100
+UNIT_NUM = 50
 
 def download_image(url, icon_size=200, dst_path="icon.png"):
     """URLから画像をダウンロードする
@@ -20,7 +20,6 @@ def download_image(url, icon_size=200, dst_path="icon.png"):
         画像の保存場所, by default "icon.png"
     """
     url = url.replace("_normal.jpg", "_"+str(icon_size)+"x"+str(icon_size)+".jpg")
-    print(url)
     try:
         data = urllib.request.urlopen(url).read()
         with open(dst_path, mode="wb") as f:
@@ -28,13 +27,15 @@ def download_image(url, icon_size=200, dst_path="icon.png"):
     except urllib.error.URLError as e:
         print(e)
 
-def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_token_secret):
+def get_tweet(max_num, max_chara_num, account, api_key, api_key_secret, access_token, access_token_secret):
     """対象のツイートを取得
 
     Parameters
     ----------
-    min_num : int
-        最低限欲しいツイート数
+    max_num : int
+        ツイート数の上限
+    max_chara_num : int
+        ツイート文字数の上限
     account : str
         アカウントID
     api_key : str
@@ -68,18 +69,24 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
     description = user.description
     img_url = user.profile_image_url_https
     download_image(img_url)
-    
+    chara_count = 0
     tweet_list = []
-    paging_num = math.ceil(min_num/UNIT_NUM)
+    paging_num = math.ceil(max_num/UNIT_NUM)
     for page in range(paging_num):
         statuses = api.user_timeline(id=account, count=UNIT_NUM, page=page, include_rts=False)
         for status in statuses:
-            tweet_list.append(status.text)
+            tweet_text = status.text
+            chara_count += len(tweet_text)
+            tweet_list.append(tweet_text)
+        if chara_count >= max_chara_num:
+            break
+
     for i in range(len(tweet_list)):
         tweet_list[i] = re.sub(r"@\w+\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"\s", "", tweet_list[i])
         tweet_list[i] = re.sub(r"http.*", "", tweet_list[i])
-    
+    print(len(tweet_list))
+    print(chara_count)
     return tweet_list, description, ""
 
 def main():

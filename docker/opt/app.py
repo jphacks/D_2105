@@ -125,6 +125,8 @@ def create_manager(id, email1):
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
+        # エラー発生を知らせるメール送る
+        send_email(email1,id, error=True)
 
 def send_email(email1, id, error=False):
     '''

@@ -6,6 +6,7 @@ from composer import get_tempo, create_music
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formatdate
+import asyncio
 
 app = Flask(__name__)
 app.secret_key = os.environ["APP_SECRET_KEY"]
@@ -35,6 +36,9 @@ def req():
     elif email1 != email2:
         flash("メールアドレスが一致しません")
         return redirect(url_for('index'))
+    elif (False):
+        # Twitterアカウントの存在確認
+        pass
     else:
         # uuidが被らなくなるまで再発行する
         id = uuid.uuid4().hex
@@ -45,7 +49,9 @@ def req():
         os.mkdir('./movie/' + id)
         print(f"created uuid: {id}")
         # 非同期的に曲生成を開始する
-        create_manager(id, email1)
+        loop = asyncio.get_event_loop()
+        loop.run_in_executor(None, create_manager, id, email1)
+        
 
         return redirect(url_for('accept', id=id))
 
@@ -103,8 +109,15 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
+<<<<<<< HEAD
         #related_list = ['cherry', 'dog', 'idol']
         related_list = ['sea','history','gun']
+=======
+        # ここにTwitterからキーワードとかをとってくる関数の呼び出しを書く
+
+        bpm = 100 # デバッグ用
+        related_list = ['cherry', 'dog', 'idol'] # デバッグ用
+>>>>>>> c3040927e96d02951c93834badaf6be717d284a8
         positive_param = 0.3 #デバッグ用
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)

@@ -52,7 +52,7 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
         エラー内容を表示（エラーでなければ""）
     """
     if account == "@":
-        return [], "", "存在しないアカウントです"
+        return [], "", "アカウントが存在しません"
     if account[0] == "@":
         account = account[1:]
     auth = tweepy.OAuthHandler(api_key, api_key_secret)
@@ -62,9 +62,9 @@ def get_tweet(min_num, account, api_key, api_key_secret, access_token, access_to
     try:
         user = api.get_user(id=account)
     except:
-        return [], "", "存在しないアカウントです"
+        return [], "", "アカウントが存在しません"
     if user.protected == True:
-        return [], "", "鍵アカはサービス対象外です"
+        return [], "", "相手のアカウントが鍵アカになっています"
     description = user.description
     img_url = user.profile_image_url_https
     download_image(img_url)

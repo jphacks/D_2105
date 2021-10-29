@@ -11,7 +11,7 @@ import emotion
 import keywords
 import decide_keywords
 
-def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
+def nlp_control(id_, twitter_id, twitter_get_num=100, key_num=3):
     """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。
 
     Parameters
@@ -34,9 +34,14 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     error_flag : str
         エラー内容を表示（エラーでなければ""）
     """
+    error_flag = ""
     if twitter_id == "":
         return [], {}, "アカウント名が入力されていません"
-    tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+    try:
+        tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
+    except:
+        print("NG")
+        print(error_flag)
     #tweet_list = joblib.load("twitter_result")
     #error_flag = 0
     #description = "ピアノ弾きます DTMやります 演奏&作曲で動画上げてます良ければお聴きくださいAAR(Anti-AgingRecord)所属 https://m.youtube.com/c/sawapypiano PythonとC++で色々やってるLinux使い"
@@ -51,11 +56,11 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     #emotions = joblib.load("emotion_result")
     #joblib.dump(emotions, "emotion_result")
     description_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], [description])
-    joblib.dump(description_keywords, "description_keywords")
+    #joblib.dump(description_keywords, "description_keywords")
     tweet_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], tweet_list)
-    joblib.dump(tweet_keywords, "tweet_keywords")
+    #joblib.dump(tweet_keywords, "tweet_keywords")
     keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, key_num, twitter_get_num)
-    joblib.dump(keyword_list, "keyword_result")
+    #joblib.dump(keyword_list, "keyword_result")
     
     print(keyword_list)
     print(emotions)

@@ -1,45 +1,3 @@
-# LICENSE
-"""
-# MuseScore_General.sf2
----
-Current version: 0.2  13th May 2020
-This is a scaled-down version of **MuseScore_General-HQ.sf2** that replaces some of the larger instruments to save memory and CPU on older PCs. This SoundFont is currently a work-in-progress. Detailed information on presets and sample sources used can be found in "MuseScore_General_Sample_Sources.csv". All instruments without attribution are still using samples from FluidR3Mono.
-FluidR3 (original version) by Frank Wen Copyright (c) 2000-02
-Mono conversion (FluidR3Mono) by Michael Cowgill Copyright (c) 2014-17
-Adaptation for MuseScore_General.sf2 by S. Christian Collins Copyright (c) 2018-19
-Temple Blocks instrument provided by Ethan Winer Copyright (c) 2002
-Drumline Cymbals provided by Michael Schorsch Copyright (c) 2016
-MuseScore_General.sf2 is shared under the MIT license as described in COPYING, as was FluidR3Mono and FluidR3 before it.
-ftp://ftp.osuosl.org/pub/musescore/soundfont/MuseScore_General/MuseScore_General_License.md
-"""
-
-"""
-pretty_midi
-Copyright (c) 2014 Colin Raffel
-Released under the MIT License (MIT)
-https://github.com/craffel/pretty-midi/blob/main/LICENSE.txt
-"""
-
-"""
-midi2audio
-Copyright (c) 2016 Bohumír Zámečník
-Released under the MIT License (MIT)
-https://github.com/bzamecnik/midi2audio/blob/master/LICENSE
-"""
-
-"""
-mido
-Copyright (c) 2013-infinity Ole Martin Bjørndalen
-Released under the MIT License (MIT)
-https://mido.readthedocs.io/en/latest/license.html
-"""
-
-import os
-
-import pretty_midi as pm
-from midi2audio import FluidSynth
-import mido
-from mido import MidiFile, MidiTrack, MetaMessage
 import numpy as np
 from random import choice
 
@@ -51,24 +9,24 @@ INDEX_TO_NOTENUMBER = 20 #1から88にこれを足すとmidiのノートナン�
 #ダイアトニックコードリスト
 F_DIATONIC = \
     [
-        ["F2","A2","C3"], #Ⅰ
-        ["G2","A#2","D3"], #Ⅱm
-        ["A2","C3","E3"], #Ⅲm
-        ["A#2","D3","F3"], #Ⅳ
-        ["C3","E3","G3"], #Ⅴ
-        ["D3","F3","A3"], #Ⅵm
-        ["E3","G3","A#3"], #Ⅶdim
+        ["F2","A2","C3"], #Ⅰ               0
+        ["G2","A#2","D3"], #Ⅱm             1
+        ["A2","C3","E3"], #Ⅲm              2
+        ["A#2","D3","F3"], #Ⅳ              3
+        ["C3","E3","G3"], #Ⅴ               4
+        ["D3","F3","A3"], #Ⅵm              5
+        ["E3","G3","A#3"], #Ⅶdim           6
 
         #ここから7th
-        ["F2","A2","C3", "E3" ], #Ⅰ7
-        ["G2","A#2","D3", "F3" ], #Ⅱm7
-        ["A2","C3","E3", "G3" ], #Ⅲm7
-        ["A#2","D3","F3", "A3" ], #Ⅳ7
-        ["C3","E3","G3", "A#3" ], #Ⅴ7
-        ["D3","F3","A3", "C4" ], #Ⅵm7
-        ["E3","G3","A#3", "D4" ], #Ⅶdim7
+        ["F2","A2","C3", "E3" ], #Ⅰ7       7
+        ["G2","A#2","D3", "F3" ], #Ⅱm7     8
+        ["A2","C3","E3", "G3" ], #Ⅲm7      9
+        ["A#2","D3","F3", "A3" ], #Ⅳ7     10
+        ["C3","E3","G3", "A#3" ], #Ⅴ7     11
+        ["D3","F3","A3", "C4" ], #Ⅵm7     12
+        ["E3","G3","A#3", "D4" ], #Ⅶdim7  13
 
-        ["F2","A#2","C3"], #Ⅰsus4
+        ["F2","A#2","C3"], #Ⅰsus4         14
     ]
 CHORDS_DICT = [
 
@@ -92,7 +50,7 @@ CHORDS_DICT = [
         "Ⅰsus4",
 ]
 
-def create_backing(related_value_list, key_note_list, rhythm_denominator):
+def create_backing(related_value_list, key_note_list, rhythm_denominator, emotion_value=0.5, debug=False):
     """
     入力されたパラメータを基に伴奏とベースを作成する
     Parameters
@@ -103,6 +61,11 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
         何拍子か? 3or4を想定
+    emotion_value : float
+        感情分析の結果の値
+    debug : Bool
+        デバッグ用の表示や確認の有効/無効
+        デバッグ時のみTrue, 基本はFalse
 
     Returns
     ----------
@@ -113,7 +76,8 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
     """
     if (len(key_note_list) != 21):
         raise ValueError(f"length of related_value_list must be 21, but input was {len(key_note_list)}")
-    b = 5
+    
+    b = 5 # 発生確率の標準となる値 (Ⅶdim とかの多用を避けたい和音が選ばれにくくするため)
     chords_candidate_list = [
         {
             # candidate: 使えるコード 
@@ -205,6 +169,30 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
         }, 
     ] # コード進行の候補と確率
 
+    # デバッグ用 確率が正しく設定されているかチェック
+    if (debug):
+        for i in range(len(chords_candidate_list)):
+            if (len(chords_candidate_list[i]["candidate"]) != len(chords_candidate_list[i]["probability"])):
+                raise Exception("chords_candidate_list おかしい")
+
+    # 感情分析の結果の整形
+    emotion_weight = 4
+    posi = int(emotion_value * emotion_weight) # 確率決定の時に値を整数値で扱いたいため
+    nega = emotion_weight - posi # 同上
+    posi_chords_idx = [0, 3, 4, 5, 7, 10, 11, 13]
+    nega_chords_idx = [2, 6, 8, 13, 14]
+    # 感情分析の結果を反映させる
+    for i in range(len(chords_candidate_list)):
+        for probability_idx in range(len(chords_candidate_list[i]["probability"])):
+            if (chords_candidate_list[i]["probability"][probability_idx] in posi_chords_idx):
+                chords_candidate_list[i]["probability"][probability_idx] += posi
+            elif (chords_candidate_list[i]["probability"][probability_idx] in nega_chords_idx):
+                chords_candidate_list[i]["probability"][probability_idx] += nega
+            else:
+                chords_candidate_list[i]["probability"][probability_idx] += emotion_weight // 2
+
+
+
     chords_progression = []
 
     # コード進行を作る
@@ -224,13 +212,16 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator):
         chords_progression.append(np.random.choice(candidate))
     
     # ----テスト出力用-----
-    for i in range(21):
-        if (chords_progression[i] != -1 and chords_progression[i] != -2):
-            print(CHORDS_DICT[chords_progression[i]], end=" ")
-        else: print(chords_progression[i], end=" ")
-    print("")
-    # print(chords_progression)
-    # ----テスト出力用ここまで-----
+    if (debug):
+        for i in range(21):
+            if (chords_progression[i] != -1 and chords_progression[i] != -2):
+                print(CHORDS_DICT[chords_progression[i]], end=" ")
+                
+            else: 
+                print(chords_progression[i], end=" ")
+        print("")
+        # print(chords_progression)
+        # ----テスト出力用ここまで-----
 
 
     # key_note_list があれば拍子を考える必要ないかも
@@ -438,13 +429,15 @@ def create_baseline(related_value_list, key_note_list, rhythm_denominator, chord
 
 # 動作テスト
 if __name__ == "__main__":
-    back = create_backing(
-        related_value_list=["key1", "key2", "key3"],
-        key_note_list=[
-            2,3,4,5,6, #Happy Birthday to you
-            8,9,10,11,12, #Happy Birthday to you
-            14,15,16,17,18,19, #Happy Birthday dear ??
-            21,22,23,24,25 #Happy Birthday to you
-        ],
-        rhythm_denominator=3
-    )
+    for _ in range(5):
+        back = create_backing(
+            related_value_list=["key1", "key2", "key3"],
+            key_note_list=[
+                2,3,4,5,6, #Happy Birthday to you
+                8,9,10,11,12, #Happy Birthday to you
+                14,15,16,17,18,19, #Happy Birthday dear ??
+                21,22,23,24,25 #Happy Birthday to you
+            ],
+            rhythm_denominator=3,
+            debug=True
+        )

@@ -68,9 +68,9 @@ def nlp_control(id_, twitter_id, twitter_get_num=100, key_num=3, no_api=0):
     tweet_keywords = joblib.load("tweet_keywords")
     #joblib.dump(tweet_keywords, "tweet_keywords")
     name_list = name_check.name_check(os.environ["G_id"], tweet_list)
-    keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, key_num, twitter_get_num)
-    name_list = name_check.name_check(os.environ["G_id"], tweet_list)
-    keyword_list = joblib.load("keyword_result")
+    name_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], name_list)
+    keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, name_keywords, key_num, twitter_get_num)
+    #keyword_list = joblib.load("keyword_result")
     #joblib.dump(keyword_list, "keyword_result")
     #emotion_pn = emotion_adapter.tweets2posi_nega(tweet_list)
     emotion_pn = 0.5757121439280359
@@ -78,6 +78,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=100, key_num=3, no_api=0):
     print(emotions)
     print(emotion_pn)
     print(name_list)
+    print(name_keywords)
     return keyword_list, emotions, emotion_pn, ""
 
 if __name__ == "__main__":

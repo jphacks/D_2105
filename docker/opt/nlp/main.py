@@ -31,18 +31,18 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
         キーワードのリスト
     emotion : dict
         感情分析の結果（例：{'sadness': 0.510395, 'joy': 0.465514, 'fear': 0.087964, 'disgust': 0.129827, 'anger': 0.15183}）
-    error_flag : int
-        1ならエラー、0ならOK
+    error_flag : str
+        エラー内容を表示（エラーでなければ""）
     """
     if twitter_id == "":
-        return [], {}, 1
+        return [], {}, "アカウント名が入力されていません"
     tweet_list, description, error_flag = twitter.get_tweet(twitter_get_num, twitter_id, os.environ["T_key"], os.environ["T_keys"], os.environ["T_token"], os.environ["T_tokens"])
     #tweet_list = joblib.load("twitter_result")
     #error_flag = 0
     #description = "ピアノ弾きます DTMやります 演奏&作曲で動画上げてます良ければお聴きくださいAAR(Anti-AgingRecord)所属 https://m.youtube.com/c/sawapypiano PythonとC++で色々やってるLinux使い"
     #joblib.dump(tweet_list, "twitter_result")
-    if error_flag == 1:
-        return [], {}, 1
+    if error_flag != "":
+        return [], {}, error_flag
     translations = translate.translate(tweet_list, os.environ["WL_key"], os.environ["WL_url"])
     #translations = joblib.load("translation_result")
     #joblib.dump(translations, "translation_result")
@@ -59,7 +59,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=900, key_num=3):
     
     print(keyword_list)
     print(emotions)
-    return keyword_list, emotions, 0
+    return keyword_list, emotions, ""
 
 if __name__ == "__main__":
     nlp_control(0, "jphacks2021")

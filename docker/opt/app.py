@@ -109,15 +109,8 @@ def create_manager(id, email1):
         返信用メールアドレス
     """
     try:
-<<<<<<< HEAD
         #related_list = ['cherry', 'dog', 'idol']
         related_list = ['sea','history','gun']
-=======
-        # ここにTwitterからキーワードとかをとってくる関数の呼び出しを書く
-
-        bpm = 100 # デバッグ用
-        related_list = ['cherry', 'dog', 'idol'] # デバッグ用
->>>>>>> c3040927e96d02951c93834badaf6be717d284a8
         positive_param = 0.3 #デバッグ用
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)

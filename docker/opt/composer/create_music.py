@@ -59,8 +59,7 @@ import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 
 from composer.instruments import Instruments, DrumInstruments
-#import composer.get_tempo as get_tempo
-from composer import get_tempo, add_sound_effect
+from composer import get_tempo, add_sound_effect, create_backing
 import settings
 
 
@@ -102,6 +101,7 @@ def create_default_main_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    backing_param = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
     append_notes(notes = piano.notes, input_notes_list = default_melody_notes_list)
     instruments_list.append(piano)
 

@@ -50,13 +50,11 @@ CHORDS_DICT = [
         "Ⅰsus4",
 ]
 
-def create_backing(related_value_list, key_note_list, rhythm_denominator, emotion_value=0.5, debug=False):
+def create_backing(key_note_list, rhythm_denominator, emotion_value=0.5, debug=False):
     """
     入力されたパラメータを基に伴奏とベースを作成する
     Parameters
     ----------
-    related_value_list : [str]
-        言語分析の結果を格納したリスト
     key_note_list : [int/float]
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
@@ -75,7 +73,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator, emotio
         ベースについて, 順にvelocity, 音高("4"みたいな), start, end が入る
     """
     if (len(key_note_list) != 21):
-        raise ValueError(f"length of related_value_list must be 21, but input was {len(key_note_list)}")
+        raise ValueError(f"length of key_note_list must be 21, but input was {len(key_note_list)}")
     
     b = 5 # 発生確率の標準となる値 (Ⅶdim とかの多用を避けたい和音が選ばれにくくするため)
     chords_candidate_list = [
@@ -232,8 +230,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator, emotio
 
     # ベースを作る
 
-    notes_list_base = create_baseline(
-        related_value_list, key_note_list, rhythm_denominator, chords_progression)
+    notes_list_base = create_baseline(key_note_list, rhythm_denominator, chords_progression)
     
 
 
@@ -361,13 +358,11 @@ def create_chord_arpeggio(chords_duration, notes_list, density):
         arpeggio_ary.append((t, note_duration[density]))
     return arpeggio_ary
 
-def create_baseline(related_value_list, key_note_list, rhythm_denominator, chords_progression):
+def create_baseline(key_note_list, rhythm_denominator, chords_progression):
     """
     入力されたパラメータを基に曲を作成する
     Parameters
     ----------
-    related_value_list : [str]
-        言語分析の結果を格納したリスト
     key_note_list : [int/float]
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
@@ -431,7 +426,6 @@ def create_baseline(related_value_list, key_note_list, rhythm_denominator, chord
 if __name__ == "__main__":
     for _ in range(5):
         back = create_backing(
-            related_value_list=["key1", "key2", "key3"],
             key_note_list=[
                 2,3,4,5,6, #Happy Birthday to you
                 8,9,10,11,12, #Happy Birthday to you

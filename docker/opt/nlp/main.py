@@ -11,7 +11,7 @@ from nlp import decide_keywords
 from nlp import emotion_adapter
 from nlp import name_check
 
-def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=10000, key_num=3, no_api=0):
+def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=10000, key_num=3, no_api=2):
     """nlp全体の制御プログラム。返り値とは別に、ツイッターアイコンの画像ファイルを作成する。
 
     Parameters
@@ -27,7 +27,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=1000
     key_num : int, optional
         欲しいキーワード数, by default 3
     no_api : int
-        もしもの時の、API使わず結果だけ返すやつ（値が1の時）
+        もしもの時の、API使わず結果だけ返すやつ（値が1の時）、2にするとエラーでなくても結果だけ返す
 
     Returns
     -------
@@ -40,6 +40,11 @@ def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=1000
     error_flag : str
         エラー内容を表示（エラーでなければ""）
     """
+    if no_api == 2:
+        keyword_list_e = ['pc', 'japanese', 'gourmet']
+        emotions_e = {'sadness': 0.086197, 'joy': 0.70992, 'fear': 0.064405, 'disgust': 0.08614, 'anger': 0.105672}
+        emotion_pn_e = 1.0
+        return keyword_list_e, emotions_e, emotion_pn_e, ""
     if no_api == 1:
         try:
             error_flag = ""
@@ -55,13 +60,14 @@ def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=1000
             name_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], name_list)
             keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, name_keywords, key_num, twitter_get_num)
             emotion_pn = emotion_adapter.tweets2posi_nega(tweet_list)
+            print(len(tweet_list))
             return keyword_list, emotions, emotion_pn, ""
         except Exception as e:
             print(e)
-            keyword_list_e = ['japnanese', 'gourmet', 'sea']
-            emotions_e = {'sadness': 0.092843, 'joy': 0.706041, 'fear': 0.054193, 'disgust': 0.034763, 'anger': 0.103145}
+            keyword_list_e = ['pc', 'japanese', 'gourmet']
+            emotions_e = {'sadness': 0.086197, 'joy': 0.70992, 'fear': 0.064405, 'disgust': 0.08614, 'anger': 0.105672}
             emotion_pn_e = 1.0
-            return keyword_list_e, emotions_e, emotion_pn_e, ""
+            return keyword_list_e, emotions_e, emotion_pn_e, "処理でエラーが生じました"
     else:
         error_flag = ""
         try:
@@ -81,6 +87,7 @@ def nlp_control(id_, twitter_id, twitter_get_num=300, twitter_get_chara_num=1000
             name_keywords = keywords.get_keywords(os.environ["DB_user"], os.environ["DB_pass"], os.environ["DB_name"], name_list)
             keyword_list = decide_keywords.decide_keywords(description_keywords, tweet_keywords, name_keywords, key_num, twitter_get_num)
             emotion_pn = emotion_adapter.tweets2posi_nega(tweet_list)
+            print(len(tweet_list))
             return keyword_list, emotions, emotion_pn, ""
         except Exception as e:
             print(e)

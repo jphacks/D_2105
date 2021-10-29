@@ -128,10 +128,9 @@ def create_manager(id, email1, twitter_id):
         返信用メールアドレス
     """
     try:
-        related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id)
-        if error_flag != "":
-            print(f"error occured in nlp: {error_flag}")
-            related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id, no_api=1)
+        #related_list = ['cherry', 'dog', 'idol']
+        #no_apiが0ならエラー出たことを伝える。1ならエラー出ても用意した結果を返す。2ならAPI使わずに直接用意した結果を返す。
+        related_list, emotion, emotion_pn, error_flag = nlp_main.nlp_control(id, twitter_id, no_api=1)
         positive_param = emotion_pn
         bpm = get_tempo.get_bpm(related_list,positive_param)
         create_music.create_music(related_list, positive_param, id)

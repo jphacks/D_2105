@@ -988,8 +988,6 @@ def create_music(related_value_list, positive_param,id):
     prime_value = 'none'
     secondary_value = 'none'
     third_value = 'none'
-    BPM = get_tempo.get_bpm(related_value_list, positive_param)
-    tempo = BPM * 2 #曲のテンポ
     PM = pm.PrettyMIDI() #Pretty_MIDIオブジェクトの生成
 
     if len(related_value_list)   == NO_ITEM:
@@ -1005,6 +1003,9 @@ def create_music(related_value_list, positive_param,id):
         prime_value     = related_value_list[0]
         secondary_value = related_value_list[1]
         third_value     = related_value_list[2]
+    
+    BPM = get_tempo.get_bpm(related_value_list, positive_param)
+    tempo = BPM * 2 #曲のテンポ
 
     create_main_melody(PM.instruments,prime_value,positive_param)
     add_sound_effect.by_midi(PM.instruments,positive_param,prime_value,secondary_value,third_value)
@@ -1016,3 +1017,4 @@ def create_music(related_value_list, positive_param,id):
     mid.save(MIDI_PATH)
     os.remove(TENTATIVE_MIDI_PATH)
     midi_to_wave(MIDI_PATH,id)
+    add_sound_effect.by_librosa(id,positive_param,prime_value,secondary_value,third_value)

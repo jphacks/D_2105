@@ -3,8 +3,9 @@ import numpy as np
 import soundfile as sf
 import pretty_midi as pm
 
-# from composer.instruments import Instruments
-# import composer.get_tempo as get_tempo
+import settings
+from composer.instruments import Instruments
+import composer.get_tempo as get_tempo
 
 
 # MIDIによってサウンドエフェクトを設定する必要のあるパラメータ
@@ -26,83 +27,83 @@ def get_effect_times(prime_value, positive_param):
     effect_times : 長さ2のリスト(int)
         サウンドエフェクトを発生させるタイミングを格納したリスト
     """
-    effect_times = []
+    effect_times = (0,0)
     if prime_value == 'sea':
         if positive_param < 0.33:
-            effect_times = [7,13]
+            effect_times = (7,13)
         elif positive_param < 0.66:
-            effect_times = [7,13]
+            effect_times = (7,13)
         else:
-            effect_times = [5,9]
+            effect_times = (5,9)
     elif prime_value == 'cherry':
         if positive_param < 0.5:
-            effect_times = [7,13]
+            effect_times = (7,13)
         else:
-            effect_times = [7,13]
+            effect_times = (7,13)
     elif prime_value == 'cat':
-        effect_times = [5,9]
+        effect_times = (5,9)
     elif prime_value == 'dog':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'train':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'pc':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'gourmet':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'sport':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'soccer':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'baseball':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'tabletennis':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'japanese':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'scandinavian':
-        effect_times = [8,16]
+        effect_times = (8,16)
     elif prime_value == 'tropical':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'school':
-        effect_times = [7,15]
+        effect_times = (7,15)
     elif prime_value == 'idol':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'outdoor':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'car':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'bike':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'drama':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'picture':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'rock':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'electronic':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'jazz':
-        effect_times = [9,17]
+        effect_times = (9,17)
     elif prime_value == 'ghost':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'sword':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'gun':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'history':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'chuni':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'fairy':
-        effect_times = [7,13]
+        effect_times = (7,13)
     elif prime_value == 'child':
-        effect_times = [5,9]
+        effect_times = (5,9)
     elif prime_value == 'mystery':
-        effect_times = [9,17]
+        effect_times = (9,17)
     elif prime_value == 'shopping':
-        effect_times = [5,9]
+        effect_times = (5,9)
     else:
-        effect_times = []
+        effect_times = (0,0)
     return effect_times
 
 
@@ -369,29 +370,107 @@ def by_midi(instruments_list, positive_param, prime_value, secondary_value, thir
     """
     NEED_MIDI_SECOND = secondary_value in NEED_MIDI_EFFECTS_LIST
     NEED_MIDI_THIRD = third_value in NEED_MIDI_EFFECTS_LIST
-    effect_times = get_effect_times(prime_value, positive_param)
-    if NEED_MIDI_SECOND and len(effect_times) > 0:
-        add_midi_effect(instruments_list, effect_times[0], secondary_value)
-    if NEED_MIDI_THIRD and len(effect_times) > 0:
-        add_midi_effect(instruments_list, effect_times[1], third_value)
+    effect_times1, effect_times2 = get_effect_times(prime_value, positive_param)
+    if NEED_MIDI_SECOND and effect_times1 > 0:
+        add_midi_effect(instruments_list, effect_times1, secondary_value)
+    if NEED_MIDI_THIRD and effect_times2 > 0:
+        add_midi_effect(instruments_list, effect_times2, third_value)
+
+
+def add_wav_effect(music_path, effect_time, value, BPM):
+    """
+    WAV音源(曲)にWAV音源(効果音)を加える
+
+    Parameters
+    ----------
+    music_path : str
+        元となる曲のパス
+    effect_time : int
+        効果音を加える拍
+    value : str
+        発生させるサウンドエフェクトを示すパラメータ
+    BPM : int
+        元の曲のはやさ
+    """
+    SE_FOLDER_PATH = 'composer/soundEffect/'
+    effect_time_second = effect_time / (BPM / 60)
+    se_wav_file_path = ''
+    if value == 'cherry':
+        se_wav_file_path = f'{SE_FOLDER_PATH}uguisu.wav'
+    elif value == 'cat':
+        se_wav_file_path = f'{SE_FOLDER_PATH}cat.wav'
+    elif value == 'dog':
+        se_wav_file_path = f'{SE_FOLDER_PATH}dog.wav'
+    elif value == 'train':
+        se_wav_file_path = f'{SE_FOLDER_PATH}train.wav'
+    elif value == 'pc':
+        se_wav_file_path = f'{SE_FOLDER_PATH}pc.wav'
+    elif value == 'gourmet':
+        se_wav_file_path = f'{SE_FOLDER_PATH}sumiyaki.wav'
+    elif value == 'sport':
+        se_wav_file_path = f'{SE_FOLDER_PATH}sport.wav'
+    elif value == 'soccer':
+        se_wav_file_path = f'{SE_FOLDER_PATH}soccer.wav'
+    elif value == 'baseball':
+        se_wav_file_path = f'{SE_FOLDER_PATH}bat.wav'
+    elif value == 'tabletennis':
+        se_wav_file_path = f'{SE_FOLDER_PATH}tabletennis.wav'
+    elif value == 'school':
+        se_wav_file_path = f'{SE_FOLDER_PATH}school_wei.wav'
+    elif value == 'idol':
+        se_wav_file_path = f'{SE_FOLDER_PATH}idle.wav'
+    elif value == 'car':
+        se_wav_file_path = f'{SE_FOLDER_PATH}car_engine1.wav'
+    elif value == 'bike':
+        se_wav_file_path = f'{SE_FOLDER_PATH}bike.wav'
+    elif value == 'picture':
+        se_wav_file_path = f'{SE_FOLDER_PATH}shutter.wav'
+    elif value == 'ghost':
+        se_wav_file_path = f'{SE_FOLDER_PATH}kerakera.wav'
+    elif value == 'sword':
+        se_wav_file_path = f'{SE_FOLDER_PATH}sword.wav'
+    elif value == 'chuni':
+        se_wav_file_path = f'{SE_FOLDER_PATH}chuni.wav'
+    elif value == 'fairy':
+        se_wav_file_path = f'{SE_FOLDER_PATH}merchen.wav'
+    elif value == 'child':
+        se_wav_file_path = f'{SE_FOLDER_PATH}child.wav'
+    elif value == 'mystery':
+        se_wav_file_path = f'{SE_FOLDER_PATH}hirameki.wav'
+    elif value == 'shopping':
+        se_wav_file_path = f'{SE_FOLDER_PATH}shopping.wav'
+
+    if len(se_wav_file_path) > 1:
+        merge_wav(music_path, se_wav_file_path, effect_time_second)
 
 
 
-def by_librosa(secondary_value, third_value, time_1, time_2):
+def by_librosa(id, positive_param, prime_value, secondary_value, third_value):
     """
     WAVによってサウンドエフェクトを追加する
 
     Parameters
     ----------
+    id : str
+        フォルダ名(uuid)
+    positive_param : float
+        Tweetから算出されたポジティブ度
+    prime_value : str
+        言語分析の結果、一番使用頻度の高かったパラメータ
     secondary_value : str
         言語分析の結果、二番目に使用頻度の高かったパラメータ
     third_value : str
         言語分析の結果、三番目に使用頻度の高かったパラメータ
-    time_1 : int
-        SE入れるタイミング, 何拍目か?
-    time_2 : int
-        SE入れるタイミング, 何拍目か?
     """
+    BPM = get_tempo.get_bpm([prime_value], positive_param)
+    BASE_WAV_PATH = f'movie/{id}/{settings.WAV_FILE_NAME}'
+    NEED_LIBROSA_SECOND = secondary_value not in NEED_MIDI_EFFECTS_LIST
+    NEED_LIBROSA_THIRD = third_value not in NEED_MIDI_EFFECTS_LIST
+    effect_times1, effect_times2 = get_effect_times(prime_value, positive_param)
+    if NEED_LIBROSA_SECOND and effect_times1 > 0:
+        add_wav_effect(BASE_WAV_PATH, effect_times1, secondary_value, BPM)
+    if NEED_LIBROSA_THIRD and effect_times2 > 0:
+        add_wav_effect(BASE_WAV_PATH, effect_times2, third_value, BPM)
 
 
 def merge_wav(filename_1, filename_2, time, fs=44100):

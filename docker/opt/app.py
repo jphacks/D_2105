@@ -54,6 +54,13 @@ def req():
         # uuidと同名のディレクトリを作成する
         os.mkdir('./movie/' + id)
         print(f"created uuid: {id}")
+
+        # twitterのidを書いておく
+        if (twitter_id[0] == "@"):
+            twitter_id = twitter_id[1:]
+        with open(f"./movie/{id}/twitter_id.txt", 'w') as f:
+            f.write(twitter_id)
+
         # 非同期的に曲生成を開始する
         loop = asyncio.new_event_loop()
         loop.run_in_executor(None, create_manager, id, email1)
@@ -75,9 +82,14 @@ def preview(id):
     if os.path.isdir('./movie/' + id) == False:
         return redirect(url_for('index'))
 
+    twitter_id = ""
+    with open(f"./movie/{id}/twitter_id.txt", 'r') as f:
+        twitter_id = f.read()
+
     return render_template(
         "preview.html",
-        id=id
+        id=id,
+        twitter_id=twitter_id,
     )
 
 @app.route('/<id>/download')

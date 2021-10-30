@@ -1,17 +1,183 @@
-{% extends "layout.html" %}
-{% block content %}
+<!doctype html>
+    <html lang=ja>
+    <head>
+      <meta charset ="UTF-8">
+      <!-- Webフォント -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@800&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="{{url_for('static', filename='css/mail.css')}}" />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
+
+      <!-- fontawesome -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+      <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+      <!-- OGP画像宣言 -->
+      <head prefix=”og: http://ogp.me/ns#”>
+      <link rel="stylesheet" href="../static/css/layout.css" />
+      <meta name = "author" content = "D_2105">
+      <meta name = "description" content="HBIFY...">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      <style>
+        div{
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .mail_message{
+          font-size: 20px;
+          text-align: center;
+          padding:0;
+          margin:0;
+          color:#b84513;
+          font-family: 'Zen Maru Gothic','MS ゴシック', sans-serif;
+        }
+
+        .mail_head{
+          text-align: center;
+          margin:2em auto;
+          padding:1em 0;
+          width:45%;
+          border:4px double #f6bfbc;
+          border-radius:2em;
+        }
+
+        span{
+            color:#ff3366;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        @media screen and (max-width:768px){
+          .mail_head{
+            margin:2em 1.5em 1em 1.5em;
+            width:80%;
+          }
+          p{
+            font-size: 15px;
+          }
+          .preview_url{
+            font-size: 15px;
+          }
+        }
+        
+
+      </style>
+      <style>
+        div{
+  width: 100%;
+}
+
+
+body{
+  background-color:#fffff0;
+  padding:8px 0 0 0;
+  margin:0;
+}
+
+.hwrapper{
+  width:100%;
+  background-color:#FFE991;
+  background-image:repeating-linear-gradient(-45deg,#fff,#fff 7px,transparent 0,transparent 14px);
+}
+
+header{
+  padding:0;
+}
+
+.header img{
+  width:20%;
+  height:auto;
+  padding-left: 20px;
+  position:relative;
+}
+
+@media (max-width:767px) {
+  .header img{
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    height: auto;
+  }
+}
+
+.catch_copy{
+  width:80%;
+  font-size:12px;
+  font-family: 'Arial','Zen Maru Gothic', sans-serif;
+  color: brown;
+  text-shadow: 1px 3px 3px yellow;
+  margin:auto;
+  padding-bottom:2%;
+}
+
+footer{
+  width:100%;
+  padding:10px 0 40px 0;
+  margin:30px 0 0 0;
+  background-color: white;
+
+  position: relative;
+  bottom: 0;
+}
+
+footer a{
+  padding-left:30px
+}
+
+.company{
+    font-size:5px;
+    padding-left:30px
+}
+
+.credit{
+  font-size:10px;
+  text-align:center;
+}
+
+      </style>
+    </head>
+
+    <body>
+      <header>
+        <div class="hwrapper">
+        <div class="header">
+          <a href="/"><img src="	https://github.com/jphacks/D_2105/blob/master/docker/opt/static/img/mail_cake.png?raw=true" alt="HABIFY..."></a>
+        <div class=catch_copy>オンリーワンなHappy Birthday to Youを<br class="br-sp">お届けします……！</div>
+        </div>
+        </div>
+      </header>
+          <main>
+<link rel="stylesheet" href="../static/css/mail.css" />
 
 <body>
   <div class="mail_message">
     <div class="mail_head"><span>Happy Birthday to You</span>が<br class="pc_hid">完成しました！!</div>
       <div class="mail_cake">
-        <img src="../static/img/mail_cake.png" alt="cake" width=200px height=200px ></img>
+        <img src="https://github.com/jphacks/D_2105/blob/master/docker/opt/static/img/mail_cake.png?raw=true" alt="cake" width=200px height=200px ></img>
       </div>
     <p>↓こちらのリンクよりご覧ください↓</p>
-    <p class="preview_url"><a href="https://habify.herokuapp.com/{{id}}/preview">https://habify.herokuapp.com/{{id}}/preview</a></p>
+    <p class="preview_url"><a href="https://habify.herokuapp.com/__id__/preview">https://habify.herokuapp.com/__id__/preview</a></p>
   </div>
 </body>
+</main>
+<footer>
+    <a href="http://www.goo.ne.jp/">
+      <img src="//u.xgoo.jp/img/sgoo.png" alt="supported by goo"
+      title="supported by goo" width="88px" height="36px">
+    </a>
+    <p class="company">IBM Cloud®</p>
+    <p class="company">Copyright (c) 2020 BANDAI NAMCO Research Inc.
+      Released under the MIT license
+      https://opensource.org/licenses/mit-license.php</p>
+    <p class="company">Copyright (c) 2021 MongoDB Inc.
+      Released under the SSPL
+      https://www.mongodb.com/licensing/server-side-public-license</p>
+    <p class=credit>Developed by ぱーいす↑ん↓</p>
+</footer>
 
-{% endblock %}
+</body>
+<html>

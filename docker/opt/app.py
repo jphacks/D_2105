@@ -170,7 +170,12 @@ def send_email(email1, id, error=False):
         body_text = 'エラーが発生しました．ご迷惑をおかけして申し訳ありませんが，しばらく時間をおいてから再度アクセスしてください．'
     else:
         subject = '【HABIFY】動画の生成が完了しました'
-        body_text = render_template("mail.html",id=id)
+        # body_text = render_template("mail.html",id=id)
+        txt = ""
+        with open("./templates/mail.html") as f:
+            txt = f.read()
+        tx = txt.replace("__id__", id)
+        body_text = tx
 
     from_address = from_address
     to_address = email1
@@ -196,6 +201,7 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
+    send_email("python.jack.jphacks@gmail.com", "dev_test", error=False)
     print(os.getcwd())
     # 感情判定のセットアップ
     emotion_adapter.setup_model()

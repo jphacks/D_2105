@@ -1,7 +1,7 @@
 import numpy as np
 from random import choice
 
-from instruments import Instruments, DrumInstruments
+from composer.instruments import Instruments, DrumInstruments
 
 INDEX_TO_NOTENUMBER = 20 #1から88にこれを足すとmidiのノートナンバーになる
 # 例：よくある左手のF=20+21
@@ -50,19 +50,19 @@ CHORDS_DICT = [
         "Ⅰsus4",
 ]
 
-def create_backing(related_value_list, key_note_list, rhythm_denominator, emotion_value=0.5, debug=False):
+def create_backing(key_note_list, rhythm_denominator, emotion_value, emotion_dict, debug=False):
     """
     入力されたパラメータを基に伴奏とベースを作成する
     Parameters
     ----------
-    related_value_list : [str]
-        言語分析の結果を格納したリスト
     key_note_list : [int/float]
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
         何拍子か? 3or4を想定
     emotion_value : float
         感情分析の結果の値
+    emotion_dict : dict
+        IBMの感情分析の結果
     debug : Bool
         デバッグ用の表示や確認の有効/無効
         デバッグ時のみTrue, 基本はFalse
@@ -75,7 +75,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator, emotio
         ベースについて, 順にvelocity, 音高("4"みたいな), start, end が入る
     """
     if (len(key_note_list) != 21):
-        raise ValueError(f"length of related_value_list must be 21, but input was {len(key_note_list)}")
+        raise ValueError(f"length of key_note_list must be 21, but input was {len(key_note_list)}")
     
     b = 5 # 発生確率の標準となる値 (Ⅶdim とかの多用を避けたい和音が選ばれにくくするため)
     chords_candidate_list = [
@@ -177,8 +177,12 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator, emotio
 
     # 感情分析の結果の整形
     emotion_weight = 4
-    posi = int(emotion_value * emotion_weight) # 確率決定の時に値を整数値で扱いたいため
-    nega = emotion_weight - posi # 同上
+    negaposi_weight = 2
+
+
+
+    posi = int(emotion_value * negaposi_weight + emotion_dict["joy"] * (emotion_weight - negaposi_weight) - (emotion_dict["sadness"] + emotion_dict["fear"] + emotion_dict["disgust"] + emotion_dict["anger"]) / 4) # 確率決定の時に値を整数値で扱いたいため
+    nega = negaposi_weight - posi # 同上
     posi_chords_idx = [0, 3, 4, 5, 7, 10, 11, 13]
     nega_chords_idx = [2, 6, 8, 13, 14]
     # 感情分析の結果を反映させる
@@ -191,7 +195,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator, emotio
             else:
                 chords_candidate_list[i]["probability"][probability_idx] += emotion_weight // 2
 
-
+    
 
     chords_progression = []
 
@@ -232,8 +236,7 @@ def create_backing(related_value_list, key_note_list, rhythm_denominator, emotio
 
     # ベースを作る
 
-    notes_list_base = create_baseline(
-        related_value_list, key_note_list, rhythm_denominator, chords_progression)
+    notes_list_base = create_baseline(key_note_list, rhythm_denominator, chords_progression)
     
 
 
@@ -361,13 +364,11 @@ def create_chord_arpeggio(chords_duration, notes_list, density):
         arpeggio_ary.append((t, note_duration[density]))
     return arpeggio_ary
 
-def create_baseline(related_value_list, key_note_list, rhythm_denominator, chords_progression):
+def create_baseline(key_note_list, rhythm_denominator, chords_progression):
     """
     入力されたパラメータを基に曲を作成する
     Parameters
     ----------
-    related_value_list : [str]
-        言語分析の結果を格納したリスト
     key_note_list : [int/float]
         great_oceanの21個の音の開始地点を入れたリスト
     rhythm_denominator : int
@@ -431,7 +432,6 @@ def create_baseline(related_value_list, key_note_list, rhythm_denominator, chord
 if __name__ == "__main__":
     for _ in range(5):
         back = create_backing(
-            related_value_list=["key1", "key2", "key3"],
             key_note_list=[
                 2,3,4,5,6, #Happy Birthday to you
                 8,9,10,11,12, #Happy Birthday to you

@@ -59,8 +59,7 @@ import mido
 from mido import MidiFile, MidiTrack, MetaMessage
 
 from composer.instruments import Instruments, DrumInstruments
-#import composer.get_tempo as get_tempo
-from composer import get_tempo, add_sound_effect
+from composer import get_tempo, add_sound_effect, create_backing
 import settings
 
 
@@ -85,7 +84,7 @@ def append_notes(notes,input_notes_list,raise_key = 0,sift_start = 0,raise_veloc
         notes.append(note)
 
 
-def create_default_main_melody(instruments_list):
+def create_default_main_melody(instruments_list, positive_param, emotion):
     """
     パラメータがなかった場合の主旋律を作成
 
@@ -102,7 +101,11 @@ def create_default_main_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list,rhythm_denominator=3,emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = piano.notes, input_notes_list = default_melody_notes_list)
+    append_notes(notes = piano.notes, input_notes_list = accompaniment)
+    append_notes(notes = piano.notes, input_notes_list = bass)
     instruments_list.append(piano)
 
 
@@ -203,7 +206,7 @@ def create_graduate_cherry_melody(instruments_list):
     instruments_list.append(flute)
 
 
-def create_cat_melody(instruments_list):
+def create_cat_melody(instruments_list, positive_param, emotion):
     """
     パラメータが猫に該当した場合の主旋律を作成する
 
@@ -213,6 +216,8 @@ def create_cat_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     orchestra_hit = pm.Instrument(Instruments.ORCHESTRA_HIT)
+    electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_PICK)
     cat_melody_notes_list = \
     [
         (90,'C4',2,2.25),(90,'C4',2.25,2.5),(100,'D4',2.5,2.75),(100,'C4',3,3.25),(100,'F4',3.5,3.75),(100,'E4',4,4.25), #Happy Birthday to you
@@ -220,11 +225,17 @@ def create_cat_melody(instruments_list):
         (90,'C4',10,10.25),(90,'C4',10.25,10.5),(100,'C5',10.5,10.75),(100,'A4',11,11.25),(100,'F4',11.5,11.75),(100,'F4',11.75,12),(95,'E4',12,12.25),(95,'E4',12.25,12.5),(90,'D4',12.75,13), #Happy Birthday dear ??
         (100,'A#4',14,14.25),(100,'A#4',14.25,14.5),(100,'A4',14.5,14.75),(100,'F4',15,15.25),(100,'G4',15.5,15.75),(100,'F4',16,17) #Happy Birthday to you
     ]
+    key_note_list = [2,2.5,3,3.5,4,6,6.5,7,7.5,8,10,10.5,11,11.5,12,12.75,14,14.5,15,15.5,16]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=4, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = orchestra_hit.notes, input_notes_list = cat_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(orchestra_hit)
+    instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
-def create_dog_melody(instruments_list):
+def create_dog_melody(instruments_list, positive_param, emotion):
     """
     パラメータが犬に該当した場合の主旋律を作成する
 
@@ -234,6 +245,7 @@ def create_dog_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     xylophone = pm.Instrument(Instruments.XYLOPHONE)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     dog_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,6.125),(100,'E4',6.125,6.25),(100,'E4',6.25,6.375),(100,'E4',6.375,6.5),(100,'E4',6.5,6.625),(100,'E4',6.625,6.75),(100,'E4',6.75,6.875),(100,'E4',6.875,7),(100,'E4',7,7.125),(100,'E4',7.125,7.25),(100,'E4',7.25,7.375),(100,'E4',7.375,7.5),(100,'E4',7.5,7.625),(100,'E4',7.625,7.75),(100,'E4',7.75,7.875),(100,'E4',7.875,8), #Happy Birthday to you
@@ -241,8 +253,13 @@ def create_dog_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,19.125),(100,'D4',19.125,19.25),(100,'D4',19.25,19.375),(100,'D4',19.375,19.5),(100,'D4',19.5,19.625),(100,'D4',19.625,19.75),(100,'D4',19.75,19.875),(100,'D4',19.875,20),(100,'D4',20,20.125),(100,'D4',20.125,20.25),(100,'D4',20.25,20.375),(100,'D4',20.375,20.5),(100,'D4',20.5,20.625),(100,'D4',20.625,20.75),(100,'D4',20.75,20.875),(100,'D4',20.875,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,25.125),(100,'F4',25.125,25.25),(100,'F4',25.25,25.375),(100,'F4',25.375,25.5),(100,'F4',25.5,25.625),(100,'F4',25.625,25.75),(100,'F4',25.75,25.875),(100,'F4',25.875,26),(100,'F4',26,26.125),(100,'F4',26.125,26.25),(100,'F4',26.25,26.375),(100,'F4',26.375,26.5),(100,'F4',26.5,26.625),(100,'F4',26.625,26.75),(100,'F4',26.75,26.875),(100,'F4',26.875,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = xylophone.notes, input_notes_list = dog_melody_notes_list, raise_key = 12)
+    append_notes(notes = xylophone.notes, input_notes_list = accompaniment, raise_key = 12)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
     instruments_list.append(xylophone)
+    instruments_list.append(contrabass)
 
 
 def create_train_melody(instruments_list):
@@ -266,7 +283,7 @@ def create_train_melody(instruments_list):
     instruments_list.append(piano)
 
 
-def create_PC_melody(instruments_list):
+def create_PC_melody(instruments_list, positive_param, emotion):
     """
     パラメータがPCに該当した場合の主旋律を作成する
 
@@ -276,6 +293,7 @@ def create_PC_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     synth_bass1 = pm.Instrument(Instruments.SYNTH_BASS_1)
+    synth_string = pm.Instrument(Instruments.SYNTH_STRINGS_2)
     PC_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -283,8 +301,13 @@ def create_PC_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = synth_bass1.notes, input_notes_list = PC_melody_notes_list)
+    append_notes(notes = synth_string.notes, input_notes_list = accompaniment)
+    append_notes(notes = synth_bass1.notes, input_notes_list = bass)
     instruments_list.append(synth_bass1)
+    instruments_list.append(synth_string)
 
 
 def create_gourmet_melody(instruments_list):
@@ -332,7 +355,7 @@ def create_sport_melody(instruments_list):
     instruments_list.append(trumpet)
 
 
-def create_soccer_melody(instruments_list):
+def create_soccer_melody(instruments_list, positive_param, emotion):
     """
     パラメータがサッカーに該当した場合の主旋律を作成する
 
@@ -342,6 +365,8 @@ def create_soccer_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     brass_ensemble = pm.Instrument(Instruments.BRASS_SECTION)
+    trombone = pm.Instrument(Instruments.TROMBONE)
+    tuba = pm.Instrument(Instruments.TUBA)
     soccer_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -349,11 +374,17 @@ def create_soccer_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = brass_ensemble.notes, input_notes_list = soccer_melody_notes_list)
+    append_notes(notes = trombone.notes, input_notes_list = accompaniment)
+    append_notes(notes = tuba.notes, input_notes_list = bass)
     instruments_list.append(brass_ensemble)
+    instruments_list.append(trombone)
+    instruments_list.append(tuba)
 
 
-def create_baseball_melody(instruments_list):
+def create_baseball_melody(instruments_list, positive_param, emotion):
     """
     パラメータが野球に該当した場合の主旋律を作成する
 
@@ -364,6 +395,7 @@ def create_baseball_melody(instruments_list):
     """
     trombone = pm.Instrument(Instruments.TROMBONE)
     trumpet = pm.Instrument(Instruments.TRUMPET)
+    tuba = pm.Instrument(Instruments.TUBA)
     baseball_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -371,10 +403,15 @@ def create_baseball_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = trombone.notes, input_notes_list = baseball_melody_notes_list, raise_key = -12)
     append_notes(notes = trumpet.notes, input_notes_list = baseball_melody_notes_list)
+    append_notes(notes = trumpet.notes, input_notes_list = accompaniment)
+    append_notes(notes = tuba.notes, input_notes_list = bass)
     instruments_list.append(trombone)
     instruments_list.append(trumpet)
+    instruments_list.append(tuba)
 
 
 def create_table_tennis_melody(instruments_list):
@@ -408,7 +445,7 @@ def create_table_tennis_melody(instruments_list):
     instruments_list.append(woodblock)
 
 
-def create_japanese_melody(instruments_list):
+def create_japanese_melody(instruments_list, positive_param, emotion):
     """
     パラメータが和風に該当した場合の主旋律を作成する
 
@@ -418,6 +455,7 @@ def create_japanese_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     koto = pm.Instrument(Instruments.KOTO)
+    shamisen = pm.Instrument(Instruments.SHAMISEN)
     japanese_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'G4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -425,8 +463,12 @@ def create_japanese_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'G4',17,17.75),(100,'G4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'D4',23,24),(100,'G4',24,25),(100,'E4',25,27) #Happy Birthday to you
     ]
-    append_notes(notes = koto.notes, input_notes_list = japanese_melody_notes_list)
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
+    append_notes(notes = shamisen.notes, input_notes_list = japanese_melody_notes_list, raise_velocity = 20)
+    append_notes(notes = koto.notes, input_notes_list = accompaniment, raise_velocity=-10)
     instruments_list.append(koto)
+    instruments_list.append(shamisen)
 
 
 def create_scandiavian_melody(instruments_list):
@@ -471,7 +513,7 @@ def create_tropical_melody(instruments_list):
     instruments_list.append(xylophone)
     
 
-def create_school_melody(instruments_list):
+def create_school_melody(instruments_list, positive_param, emotion):
     """
     パラメータが学校に該当した場合の主旋律を作成する
 
@@ -481,6 +523,7 @@ def create_school_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_FINGER)
     shcool_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -488,8 +531,13 @@ def create_school_melody(instruments_list):
         (90,'C4',18,18.75),(90,'C4',18.75,19),(100,'C5',19,20),(100,'A4',20,21),(100,'F4',21,21.75),(100,'F4',21.75,22),(95,'E4',22,22.75),(90,'D4',22.75,23),(95,'E4',23,23.75),(90,'D4',23.75,26), #Happy Birthday dear ??
         (100,'A#4',26,26.75),(100,'A#4',26.75,27),(100,'A4',27,28),(100,'F4',28,29),(100,'G4',29,30),(100,'F4',30,32) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,10,11,12,13,14,18,19,20,21,22,23.75,26,27,28,29,30]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=4, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = electric_guitar.notes, input_notes_list = shcool_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
 def create_idol_melody(instruments_list):
@@ -517,7 +565,7 @@ def create_idol_melody(instruments_list):
     instruments_list.append(applause)
 
 
-def create_outdoor_melody(instruments_list):
+def create_outdoor_melody(instruments_list, positive_param, emotion):
     """
     パラメータがアウトドアに該当した場合の主旋律を作成する
 
@@ -526,7 +574,9 @@ def create_outdoor_melody(instruments_list):
     instruments_list : pretty_midi.Pretty_midi.instruments
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
+    flute = pm.Instrument(Instruments.FLUTE)
     acostic_guitar = pm.Instrument(Instruments.ACOSTIC_GUITAR_NYLON)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     outdoor_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -534,11 +584,17 @@ def create_outdoor_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
-    append_notes(notes = acostic_guitar.notes, input_notes_list = outdoor_melody_notes_list)
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
+    append_notes(notes = flute.notes, input_notes_list = outdoor_melody_notes_list, raise_key = 12)
+    append_notes(notes = acostic_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
+    instruments_list.append(flute)
     instruments_list.append(acostic_guitar)
+    instruments_list.append(contrabass)
 
 
-def create_picture_melody(instruments_list):
+def create_picture_melody(instruments_list, positive_param, emotion):
     """
     パラメータが写真に該当した場合の主旋律を作成する
 
@@ -548,6 +604,7 @@ def create_picture_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     violin = pm.Instrument(Instruments.VIOLIN)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     violin_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -555,11 +612,16 @@ def create_picture_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = violin.notes, input_notes_list = violin_melody_notes_list)
+    append_notes(notes = violin.notes, input_notes_list = accompaniment)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
     instruments_list.append(violin)
+    instruments_list.append(contrabass)
 
 
-def create_car_melody(instruments_list):
+def create_car_melody(instruments_list, positive_param, emotion):
     """
     パラメータが車に該当した場合の主旋律を作成する
 
@@ -569,6 +631,7 @@ def create_car_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_PICK)
     car_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -576,11 +639,16 @@ def create_car_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,20), #Happy Birthday dear ??
         (100,'A#4',20,20.75),(100,'A#4',20.75,21),(100,'A4',21,22),(100,'F4',22,23),(100,'G4',23,24),(100,'F4',24,26) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = electric_guitar.notes, input_notes_list = car_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
-def create_bike_melody(instruments_list):
+def create_bike_melody(instruments_list, positive_param, emotion):
     """
     パラメータがバイクに該当した場合の主旋律を作成する
 
@@ -590,6 +658,8 @@ def create_bike_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     synth_brass = pm.Instrument(Instruments.SYNTH_BRASS_2)
+    synth_brass1 = pm.Instrument(Instruments.SYNTH_BRASS_1)
+    synth_bass = pm.Instrument(Instruments.SYNTH_BASS_1)
     bike_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -597,11 +667,17 @@ def create_bike_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,20), #Happy Birthday dear ??
         (100,'A#4',20,20.75),(100,'A#4',20.75,21),(100,'A4',21,22),(100,'F4',22,23),(100,'G4',23,24),(100,'F4',24,26) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list,rhythm_denominator=3,emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = synth_brass.notes, input_notes_list = bike_melody_notes_list)
+    append_notes(notes = synth_bass1.notes, input_notes_list = accompaniment)
+    append_notes(notes = synth_bass.notes, input_notes_list = bass)
     instruments_list.append(synth_brass)
+    instruments_list.append(synth_bass1)
+    instruments_list.append(synth_bass)
 
 
-def create_drama_melody(instruments_list):
+def create_drama_melody(instruments_list, positive_param, emotion):
     """
     パラメータがドラマに該当した場合の主旋律を作成
 
@@ -612,6 +688,8 @@ def create_drama_melody(instruments_list):
     """
     glocken = pm.Instrument(Instruments.GLOCKENSPIEL)
     piccolo = pm.Instrument(Instruments.PICCOLO)
+    xylophone = pm.Instrument(Instruments.XYLOPHONE)
+    contrabass = pm.Instrument(Instruments.CONTRABASS)
     drama_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -619,13 +697,19 @@ def create_drama_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = glocken.notes, input_notes_list = drama_melody_notes_list)
     append_notes(notes = piccolo.notes, input_notes_list = drama_melody_notes_list)
+    append_notes(notes = xylophone.notes, input_notes_list = accompaniment)
+    append_notes(notes = contrabass.notes, input_notes_list = bass)
     instruments_list.append(glocken)
     instruments_list.append(piccolo)
+    instruments_list.append(xylophone)
+    instruments_list.append(contrabass)
 
 
-def create_rock_melody(instruments_list):
+def create_rock_melody(instruments_list, positive_param, emotion):
     """
     パラメータがロックに該当した場合の主旋律を作成する
 
@@ -635,6 +719,8 @@ def create_rock_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     distortion_guitar = pm.Instrument(Instruments.DISTORTION_GUITAR)
+    electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_FINGER)
     rock_melody_notes_list = \
     [
         (90,'C4',2,2.25),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,7), #Happy Birthday to you
@@ -642,11 +728,17 @@ def create_rock_melody(instruments_list):
         (90,'C4',14,14.25),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,20), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = distortion_guitar.notes, input_notes_list = rock_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(distortion_guitar)
+    instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
-def create_electronics_melody(instruments_list):
+def create_electronics_melody(instruments_list, positive_param, emotion):
     """
     パラメータがエレクトロニクスに該当した場合の主旋律を作成する
 
@@ -656,6 +748,8 @@ def create_electronics_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     lead2_sawtooth = pm.Instrument(Instruments.LEAD2_SAWTOOTH)
+    electric_guitar = pm.Instrument(Instruments.ELECTRIC_GUITAR_JAZZ)
+    electric_bass = pm.Instrument(Instruments.ELECTRIC_BASS_FINGER)
     electronics_melody_notes_list = \
     [
         (90,'C4',2,2.75),(90,'C4',2.75,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -663,8 +757,14 @@ def create_electronics_melody(instruments_list):
         (90,'C4',14,14.75),(90,'C4',14.75,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,17.75),(100,'F4',17.75,18),(95,'E4',18,18.75),(95,'E4',18.75,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,21.75),(100,'A#4',21.75,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,27) #Happy Birthday to you
     ]
+    key_note_list = [2,3,4,5,6,8,9,10,11,12,14,15,16,17,18,19,21,22,23,24,25]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = lead2_sawtooth.notes, input_notes_list = electronics_melody_notes_list)
+    append_notes(notes = electric_guitar.notes, input_notes_list = accompaniment)
+    append_notes(notes = electric_bass.notes, input_notes_list = bass)
     instruments_list.append(lead2_sawtooth)
+    instruments_list.append(electric_guitar)
+    instruments_list.append(electric_bass)
 
 
 def create_jazz_melody(instruments_list):
@@ -688,7 +788,7 @@ def create_jazz_melody(instruments_list):
     instruments_list.append(piano)
 
 
-def create_ghost_melody(instruments_list):
+def create_ghost_melody(instruments_list, positive_param, emotion):
     """
     パラメータが妖怪に該当した場合の主旋律を作成する
 
@@ -698,6 +798,8 @@ def create_ghost_melody(instruments_list):
         pretty_midi.Instrumentインスタンスを格納するリスト
     """
     goblins = pm.Instrument(Instruments.FX_GOBLINS)
+    wistle = pm.Instrument(Instruments.WHISTLE)
+    acosic_base = pm.Instrument(Instruments.ACOSIC_BASS)
     ghost_melody_notes_list = \
     [
         (90,'C4',2,3),(100,'D4',3,4),(100,'C4',4,5),(100,'F4',5,6),(100,'E4',6,8), #Happy Birthday to you
@@ -705,8 +807,13 @@ def create_ghost_melody(instruments_list):
         (90,'C4',14,15),(100,'C5',15,16),(100,'A4',16,17),(100,'F4',17,18),(95,'E4',18,19),(90,'D4',19,21), #Happy Birthday dear ??
         (100,'A#4',21,22),(100,'A4',22,23),(100,'F4',23,24),(100,'G4',24,25),(100,'F4',25,28) #Happy Birthday to you
     ]
+    accompaniment, bass = create_backing.create_backing(key_note_list=key_note_list, rhythm_denominator=3, emotion_value=positive_param, emotion_dict=emotion)
     append_notes(notes = goblins.notes, input_notes_list = ghost_melody_notes_list)
+    append_notes(notes = wistle.notes, input_notes_list = accompaniment)
+    append_notes(notes = acosic_base.notes, input_notes_list = bass)
     instruments_list.append(goblins)
+    instruments_list.append(wistle)
+    instruments_list.append(acosic_base)
 
 
 def create_sword_melody(instruments_list):
@@ -751,7 +858,7 @@ def create_gun_melody(instruments_list):
     instruments_list.append(music_box)
 
 
-def create_history_melody(instruments_list):
+def create_history_melody(instruments_list, positive_param, emotion):
     """
     パラメータが歴史に該当した場合の主旋律を作成する
 
@@ -772,7 +879,7 @@ def create_history_melody(instruments_list):
     instruments_list.append(shanai)
 
 
-def create_chunibyo_melody(instruments_list):
+def create_chunibyo_melody(instruments_list, positive_param, emotion):
     """
     パラメータが厨二病に該当した場合の主旋律を作成する
 
@@ -793,7 +900,7 @@ def create_chunibyo_melody(instruments_list):
     instruments_list.append(trumpet)
 
 
-def create_fairy_melody(instruments_list):
+def create_fairy_melody(instruments_list, positive_param, emotion):
     """
     パラメータがメルヘンに該当した場合の主旋律を作成する
 
@@ -814,7 +921,7 @@ def create_fairy_melody(instruments_list):
     instruments_list.append(bowed)
 
 
-def create_child_melody(instruments_list):
+def create_child_melody(instruments_list, positive_param, emotion):
     """
     パラメータが子供に該当した場合の主旋律を作成する(jazzと同じ)
 
@@ -850,7 +957,7 @@ def create_mystery_melody(instruments_list):
     create_jazz_melody(instruments_list)
 
 
-def create_shopping_melody(instruments_list):
+def create_shopping_melody(instruments_list, positive_param, emotion):
     """
     パラメータがショッピングに該当した場合の主旋律を作成する(jazzと同じ)
 
@@ -871,7 +978,7 @@ def create_shopping_melody(instruments_list):
     instruments_list.append(handbell)
 
 
-def create_main_melody(instruments_list, prime_value, positive_param):
+def create_main_melody(instruments_list, prime_value, positive_param, emotion):
     """
     prime_valueに対応した主旋律を作成する
 
@@ -897,69 +1004,69 @@ def create_main_melody(instruments_list, prime_value, positive_param):
         else:
             create_aggressive_cherry_melody(instruments_list)
     elif prime_value == 'cat':
-        create_cat_melody(instruments_list)
+        create_cat_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'dog':
-        create_dog_melody(instruments_list)
+        create_dog_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'train':
         create_train_melody(instruments_list)
     elif prime_value == 'pc':
-        create_PC_melody(instruments_list)
+        create_PC_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'gourmet':
         create_gourmet_melody(instruments_list)
     elif prime_value == 'sport':
         create_sport_melody(instruments_list)
     elif prime_value == 'soccer':
-        create_soccer_melody(instruments_list)
+        create_soccer_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'baseball':
-        create_baseball_melody(instruments_list)
+        create_baseball_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'tabletennis':
         create_table_tennis_melody(instruments_list)
     elif prime_value == 'japanese':
-        create_japanese_melody(instruments_list)
+        create_japanese_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'scandinavian':
         create_scandiavian_melody(instruments_list)
     elif prime_value == 'tropical':
         create_tropical_melody(instruments_list)
     elif prime_value == 'school':
-        create_school_melody(instruments_list)
+        create_school_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'idol':
         create_idol_melody(instruments_list)
     elif prime_value == 'outdoor':
-        create_outdoor_melody(instruments_list)
+        create_outdoor_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'car':
-        create_car_melody(instruments_list)
+        create_car_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'bike':
-        create_bike_melody(instruments_list)
+        create_bike_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'drama':
-        create_drama_melody(instruments_list)
+        create_drama_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'picture':
-        create_picture_melody(instruments_list)
+        create_picture_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'rock':
-        create_rock_melody(instruments_list)
+        create_rock_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'electronic':
-        create_electronics_melody(instruments_list)
+        create_electronics_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'jazz':
         create_jazz_melody(instruments_list)
     elif prime_value == 'ghost':
-        create_ghost_melody(instruments_list)
+        create_ghost_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'sword':
         create_sword_melody(instruments_list)
     elif prime_value == 'gun':
         create_gun_melody(instruments_list)
     elif prime_value == 'history':
-        create_history_melody(instruments_list)
+        create_history_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'chuni':
-        create_chunibyo_melody(instruments_list)
+        create_chunibyo_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'fairy':
-        create_fairy_melody(instruments_list)
+        create_fairy_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'child':
-        create_child_melody(instruments_list)
+        create_child_melody(instruments_list, positive_param, emotion)
     elif prime_value == 'mystery':
         create_mystery_melody(instruments_list)
     elif prime_value == 'shopping':
-        create_shopping_melody(instruments_list)
+        create_shopping_melody(instruments_list, positive_param, emotion)
     else:
-        create_default_main_melody(instruments_list)
+        create_default_main_melody(instruments_list, positive_param, emotion)
 
 
 def midi_to_wave(inputFileName,id):
@@ -969,7 +1076,7 @@ def midi_to_wave(inputFileName,id):
     fs.midi_to_audio(inputFileName,WAV_PATH) #midiをmp3に変換、保存
     os.remove(inputFileName)
 
-def create_music(related_value_list, positive_param,id):
+def create_music(related_value_list, positive_param,id, emotion):
     """
     入力されたパラメータを基に曲を作成する
 
@@ -1007,7 +1114,7 @@ def create_music(related_value_list, positive_param,id):
     BPM = get_tempo.get_bpm(related_value_list, positive_param)
     tempo = BPM * 2 #曲のテンポ
 
-    create_main_melody(PM.instruments,prime_value,positive_param)
+    create_main_melody(PM.instruments,prime_value,positive_param,emotion)
     add_sound_effect.by_midi(PM.instruments,positive_param,prime_value,secondary_value,third_value)
     PM.write(TENTATIVE_MIDI_PATH)
     mid = MidiFile(TENTATIVE_MIDI_PATH)

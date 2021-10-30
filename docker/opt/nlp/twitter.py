@@ -7,7 +7,7 @@ import urllib.error
 
 UNIT_NUM = 50
 
-def download_image(id_, url, icon_size=200, dst_path="../movie/"):
+def download_image(id_, url, icon_size=200, dst_path="./movie/"):
     """URLから画像をダウンロードする
 
     Parameters
@@ -69,12 +69,12 @@ def get_tweet(id_, max_num, max_chara_num, account, api_key, api_key_secret, acc
         return [], "", "相手のアカウントが鍵アカになっています"
     description = user.description
     img_url = user.profile_image_url_https
-    download_image(img_url)
+    download_image(id_, img_url)
     chara_count = 0
     tweet_list = []
     paging_num = math.ceil(max_num/UNIT_NUM)
     for page in range(paging_num):
-        statuses = api.user_timeline(id=account, count=UNIT_NUM, page=page, include_rts=False)
+        statuses = api.user_timeline(id=account, count=UNIT_NUM, page=page, include_rts=True)
         for status in statuses:
             tweet_text = status.text
             chara_count += len(tweet_text)

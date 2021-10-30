@@ -5,8 +5,9 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AdapterType
 from numpy import average
 import pickle as pick
+import gc
 
-MODEL_DIR = "/root/opt/nlp/"
+MODEL_DIR = "./nlp/"
 def setup_model():
     """
     起動時に一度だけ実行される
@@ -66,6 +67,9 @@ def tweets2posi_nega(tweets):
         result = torch.argmax(outputs[0]).item()
         results.append(result)
         # print(f"{result}: {tweet}") # 確認用
+    del model
+    del tokenizer
+    gc.collect()
     return average(results)
 
 def predict(sentence, tokenizer, model):

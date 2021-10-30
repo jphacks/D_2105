@@ -519,7 +519,7 @@ def merge_wav(filename_1, filename_2, time, fs=44100):
 
 if __name__ == "__main__":
     merge_wav(
-        "/root/opt/movie/my_test/input.wav",
-        "/root/opt/movie/my_test/voice.wav",
+        "./movie/my_test/input.wav",
+        "./movie/my_test/voice.wav",
         time = 2.3
     )

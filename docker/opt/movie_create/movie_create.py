@@ -250,21 +250,21 @@ def movie_create(id, bpm, related_list):
     # クリップを作成
     base_clip = create_clip(BASE_IMG_PATH, id)
     icon_clip = create_clip(ICON_IMG_PATH, id, bpm, is_icon=True)
-    related_clip_0 = create_clip(IMGAGES_PATH + related_list[0] + '/01.PNG', id, bpm, is_related=True)
-    related_clip_1 = create_clip(IMGAGES_PATH + related_list[1] + '/01.PNG', id, bpm, is_related=True)
-    related_clip_2 = create_clip(IMGAGES_PATH + related_list[2] + '/01.PNG', id, bpm, is_related=True)
+    #related_clip_0 = create_clip(IMGAGES_PATH + related_list[0] + '/01.PNG', id, bpm, is_related=True)
+    #related_clip_1 = create_clip(IMGAGES_PATH + related_list[1] + '/01.PNG', id, bpm, is_related=True)
+    #related_clip_2 = create_clip(IMGAGES_PATH + related_list[2] + '/01.PNG', id, bpm, is_related=True)
 
     # クリップの合成
-    final_clip = mpy.CompositeVideoClip([base_clip, icon_clip.set_position((BASE_WIDTH * 0.38, BASE_HEIGHT * 0.2)), \
-    related_clip_0.set_position((0, BASE_HEIGHT * 0.55)), related_clip_1.set_position((BASE_WIDTH * 0.37, BASE_HEIGHT * 0.65)), \
-    related_clip_2.set_position((BASE_WIDTH * 0.7, BASE_HEIGHT * 0.55))])
+    final_clip = mpy.CompositeVideoClip([base_clip, icon_clip.set_position((BASE_WIDTH * 0.38, BASE_HEIGHT * 0.2))])#, \
+    #related_clip_0.set_position((0, BASE_HEIGHT * 0.55)), related_clip_1.set_position((BASE_WIDTH * 0.37, BASE_HEIGHT * 0.65)), \
+    #related_clip_2.set_position((BASE_WIDTH * 0.7, BASE_HEIGHT * 0.55))])
 
     # 音と動画を合成
     final_clip = final_clip.set_audio(mpy.AudioFileClip(WAVE_PATH))
     final_clip.write_videofile(filename = MOVIE_PATH + 'happy_birthday.mp4', codec='libx264', audio_codec='aac', fps=FPS)
     final_clip.close()
-    related_clip_2.close()
-    related_clip_1.close()
-    related_clip_0.close()
+    #related_clip_2.close()
+    #related_clip_1.close()
+    #related_clip_0.close()
     icon_clip.close()
     base_clip.close()

@@ -50,7 +50,7 @@ CHORDS_DICT = [
         "Ⅰsus4",
 ]
 
-def create_backing(key_note_list, rhythm_denominator, emotion_value=0.5, debug=False):
+def create_backing(key_note_list, rhythm_denominator, emotion_value, emotion_dict, debug=False):
     """
     入力されたパラメータを基に伴奏とベースを作成する
     Parameters
@@ -61,6 +61,8 @@ def create_backing(key_note_list, rhythm_denominator, emotion_value=0.5, debug=F
         何拍子か? 3or4を想定
     emotion_value : float
         感情分析の結果の値
+    emotion_dict : dict
+        IBMの感情分析の結果
     debug : Bool
         デバッグ用の表示や確認の有効/無効
         デバッグ時のみTrue, 基本はFalse
@@ -175,8 +177,12 @@ def create_backing(key_note_list, rhythm_denominator, emotion_value=0.5, debug=F
 
     # 感情分析の結果の整形
     emotion_weight = 4
-    posi = int(emotion_value * emotion_weight) # 確率決定の時に値を整数値で扱いたいため
-    nega = emotion_weight - posi # 同上
+    negaposi_weight = 2
+
+
+
+    posi = int(emotion_value * negaposi_weight + emotion_dict["joy"] * (emotion_weight - negaposi_weight) - (emotion_dict["sadness"] + emotion_dict["fear"] + emotion_dict["disgust"] + emotion_dict["anger"]) / 4) # 確率決定の時に値を整数値で扱いたいため
+    nega = negaposi_weight - posi # 同上
     posi_chords_idx = [0, 3, 4, 5, 7, 10, 11, 13]
     nega_chords_idx = [2, 6, 8, 13, 14]
     # 感情分析の結果を反映させる
@@ -189,7 +195,7 @@ def create_backing(key_note_list, rhythm_denominator, emotion_value=0.5, debug=F
             else:
                 chords_candidate_list[i]["probability"][probability_idx] += emotion_weight // 2
 
-
+    
 
     chords_progression = []
 

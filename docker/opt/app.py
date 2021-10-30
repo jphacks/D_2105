@@ -59,7 +59,7 @@ def req():
         # twitterのidを書いておく
         if (twitter_id[0] == "@"):
             twitter_id = twitter_id[1:]
-        with open(f"./movie/{id}/twitter_id.txt", 'w') as f:
+        with open(f"/root/opt/movie/{id}/twitter_id.txt", 'w') as f:
             f.write(twitter_id)
 
         # 非同期的に曲生成を開始する

@@ -5,6 +5,7 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AdapterType
 from numpy import average
 import pickle as pick
+import gc
 
 MODEL_DIR = "./nlp/"
 def setup_model():
@@ -68,6 +69,7 @@ def tweets2posi_nega(tweets):
         # print(f"{result}: {tweet}") # 確認用
     del model
     del tokenizer
+    gc.collect()
     return average(results)
 
 def predict(sentence, tokenizer, model):

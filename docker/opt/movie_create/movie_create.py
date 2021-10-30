@@ -22,7 +22,7 @@ def get_music(id):
     1.0 * music_frames / SAMPLING_RATE : float
         音楽の長さ(秒)
     """
-    MOVIE_PATH = MOVIE_PATH = '/root/opt/movie/' + id + '/'
+    MOVIE_PATH = MOVIE_PATH = './movie/' + id + '/'
     WAVE_PATH = MOVIE_PATH + settings.WAV_FILE_NAME
     SAMPLING_RATE = 44100
 
@@ -53,7 +53,7 @@ def create_clip(path, id, bpm=0, is_icon=False, is_related=False):
     concat_clip :
         画像から生成した音楽と同じ長さの無音動画
     """
-    MOVIE_PATH = f'/root/opt/movie/{id}/'
+    MOVIE_PATH = f'./movie/{id}/'
     FPS = 30
     SECONDS_PER_FRAME = 1/30
 
@@ -108,7 +108,7 @@ def clip_circle(path, id, bpm, music_length):
     img_list : ndarray
         円形に切り出したTwitterアイコンの配列
     """
-    MOVIE_PATH = '/root/opt/movie/' + id + '/'
+    MOVIE_PATH = './movie/' + id + '/'
     FPS = 30
 
     # 画像の読み込み
@@ -177,7 +177,7 @@ def clip_related(path, id, bpm, music_length):
     img_list : ndarray
         その人に関係ある画像の配列
     """
-    MOVIE_PATH = '/root/opt/movie/' + id + '/'
+    MOVIE_PATH = './movie/' + id + '/'
     FPS = 30
 
     # 画像の読み込み
@@ -238,11 +238,11 @@ def movie_create(id, bpm, related_list):
     related_list : array
         関連するキーワードのリスト
     """
-    MOVIE_PATH = '/root/opt/movie/' + id + '/'
+    MOVIE_PATH = './movie/' + id + '/'
     WAVE_PATH = MOVIE_PATH + settings.WAV_FILE_NAME
-    BASE_IMG_PATH = '/root/opt/movie_create/common_images/cake_background.PNG'
+    BASE_IMG_PATH = './movie_create/common_images/cake_background.PNG'
     ICON_IMG_PATH = MOVIE_PATH + '/icon.png'
-    IMGAGES_PATH = '/root/opt/movie_create/images/'
+    IMGAGES_PATH = './movie_create/images/'
     BASE_HEIGHT = 720
     BASE_WIDTH = 720
     FPS = 30

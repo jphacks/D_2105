@@ -6,7 +6,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Adap
 from numpy import average
 import pickle as pick
 
-MODEL_DIR = "/root/opt/nlp/"
+MODEL_DIR = "./nlp/"
 def setup_model():
     """
     起動時に一度だけ実行される

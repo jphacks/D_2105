@@ -7,7 +7,7 @@ import urllib.error
 
 UNIT_NUM = 50
 
-def download_image(id_, url, icon_size=200, dst_path="/root/opt/movie/"):
+def download_image(id_, url, icon_size=200, dst_path="./movie/"):
     """URLから画像をダウンロードする
 
     Parameters

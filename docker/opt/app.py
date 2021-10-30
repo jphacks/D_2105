@@ -65,7 +65,7 @@ def req():
         # 非同期的に曲生成を開始する
         loop = asyncio.new_event_loop()
         loop.run_in_executor(None, create_manager, id, email1, twitter_id)
-        
+
 
         return redirect(url_for('accept', id=id))
 
@@ -77,6 +77,10 @@ def accept(id):
     return render_template(
         "accept.html",
     )
+
+@app.route('/<id>/mail')
+def mail(id):
+    return render_template("mail.html",id=id)
 
 @app.route('/<id>/preview')
 def preview(id):
@@ -166,7 +170,7 @@ def send_email(email1, id, error=False):
         body_text = 'エラーが発生しました．ご迷惑をおかけして申し訳ありませんが，しばらく時間をおいてから再度アクセスしてください．'
     else:
         subject = '【HABIFY】動画の生成が完了しました'
-        body_text = f'<p>↓こちらのリンクよりご覧ください↓</p><p><a href="https://habify.herokuapp.com/{id}/preview">https://habify.herokuapp.com/{id}/preview</a></p>'
+        body_text = render_template("mail.html",id=id)
 
     from_address = from_address
     to_address = email1

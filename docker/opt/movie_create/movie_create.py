@@ -84,7 +84,7 @@ def create_clip(path, id, bpm=0, is_icon=False, is_related=False):
 
     # 動画を作成する処理
     concat_clip = mpy.concatenate_videoclips(clips, method='compose')
-
+    clip.close()
     return concat_clip
 
 def clip_circle(path, id, bpm, music_length):
@@ -262,3 +262,9 @@ def movie_create(id, bpm, related_list):
     # 音と動画を合成
     final_clip = final_clip.set_audio(mpy.AudioFileClip(WAVE_PATH))
     final_clip.write_videofile(filename = MOVIE_PATH + 'happy_birthday.mp4', codec='libx264', audio_codec='aac', fps=FPS)
+    final_clip.close()
+    related_clip_2.close()
+    related_clip_1.close()
+    related_clip_0.close()
+    icon_clip.close()
+    base_clip.close()

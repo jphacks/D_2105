@@ -192,6 +192,7 @@ def favicon():
     return app.send_static_file("favicon.ico")
 
 if __name__=='__main__':
+    print(os.getcwd())
     # 感情判定のセットアップ
     emotion_adapter.setup_model()
     port = os.getenv('PORT')

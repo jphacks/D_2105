@@ -11,8 +11,8 @@ ENV LC_ALL ja_JP.UTF-8
 ENV TZ JST-9
 ENV TERM xterm
 
-WORKDIR /opt
-ADD ./docker/opt/ /opt
+WORKDIR /root/opt
+ADD ./docker/opt/ /root/opt
 
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools

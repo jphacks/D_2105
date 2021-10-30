@@ -1,0 +1,42 @@
+div{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mail_message{
+  font-size: 20px;
+  text-align: center;
+  padding:0;
+  margin:0;
+  color:#b84513;
+  font-family: 'Zen Maru Gothic','MS ゴシック', sans-serif;
+}
+
+.mail_head{
+  text-align: center;
+  margin:2em auto;
+  padding:1em 0;
+  width:45%;
+  border:4px double #f6bfbc;
+  border-radius:2em;
+}
+
+span{
+    color:#ff3366;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+@media screen and (max-width:768px){
+  .mail_head{
+    margin:2em 1.5em 1em 1.5em;
+    width:80%;
+  }
+  p{
+    font-size: 15px;
+  }
+  .preview_url{
+    font-size: 15px;
+  }
+  }
+}

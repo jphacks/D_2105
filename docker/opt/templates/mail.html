@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/mail.css')}}" />
+
+<body>
+  <div class="mail_message">
+    <div class="mail_head"><span>Happy Birthday to You</span>が<br class="pc_hid">完成しました！!</div>
+      <div class="mail_cake">
+        <img src="../static/img/mail_cake.png" alt="cake" width=200px height=200px ></img>
+      </div>
+    <p>↓こちらのリンクよりご覧ください↓</p>
+    <p class="preview_url"><a href="https://habify.herokuapp.com/{{id}}/preview">https://habify.herokuapp.com/{{id}}/preview</a></p>
+  </div>
+</body>
+
+{% endblock %}
